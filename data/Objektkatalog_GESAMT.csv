@@ -1,0 +1,246 @@
+﻿Objektklasse;Objekttyp;Objektart;Gewerk;Erlaubte_Elternklasse;Aktiv;Notiz
+Heizflächen – statisch;Röhrenheizkörper;Objekt;Heizung;Raum;Ja;
+Heizflächen – statisch;Gliederheizkörper;Objekt;Heizung;Raum;Ja;
+Heizflächen – statisch;Plattenheizkörper;Objekt;Heizung;Raum;Ja;
+Heizflächen – statisch;Badheizkörper;Objekt;Heizung;Raum;Ja;
+Heizflächen – statisch;Konvektor;Objekt;Heizung;Raum;Ja;
+Heizflächen – statisch;Wandheizkörper;Objekt;Heizung;Raum;Ja;
+Heizflächen – Flächenheizung;Fußbodenheizung;Objekt;Heizung;Raum;Ja;
+Heizflächen – Flächenheizung;Wandheizung;Objekt;Heizung;Raum;Ja;ergänzt
+Heizflächen – Flächenheizung;Deckenheizung;Objekt;Heizung;Raum;Ja;ergänzt
+Wärmeerzeuger;Gas-Brennwertkessel;Objekt;Heizung;"Raum;Wohnungsstation";Ja;
+Wärmeerzeuger;Gas-Standardkessel;Objekt;Heizung;"Raum;Wohnungsstation";Ja;ergänzt (Standardkessel fehlten)
+Wärmeerzeuger;Öl-Brennwertkessel;Objekt;Heizung;Raum;Ja;
+Wärmeerzeuger;Öl-Standardkessel;Objekt;Heizung;Raum;Ja;ergänzt
+Wärmeerzeuger;Wärmepumpe;Objekt;Heizung;Raum;Ja;Bauart (Luft/Sole/Wasser, Monoblock/Split) als Frage, nicht als Typ
+Wärmeerzeuger;Fernwärme-Übergabestation;Objekt;Heizung;"Raum;Wohnungsstation";Ja;
+Wärmeerzeuger;Biomasse-/Pelletkessel;Objekt;Heizung;Raum;Ja;
+Wärmeerzeuger;BHKW;Objekt;Heizung;Raum;Ja;
+Wärmeerzeuger;Elektro-Wärmeerzeuger (zentral);Objekt;Heizung;Raum;Ja;
+Wärmeerzeuger;Nachtspeicherofen;Objekt;Heizung;Raum;Ja;ergänzt: dezentral, Minimalerfassung
+Wärmeerzeuger;Gas-Einzelraumheizung;Objekt;Heizung;Raum;Ja;ergänzt: dezentral, minimal
+Wärmeerzeuger;Elektro-Einzelraumheizung;Objekt;Heizung;Raum;Ja;ergänzt: dezentral, minimal
+Wärmeerzeuger;Abgasinstallation;Sub-Objekt;Heizung;Wärmeerzeuger;Ja;Sub des Erzeugers
+Wärmeerzeuger;Förderanlage;Sub-Objekt;Heizung;Wärmeerzeuger;Ja;ergänzt
+Wärmeerzeuger;Pelletsilo;Sub-Objekt;Heizung;Wärmeerzeuger;Ja;ergänzt
+Wärmeerzeuger;Öltank;Sub-Objekt;Heizung;Wärmeerzeuger;Ja;ergänzt
+Wärmespeicher;Pufferspeicher;Objekt;Heizung;"Raum;Wohnungsstation";Ja;
+Wärmespeicher;Kombispeicher;Objekt;Heizung;"Raum;Wohnungsstation";Ja;grenzt an TWW
+Wärmespeicher;Opferanode;Sub-Objekt;Heizung;Wärmespeicher;Ja;ergänzt
+Wärmespeicher;Entleerhahn;Sub-Objekt;Heizung;Wärmespeicher;Ja;ergänzt
+Wärmespeicher;Reinigungsöffnung;Sub-Objekt;Heizung;Wärmespeicher;Ja;ergänzt
+Wärmespeicher;Zusatzerzeuger (Gas/Elektro);Sub-Objekt;Heizung;Wärmespeicher;Ja;ergänzt
+Wärmespeicher;Externer Wärmeübertrager;Sub-Objekt;Heizung;Wärmespeicher;Ja;ergänzt
+Heizungsverteiler;Heizkreisverteiler;Objekt;Heizung;"Raum;Wohnungsstation";Ja;Fragen: Hersteller/Produkt/Drucklos/Beschriftung
+Heizungsverteiler;Verteilerbalken;Sub-Objekt;Heizung;Heizkreisverteiler;Ja;
+Heizungsverteiler;Hydraulische Weiche;Sub-Objekt;Heizung;Heizkreisverteiler;Ja;
+Heizungsverteiler;Überlaufwanne;Sub-Objekt;Heizung;Heizkreisverteiler;Ja;
+Heizungsinstallation;Rohrleitung;Objekt;Heizung;"Raum;Rohrleitung";Ja;"raumübergreifend inkl. vertikaler Läufe (Steigleitung entfällt); Fortsetzung über Wanddurchbruch + Raumliste"
+Heizungsinstallation;Pumpe;Sub-Objekt;Heizung;"Heizungsinstallation;Wärmeerzeuger;Wohnungsstation;Wärmeübertrager (WÜT)";Ja;Heizkreis/TWW-Zirk/WÜT-Peripherie je Kontext
+Heizungsinstallation;Sensor/Fühler;Sub-Objekt;Heizung;Heizungsinstallation;Ja;"war „Sensortechnik"""
+Heizungsinstallation;Wärmeübertrager (WÜT);Sub-Objekt;Heizung;"Heizungsinstallation;Wohnungsstation";Ja;Medienpaarung als Frage
+Heizungsinstallation;Automatischer Entlüfter;Sub-Objekt;Heizung;"Rohrleitung;Heizungsinstallation";Ja;ergänzt
+Heizungsinstallation;Lufttopf/Luftabscheider;Sub-Objekt;Heizung;Rohrleitung;Ja;ergänzt
+Heizungsinstallation;Wärmemengenzähler;Sub-Objekt;Heizung;"Rohrleitung;Wohnungsstation";Ja;ergänzt: Bauteil
+Heizungsinstallation;Anlegefühler;Sub-Objekt;Heizung;Wärmemengenzähler;Ja;Sub des Zählers
+Heizungsregelung;Regelung;Objekt;Heizung;"Raum;Wärmeerzeuger";Ja;"umbenannt; Kasten an der Wand – Hersteller/Produkt, Funktion später"
+Wohnungsstation;Wohnungsstation;Objekt;Heizung;Raum;Ja;Container – Heizung- & TWW-Objekte docken darunter an
+Heizungsarmaturen;Heizkörperventil;Sub-Objekt;Heizung;Heizflächen – statisch;Ja;
+Heizungsarmaturen;Flächenheizungsventil;Sub-Objekt;Heizung;"Heizkreisverteiler;Heizflächen – Flächenheizung";Ja;ergänzt
+Heizungsarmaturen;Thermostatkopf;Sub-Objekt;Heizung;"Heizkörperventil;Flächenheizungsventil";Ja;sitzt auf Heizkörper- ODER Flächenheizungsventil
+Heizungsarmaturen;Rücklaufverschraubung;Sub-Objekt;Heizung;Heizflächen – statisch;Ja;
+Heizungsarmaturen;Strangregulierventil;Sub-Objekt;Heizung;Heizungsinstallation;Ja;
+Heizungsarmaturen;Differenzdruckregler;Sub-Objekt;Heizung;Heizungsinstallation;Ja;
+Heizungsarmaturen;Überströmventil;Sub-Objekt;Heizung;Heizungsinstallation;Ja;
+Heizungsarmaturen;3-Wege-Mischer;Sub-Objekt;Heizung;Heizungsinstallation;Ja;
+Heizungsarmaturen;Absperrarmatur/Kugelhahn;Sub-Objekt;Heizung;Heizungsinstallation;Ja;dupliziert
+Heizungsarmaturen;Rückschlagventil;Sub-Objekt;Heizung;Heizungsinstallation;Ja;dupliziert
+Heizungsarmaturen;Schmutzfänger/Filter;Sub-Objekt;Heizung;Heizungsinstallation;Ja;dupliziert
+Heizungsarmaturen;Sicherheits-/Überdruckventil;Sub-Objekt;Heizung;Wärmeerzeuger;Ja;dupliziert (auch Solar/TWW)
+Heizungsarmaturen;Ausdehnungsgefäß (MAG);Sub-Objekt;Heizung;Wärmeerzeuger;Ja;dupliziert (auch Solar/TWW)
+Heizungsarmaturen;Manometer;Sub-Objekt;Heizung;Heizungsinstallation;Ja;dupliziert
+Heizungsarmaturen;Thermometer;Sub-Objekt;Heizung;Heizungsinstallation;Ja;dupliziert
+Heizungsarmaturen;Entlüfter (manuell);Sub-Objekt;Heizung;Heizflächen – statisch;Ja;dupliziert
+Heizungsarmaturen;KFE-/Entleerhahn;Sub-Objekt;Heizung;Heizungsinstallation;Ja;dupliziert
+Heizungsarmaturen;Probeentnahmehahn;Sub-Objekt;Heizung;Heizungsinstallation;Ja;dupliziert (auch TWW)
+Wasserinstallation;Rohrleitung;Objekt;Wasser;"Raum;Rohrleitung";Ja;"raumübergreifend inkl. vertikaler Läufe; Fortsetzung über Wanddurchbruch + Raumliste"
+Wasserinstallation;Wasserzähler;Objekt;Wasser;"Raum;Hausanschlusspunkt;Wohnungsstation";Ja;
+Wasserinstallation;Druckerhöhungsanlage;Objekt;Wasser;Raum;Ja;ergänzt
+Wasseraufbereitung;Enthärtungsanlage;Objekt;Wasser;"Raum;Wasserinstallation";Ja;ergänzt
+Wasseraufbereitung;Feinfilter/Rückspülfilter;Sub-Objekt;Wasser;Wasserinstallation;Ja;ergänzt
+Wasseraufbereitung;Dosieranlage;Sub-Objekt;Wasser;Wasserinstallation;Ja;ergänzt
+Wasserarmaturen;Hauptabsperrung (KFR-Ventil);Sub-Objekt;Wasser;Hausanschlusspunkt;Ja;
+Wasserarmaturen;Eckventil;Sub-Objekt;Wasser;"Sanitärobjekt;Rohrleitung";Ja;
+Wasserarmaturen;Auslaufarmatur/Zapfventil;Sub-Objekt;Wasser;Rohrleitung;Ja;
+Wasserarmaturen;Druckminderer;Sub-Objekt;Wasser;Wasserinstallation;Ja;
+Wasserarmaturen;Systemtrenner/Rückflussverhinderer;Sub-Objekt;Wasser;Wasserinstallation;Ja;
+Wasserarmaturen;Absperrarmatur/Kugelhahn;Sub-Objekt;Wasser;Wasserinstallation;Ja;dupliziert
+Wasserarmaturen;Rückschlagventil;Sub-Objekt;Wasser;Wasserinstallation;Ja;dupliziert
+Wasserarmaturen;Schmutzfänger/Filter;Sub-Objekt;Wasser;Wasserinstallation;Ja;dupliziert
+Wasserarmaturen;Manometer;Sub-Objekt;Wasser;Wasserinstallation;Ja;dupliziert
+Wasserarmaturen;Entleerhahn;Sub-Objekt;Wasser;Wasserinstallation;Ja;dupliziert
+Wasserarmaturen;Probeentnahmehahn;Sub-Objekt;Wasser;Wasserinstallation;Ja;dupliziert (auch TWW/Heizung)
+Sanitärobjekte;Waschbecken;Objekt;Wasser;Raum;Ja;"Endstelle bei Wasser; Ablauf via Siphon ins Abwasser verknüpft"
+Sanitärobjekte;WC;Objekt;Wasser;Raum;Ja;"Endstelle bei Wasser; Ablauf via Siphon ins Abwasser verknüpft"
+Sanitärobjekte;Urinal;Objekt;Wasser;Raum;Ja;"Endstelle bei Wasser; Ablauf via Siphon ins Abwasser verknüpft"
+Sanitärobjekte;Badewanne;Objekt;Wasser;Raum;Ja;"Endstelle bei Wasser; Ablauf via Siphon ins Abwasser verknüpft"
+Sanitärobjekte;Dusche;Objekt;Wasser;Raum;Ja;"Endstelle bei Wasser; Ablauf via Siphon ins Abwasser verknüpft"
+Sanitärobjekte;Bidet;Objekt;Wasser;Raum;Ja;"Tippfehler korr. (war „Bede"")"
+Sanitärobjekte;Küchenspüle;Objekt;Wasser;Raum;Ja;"war „Küchenmöbel: Waschbecken"""
+Sanitärobjekte;Ausgussbecken;Objekt;Wasser;Raum;Ja;ergänzt
+Sanitärobjekte;Sanitärarmatur (Mischer/Batterie);Sub-Objekt;Wasser;Sanitärobjekt;Ja;
+Sanitärobjekte;Spülkasten;Sub-Objekt;Wasser;WC;Ja;
+Sanitärobjekte;Ablaufgarnitur/Siphon;Sub-Objekt;Wasser;Sanitärobjekt;Ja;Übergang zu Abwasser
+Sanitärobjekte;Vorwandinstallationselement;Sub-Objekt;Wasser;Sanitärobjekt;Ja;ergänzt: meist verdeckt, TGA-relevant (vorhanden?, Hersteller, Produkt)
+TWW-Erzeugung;Trinkwarmwasserspeicher;Objekt;TWW;"Raum;Wohnungsstation";Ja;indirekt beheizt
+TWW-Erzeugung;Durchlauferhitzer;Objekt;TWW;"Raum;Wohnungsstation";Ja;elektrisch/Gas
+TWW-Erzeugung;Warmwasserboiler (elektrisch);Objekt;TWW;Raum;Ja;Klein-/Untertischspeicher
+TWW-Erzeugung;Frischwasserstation;Objekt;TWW;"Raum;Wohnungsstation";Ja;ergänzt: WW im Durchfluss über WÜT
+TWW-Erzeugung;Opferanode;Sub-Objekt;TWW;Trinkwarmwasserspeicher;Ja;
+TWW-Erzeugung;Reinigungsöffnung;Sub-Objekt;TWW;Trinkwarmwasserspeicher;Ja;
+TWW-Installation;Warmwasserleitung;Objekt;TWW;"Raum;Warmwasserleitung";Ja;"raumübergreifend; Fortsetzung über Wanddurchbruch + Raumliste"
+TWW-Installation;Zirkulationsleitung;Objekt;TWW;"Raum;Zirkulationsleitung;Warmwasserleitung";Ja;aus Warmwasserleitung spawnbar → schließt den Zirkulationskreis zum Speicher
+TWW-Installation;Warmwasserzähler;Objekt;TWW;"Raum;Wohnungsstation;TWW-Installation";Ja;
+TWW-Armaturen;Zirkulationsregulierventil (thermostatisch);Sub-Objekt;TWW;Zirkulationsleitung;Ja;
+TWW-Armaturen;Thermostat-/Verbrühschutzmischer;Sub-Objekt;TWW;TWW-Installation;Ja;
+TWW-Armaturen;Zirkulationspumpe;Sub-Objekt;TWW;"TWW-Installation;Wohnungsstation";Ja;gleiche Format-Logik wie Pumpe
+TWW-Armaturen;Absperrarmatur/Kugelhahn;Sub-Objekt;TWW;TWW-Installation;Ja;dupliziert
+TWW-Armaturen;Rückschlagventil;Sub-Objekt;TWW;TWW-Installation;Ja;dupliziert
+TWW-Armaturen;Sicherheits-/Überdruckventil;Sub-Objekt;TWW;Trinkwarmwasserspeicher;Ja;dupliziert (auch Heizung/Solar)
+TWW-Armaturen;Manometer;Sub-Objekt;TWW;TWW-Installation;Ja;dupliziert
+TWW-Armaturen;Thermometer;Sub-Objekt;TWW;TWW-Installation;Ja;dupliziert
+TWW-Armaturen;Entleerhahn;Sub-Objekt;TWW;TWW-Installation;Ja;dupliziert
+TWW-Armaturen;Probeentnahmehahn;Sub-Objekt;TWW;TWW-Installation;Ja;dupliziert (auch Wasser)
+Solarkollektoren;Röhrenkollektor;Objekt;Solar;Bereich (Erneuerbare Energien);Ja;"Ausrichtung/Neigung am Kollektor; Montageart/Verschattung am Bereich"
+Solarkollektoren;Flachkollektor;Objekt;Solar;Bereich (Erneuerbare Energien);Ja;
+Solarstation;Solarstation;Objekt;Solar;Raum;Ja;Glykolgehalt/Frostschutz wird hier eingegeben (einmal je Kreis)
+Solar-Installation;Solarleitung;Objekt;Solar;"Raum;Solarleitung";Ja;"raumübergreifend; führt Glykol-Wasser-Gemisch; Fortsetzung über Wanddurchbruch + Raumliste"
+Solararmaturen;Solar-Sicherheitsgruppe;Sub-Objekt;Solar;"Solarstation;Solar-Installation";Ja;
+Solararmaturen;Schwerkraftbremse;Sub-Objekt;Solar;Solarleitung;Ja;
+Solararmaturen;Tacosetter/Durchflussmesser;Sub-Objekt;Solar;Solarstation;Ja;
+Solararmaturen;Solarpumpe;Sub-Objekt;Solar;Solarstation;Ja;gleiche Format-Logik wie Pumpe
+Solararmaturen;Ausdehnungsgefäß (MAG);Sub-Objekt;Solar;"Solarstation;Solar-Installation";Ja;"dupliziert (auch Heizung/TWW); temperaturfest"
+Solararmaturen;Sicherheits-/Überdruckventil;Sub-Objekt;Solar;Solarstation;Ja;dupliziert (auch Heizung/TWW)
+Solararmaturen;Entlüfter (temperaturfest);Sub-Objekt;Solar;Solarleitung;Ja;dupliziert
+Solararmaturen;Absperrarmatur/Kugelhahn;Sub-Objekt;Solar;Solar-Installation;Ja;dupliziert
+Solararmaturen;Rückschlagventil;Sub-Objekt;Solar;Solar-Installation;Ja;dupliziert
+Solararmaturen;Manometer;Sub-Objekt;Solar;Solarstation;Ja;dupliziert
+Solararmaturen;Thermometer;Sub-Objekt;Solar;Solarstation;Ja;dupliziert
+Solararmaturen;Befüll-/Entleerhahn;Sub-Objekt;Solar;Solar-Installation;Ja;dupliziert
+Kälteerzeugung;Kaltwassersatz/Kältemaschine;Objekt;Kälte;Raum;Ja;Glykolgehalt/Frostschutz wird hier eingegeben (Kaltwasser-/Solekreis)
+Kälteerzeugung;Split-Klimagerät (Außengerät);Objekt;Kälte;"Raum;Bereich (Erneuerbare Energien)";Ja;DX/Kältemittel
+Kälteerzeugung;VRF-Außengerät;Objekt;Kälte;Raum;Ja;DX/Kältemittel
+Kälteerzeugung;Rückkühler/Rückkühlwerk;Objekt;Kälte;"Raum;Bereich (Erneuerbare Energien)";Ja;
+Kälteinstallation;Kälteleitung (Kaltwasser/Sole);Objekt;Kälte;"Raum;Kälteleitung (Kaltwasser/Sole)";Ja;"raumübergreifend; führt Glykol-/Solegemisch; Dämmung gegen Schwitzwasser wichtig"
+Kälteinstallation;Kältemittelleitung;Objekt;Kälte;"Raum;Kältemittelleitung";Ja;"für DX/VRF; isoliert"
+Kälteinstallation;Kondensatleitung;Objekt;Kälte;"Raum;Kondensatleitung";Ja;Kondensatablauf der Kühlung → Abwasser
+Kälteübergabe;Gebläsekonvektor/Fan-Coil;Objekt;Kälte;Raum;Ja;
+Kälteübergabe;Kühldecke/Kühlsegel;Objekt;Kälte;Raum;Ja;
+Kälteübergabe;Umluftkühlgerät;Objekt;Kälte;Raum;Ja;
+Kälteübergabe;Split-Innengerät;Objekt;Kälte;Raum;Ja;
+Kältearmaturen;Expansionsventil (thermost./elektron.);Sub-Objekt;Kälte;"Kältemittelleitung;Split-Innengerät";Ja;
+Kältearmaturen;Magnetventil;Sub-Objekt;Kälte;Kältemittelleitung;Ja;
+Kältearmaturen;Schauglas;Sub-Objekt;Kälte;Kältemittelleitung;Ja;
+Kältearmaturen;Filtertrockner;Sub-Objekt;Kälte;Kältemittelleitung;Ja;
+Kältearmaturen;Kaltwasserpumpe;Sub-Objekt;Kälte;"Kaltwassersatz/Kältemaschine;Kälteinstallation";Ja;gleiche Format-Logik wie Pumpe
+Kältearmaturen;Absperrventil/Kugelhahn;Sub-Objekt;Kälte;Kälteinstallation;Ja;dupliziert
+Kältearmaturen;Rückschlagventil;Sub-Objekt;Kälte;Kälteinstallation;Ja;dupliziert
+Kältearmaturen;Schmutzfänger/Filter;Sub-Objekt;Kälte;Kälteinstallation;Ja;dupliziert
+Kältearmaturen;Manometer (HD/ND);Sub-Objekt;Kälte;Kaltwassersatz/Kältemaschine;Ja;dupliziert
+Kältearmaturen;Thermometer;Sub-Objekt;Kälte;Kälteinstallation;Ja;dupliziert
+Kältearmaturen;Sicherheits-/Überdruckventil;Sub-Objekt;Kälte;Kaltwassersatz/Kältemaschine;Ja;dupliziert (auch Heizung/Solar/TWW)
+Kältearmaturen;Ausdehnungsgefäß (MAG);Sub-Objekt;Kälte;"Kaltwassersatz/Kältemaschine;Kälteinstallation";Ja;"dupliziert; für Sole-/Kaltwasserkreis"
+Kältearmaturen;Entlüfter;Sub-Objekt;Kälte;Kälteleitung (Kaltwasser/Sole);Ja;dupliziert
+Abwasserinstallation;Anschlussleitung;Objekt;Abwasser;"Raum;Sanitärobjekt;Anschlussleitung";Ja;"von der Endstelle zur Sammelleitung; mit Gefälle"
+Abwasserinstallation;Sammelleitung (liegend);Objekt;Abwasser;"Raum;Sammelleitung (liegend)";Ja;"raumübergreifend; mit Gefälle; Fortsetzung über Wanddurchbruch + Raumliste"
+Abwasserinstallation;Fallleitung;Objekt;Abwasser;"Bereich;Fallleitung";Ja;"vertikal; sammelt mehrere Geschosse"
+Abwasserinstallation;Grundleitung;Objekt;Abwasser;"Bereich;Grundleitung";Ja;"erdverlegt/unter Bodenplatte; mit Gefälle"
+Abwasserinstallation;Lüftungsleitung;Objekt;Abwasser;"Fallleitung;Raum";Ja;Be-/Entlüftung über Dach
+Abwasserinstallation;Formstück/Anschlussstück;Sub-Objekt;Abwasser;"Sammelleitung (liegend);Fallleitung;Grundleitung;Anschlussleitung";Ja;Bögen, Abzweige, Reduzierungen, Übergänge
+Abwasserinstallation;Reinigungsöffnung/Putzstück;Sub-Objekt;Abwasser;"Sammelleitung (liegend);Fallleitung;Grundleitung";Ja;
+Abwasser-Sonderbauteile;Bodenablauf/Gully;Objekt;Abwasser;Raum;Ja;
+Abwasser-Sonderbauteile;Rückstauverschluss/Rückstauklappe;Objekt;Abwasser;"Grundleitung;Sammelleitung (liegend)";Ja;
+Abwasser-Sonderbauteile;Hebeanlage;Objekt;Abwasser;Raum;Ja;für Entwässerung unterhalb der Rückstauebene
+Abwasser-Sonderbauteile;Fettabscheider;Objekt;Abwasser;"Raum;Außenanlage";Ja;gewerblich (Küche)
+Abwasser-Sonderbauteile;Ölabscheider;Objekt;Abwasser;Außenanlage;Ja;Garage/Werkstatt
+Abwasser-Sonderbauteile;Revisionsschacht/Kanalanschluss;Objekt;Abwasser;Außenanlage;Ja;
+Abwasser-Sonderbauteile;Abwasser-/Tauchpumpe;Sub-Objekt;Abwasser;Hebeanlage;Ja;gleiche Format-Logik wie Pumpe
+Gasinstallation;Gasleitung;Objekt;Gas;"Raum;Gasleitung";Ja;"raumübergreifend; Fortsetzung über Wanddurchbruch + Raumliste"
+Gasinstallation;Gashausanschluss/HAE;Objekt;Gas;"Raum;Bereich";Ja;Hauptabsperreinrichtung
+Gaszähler;Gaszähler;Objekt;Gas;"Raum;Gasinstallation;Wohnungsstation";Ja;
+Gasarmaturen;Gaskugelhahn (GS-Hahn);Sub-Objekt;Gas;"Gasleitung;Gaszähler;Wärmeerzeuger";Ja;
+Gasarmaturen;Thermische Absperreinrichtung (TAE);Sub-Objekt;Gas;"Gasleitung;Wärmeerzeuger";Ja;
+Gasarmaturen;Gasströmungswächter (GS);Sub-Objekt;Gas;"Gasleitung;Gaszähler";Ja;
+Gasarmaturen;Gasdruckregler;Sub-Objekt;Gas;"Gashausanschluss/HAE;Gasleitung";Ja;
+Gasarmaturen;Zähleranschlussarmatur;Sub-Objekt;Gas;Gaszähler;Ja;
+Gasarmaturen;Manometer;Sub-Objekt;Gas;Gasinstallation;Ja;dupliziert
+Elektroverteilung;Hausanschlusskasten (HAK);Objekt;Elektro;"Raum;Bereich";Ja;
+Elektroverteilung;Zählerschrank;Objekt;Elektro;Raum;Ja;
+Elektroverteilung;Stromzähler;Objekt;Elektro;"Zählerschrank;Wohnungsstation;Raum";Ja;
+Elektroverteilung;Hauptverteilung;Objekt;Elektro;Raum;Ja;
+Elektroverteilung;Unterverteilung;Objekt;Elektro;"Raum;Wohnung";Ja;
+Elektroverteilung;Fehlerstromschutzschalter (RCD/FI);Sub-Objekt;Elektro;"Unterverteilung;Hauptverteilung";Ja;
+Elektroverteilung;Leitungsschutzschalter (LS);Sub-Objekt;Elektro;"Unterverteilung;Hauptverteilung";Ja;
+Elektroverteilung;Schmelzsicherung;Sub-Objekt;Elektro;"Unterverteilung;Hauptverteilung;Zählerschrank";Ja;
+Elektroverteilung;Hauptschalter/SLS;Sub-Objekt;Elektro;"Unterverteilung;Hauptverteilung;Zählerschrank";Ja;
+Elektroverteilung;Überspannungsschutz (SPD);Sub-Objekt;Elektro;"Unterverteilung;Hauptverteilung";Ja;
+Elektroinstallation;Leitung/Kabel;Objekt;Elektro;"Raum;Leitung/Kabel";Ja;"raumübergreifend; Fortsetzung über Wanddurchbruch + Raumliste"
+Elektroinstallation;Kabeltrasse/-kanal;Sub-Objekt;Elektro;"Raum;Leitung/Kabel";Ja;
+Elektroinstallation;Abzweigdose;Objekt;Elektro;"Raum;Leitung/Kabel";Ja;
+Elektroinstallation;Potentialausgleichsschiene;Objekt;Elektro;Raum;Ja;
+Elektro-Endstellen;Steckdose;Objekt;Elektro;Raum;Ja;
+Elektro-Endstellen;Schalter;Objekt;Elektro;Raum;Ja;
+Elektro-Endstellen;Leuchte/Auslass;Objekt;Elektro;Raum;Ja;
+Elektro-Erzeugung/Speicher;PV-Modul;Objekt;Elektro;Bereich (Erneuerbare Energien);Ja;Ausrichtung/Neigung am Modul, Montageart/Verschattung am Bereich
+Elektro-Erzeugung/Speicher;PV-Wechselrichter;Objekt;Elektro;"Raum;Bereich (Erneuerbare Energien)";Ja;
+Elektro-Erzeugung/Speicher;Batteriespeicher;Objekt;Elektro;Raum;Ja;
+Elektro-Erzeugung/Speicher;Wallbox/Ladestation;Objekt;Elektro;"Raum;Außenanlage";Ja;
+(Basis);Rohrzubehör;Sub-Objekt;(erbt vom Eltern);"Anschlussleitung;Fallleitung;Gasleitung;Grundleitung;Kondensatleitung;Kälteleitung (Kaltwasser/Sole);Kältemittelleitung;Leitung/Kabel;Lüftungsleitung;Rohrleitung;Sammelleitung (liegend);Solarleitung;Warmwasserleitung;Zirkulationsleitung";Ja;generisch: gilt für alle Leitungen (Gewerk erbt vom Eltern)
+(Basis);Wanddurchbruch;Sub-Objekt;(erbt vom Eltern);"Anschlussleitung;Fallleitung;Gasleitung;Grundleitung;Kondensatleitung;Kälteleitung (Kaltwasser/Sole);Kältemittelleitung;Leitung/Kabel;Lüftungsleitung;Rohrleitung;Sammelleitung (liegend);Solarleitung;Warmwasserleitung;Zirkulationsleitung";Ja;generisch: gilt für alle Leitungen (Gewerk erbt vom Eltern)
+(Basis);Abzweig;Sub-Objekt;(erbt vom Eltern);"Anschlussleitung;Fallleitung;Gasleitung;Grundleitung;Kondensatleitung;Kälteleitung (Kaltwasser/Sole);Kältemittelleitung;Leitung/Kabel;Lüftungsleitung;Rohrleitung;Sammelleitung (liegend);Solarleitung;Warmwasserleitung;Zirkulationsleitung";Ja;generisch: gilt für alle Leitungen (Gewerk erbt vom Eltern)
+(Basis);Hausanschlusspunkt;Sub-Objekt;(erbt vom Eltern);"Anschlussleitung;Fallleitung;Gasleitung;Grundleitung;Kondensatleitung;Kälteleitung (Kaltwasser/Sole);Kältemittelleitung;Leitung/Kabel;Lüftungsleitung;Rohrleitung;Sammelleitung (liegend);Solarleitung;Warmwasserleitung;Zirkulationsleitung";Ja;generisch: gilt für alle Leitungen (Gewerk erbt vom Eltern)
+(Basis);Steigerposition;Sub-Objekt;(erbt vom Eltern);"Anschlussleitung;Fallleitung;Gasleitung;Grundleitung;Kondensatleitung;Kälteleitung (Kaltwasser/Sole);Kältemittelleitung;Leitung/Kabel;Lüftungsleitung;Rohrleitung;Sammelleitung (liegend);Solarleitung;Warmwasserleitung;Zirkulationsleitung";Ja;generisch: gilt für alle Leitungen (Gewerk erbt vom Eltern)
+(Basis);Brandschutzbauteil (Abschottung);Sub-Objekt;(erbt vom Eltern);Wanddurchbruch;Ja;Aspekt des Wanddurchbruchs
+(Basis);Dämmung;Sub-Objekt;(erbt vom Eltern);"Anschlussleitung;Fallleitung;Gasleitung;Grundleitung;Kondensatleitung;Kälteleitung (Kaltwasser/Sole);Kältemittelleitung;Leitung/Kabel;Lüftungsleitung;Rohrleitung;Sammelleitung (liegend);Solarleitung;Warmwasserleitung;Zirkulationsleitung;Wärmespeicher;Trinkwarmwasserspeicher;Wärmeübertrager (WÜT);Pumpe;Solarstation";Ja;generisch (BIM: eigenes Dämm-Element)
+(Basis);Anschluss;Sub-Objekt;(erbt vom Eltern);"Anschlussleitung;Fallleitung;Gasleitung;Grundleitung;Kondensatleitung;Kälteleitung (Kaltwasser/Sole);Kältemittelleitung;Leitung/Kabel;Lüftungsleitung;Rohrleitung;Sammelleitung (liegend);Solarleitung;Warmwasserleitung;Zirkulationsleitung;Heizflächen – statisch;Heizflächen – Flächenheizung;Wärmeerzeuger;Wärmespeicher;Trinkwarmwasserspeicher;Heizkreisverteiler;Wärmeübertrager (WÜT);Pumpe;Solarstation;Kaltwassersatz/Kältemaschine;Sanitärobjekt;Wohnungsstation";Ja;"generisch (BIM: Anschlussstutzen); Funktion VL/RL/… + Position/Höhe"
+(Basis);Messpunkt;Sub-Objekt;(erbt vom Eltern);alle Objekte;Ja;generisch: Titel, Beschreibung, Foto, Maß 1..x
+(Basis);Sockel;Sub-Objekt;(erbt vom Eltern);alle stehenden Objekte;Ja;generisch: Maße L/B/H
+Bauphysik – Fenster;Fenster;Objekt;Bauphysik;"Raum;Außenwand";Ja;wird je Vorkommen auf Raumebene dupliziert
+Bauphysik – Fenster;Fenstertür;Objekt;Bauphysik;"Raum;Außenwand";Ja;bodentief / Balkontür
+Bauphysik – Fenster;Festverglasung;Objekt;Bauphysik;"Raum;Außenwand";Ja;komplett feststehendes Fenster
+Bauphysik – Fenster;Dachflächenfenster;Objekt;Bauphysik;"Raum;Dachschräge";Ja;Velux o. ä.
+Bauphysik – Fenster;Feld;Sub-Objekt;Bauphysik;"Fenster;Fenstertür;Dachflächenfenster";Ja;"Flügel ODER Festscheibe; trägt Sprossen/Beschlag/Glasaufbau"
+Bauphysik – Fenster;Sprossen;Sub-Objekt;Bauphysik;Feld;Ja;
+Bauphysik – Fenster;Griff/Beschlag;Sub-Objekt;Bauphysik;Feld;Ja;nur bei Flügel
+Bauphysik – Fenster;Blendrahmen;Sub-Objekt;Bauphysik;"Fenster;Fenstertür";Ja;
+Bauphysik – Fenster;Pfosten;Sub-Objekt;Bauphysik;"Fenster;Fenstertür";Ja;
+Bauphysik – Fenster;Rollladenkasten;Sub-Objekt;Bauphysik;"Fenster;Fenstertür";Ja;oft größte lineare Wärmebrücke
+Bauphysik – Fenster;Fensterbank;Sub-Objekt;Bauphysik;"Fenster;Fenstertür";Ja;
+Bauphysik – Fenster;Sonnenschutz/Verschattung;Sub-Objekt;Bauphysik;"Fenster;Fenstertür;Dachflächenfenster";Ja;
+Bauphysik – Türen;Tür (Drehflügel);Objekt;Bauphysik;Raum;Ja;"klassische Tür; innen/außen/brandschutz/sicherheit über Attribute"
+Bauphysik – Türen;Schiebetür;Objekt;Bauphysik;Raum;Ja;zusätzlich: Laufart Tasche/Aufputz/Nische
+Bauphysik – Türen;Falttür;Objekt;Bauphysik;Raum;Ja;minimal: Maße, Material, Schloss/Bänder
+Bauphysik – Türen;Drehtür (Karusselltür);Objekt;Bauphysik;"Raum;Außenwand";Ja;"komplex; wie Tor behandelt"
+Bauphysik – Türen;Tor;Objekt;Bauphysik;"Raum;Außenwand";Ja;"Torart Sektional/Schwing/Roll/Flügel/Schiebe/Falt; Antrieb & Sicherheit"
+Bauphysik – Türen;Flügel (Türblatt);Sub-Objekt;Bauphysik;"Tür (Drehflügel);Schiebetür;Falttür;Drehtür (Karusselltür)";Ja;"wiederholbar (Anzahl Flügel); öffenbar/Standflügel"
+Bauphysik – Türen;Griff;Sub-Objekt;Bauphysik;Flügel (Türblatt);Ja;
+Bauphysik – Türen;Schloss/Bänder;Sub-Objekt;Bauphysik;"Flügel (Türblatt);Falttür";Ja;Verriegelung, Schloss-/Schlüsselnr., Schließpunkte, Scharniere, pendelbar
+Bauphysik – Türen;Einlage;Sub-Objekt;Bauphysik;"Flügel (Türblatt);Feststehendes Teil;Torblatt/Paneel";Ja;"Glas/Platte/Gitter; Flächenanteil"
+Bauphysik – Türen;Schließer;Sub-Objekt;Bauphysik;Flügel (Türblatt);Ja;
+Bauphysik – Türen;Zarge;Sub-Objekt;Bauphysik;"Tür (Drehflügel);Schiebetür;Falttür";Ja;Typ, Material, Schwelle
+Bauphysik – Türen;Feststehendes Teil;Sub-Objekt;Bauphysik;"Tür (Drehflügel);Schiebetür;Drehtür (Karusselltür)";Ja;Seitenteil/Oberlicht + Einlage
+Bauphysik – Türen;Schiebe-Führung/Tasche;Sub-Objekt;Bauphysik;Schiebetür;Ja;Wandtasche/Aufputz/Nische
+Bauphysik – Türen;Torblatt/Paneel;Sub-Objekt;Bauphysik;Tor;Ja;"Paneele/Torblatt; Verglasung; Dämmung"
+Bauphysik – Türen;Torantrieb/Steuerung;Sub-Objekt;Bauphysik;"Tor;Drehtür (Karusselltür)";Ja;Antriebsart, Notentriegelung, Handsender
+Bauphysik – Türen;Torsicherheit;Sub-Objekt;Bauphysik;Tor;Ja;Lichtschranke, Kontaktleiste, Einzugssicherung
+Bauphysik – Hülle (opak);Außenwand;Objekt;Bauphysik;Gebäude;Ja;auf Gebäudeebene als Typ (AW01…) anlegen, im Raum zuordnen
+Bauphysik – Hülle (opak);Innenwand gegen unbeheizt;Objekt;Bauphysik;Gebäude;Ja;auf Gebäudeebene als Typ (AW01…) anlegen, im Raum zuordnen
+Bauphysik – Hülle (opak);Innenwand gegen andere Einheit;Objekt;Bauphysik;Gebäude;Ja;auf Gebäudeebene als Typ (AW01…) anlegen, im Raum zuordnen
+Bauphysik – Hülle (opak);Dachschräge;Objekt;Bauphysik;Gebäude;Ja;auf Gebäudeebene als Typ (AW01…) anlegen, im Raum zuordnen
+Bauphysik – Hülle (opak);Flachdach;Objekt;Bauphysik;Gebäude;Ja;auf Gebäudeebene als Typ (AW01…) anlegen, im Raum zuordnen
+Bauphysik – Hülle (opak);Oberste Geschossdecke;Objekt;Bauphysik;Gebäude;Ja;auf Gebäudeebene als Typ (AW01…) anlegen, im Raum zuordnen
+Bauphysik – Hülle (opak);Kellerdecke/Decke gegen unbeheizt;Objekt;Bauphysik;Gebäude;Ja;auf Gebäudeebene als Typ (AW01…) anlegen, im Raum zuordnen
+Bauphysik – Hülle (opak);Bodenplatte/Boden gegen Erdreich;Objekt;Bauphysik;Gebäude;Ja;auf Gebäudeebene als Typ (AW01…) anlegen, im Raum zuordnen
+Bauphysik – Hülle (opak);Schicht (Schichtaufbau);Sub-Objekt;Bauphysik;"Außenwand;Innenwand gegen unbeheizt;Innenwand gegen andere Einheit;Dachschräge;Flachdach;Oberste Geschossdecke;Kellerdecke/Decke gegen unbeheizt;Bodenplatte/Boden gegen Erdreich";Ja;wiederholbar: Material (Normkatalog) + Stärke + Anmerkung
+Bauphysik – Wärmebrücken;Lineare Wärmebrücke;Objekt;Bauphysik;"Gebäude;Raum";Ja;"Länge in m; Foto-Pflicht"
+Bauphysik – Wärmebrücken;Punktförmige Wärmebrücke;Objekt;Bauphysik;"Gebäude;Raum";Ja;"Anzahl; Foto-Pflicht"

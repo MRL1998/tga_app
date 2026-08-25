@@ -1,0 +1,15 @@
+﻿Kluster;im_Bericht;Reihenfolge_Bericht;Beschreibung
+Allgemein / Identifikation;Ja;10;Identifikation & Stammdaten des Objekts
+Geometrie & Maße (Dimensionen);Ja;20;Alle Maße – Gebäude, Raum, Objekt
+Bauphysik – Hülle;Ja;30;Hülle, Schichtaufbau, Dämmung, Wärmebrücken
+Heizung;Ja;40;Heizungstechnisch relevante Angaben
+Solar;Ja;42;Solarthermie (Kollektoren, Station, Kreis)
+Kälte;Ja;43;Kälteerzeugung, -verteilung, -übergabe
+Gas;Ja;45;Gasinstallation, Zähler, Sicherheitsarmaturen
+Sanitär;Ja;50;Wasser/Abwasser/TWW
+Lüftung;Ja;60;Lüftung/RLT
+Elektro;Ja;70;Elektro (inkl. PV)
+Schäden / Mangel;Ja;80;Schäden, Mängel, Feuchte
+Nutzung & Betrieb;Ja;90;Nutzung, Zone, Belegung
+Dokumentation / Foto;Ja;100;Fotos & Belege
+Struktur & Verknüpfung;Nein;-;Interne Aufnahme-/Modellführung – NICHT im Bericht

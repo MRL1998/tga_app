@@ -1,0 +1,24 @@
+﻿Raumtyp;Bereichstyp;Objektklasse;Vorauswahl;Anzahl_typisch;Prompt_wenn_fehlt;Notiz
+Badezimmer;alle;Sanitärobjekte;Standard;1–4;Ja;Waschbecken/WC/Dusche/Wanne – Typ bei Objektaufnahme
+Badezimmer;alle;Heizflächen – statisch;Standard;1;Ja;typisch Badheizkörper
+Badezimmer;alle;Heizflächen – Flächenheizung;Optional;0–1;Nein;falls FBH
+Badezimmer;alle;Abwasser-Sonderbauteile;Optional;0–1;Nein;Bodenablauf/Gully
+Badezimmer;alle;Bauphysik – Fenster;Optional;0–1;Nein;
+Badezimmer;alle;Bauphysik – Türen;Standard;1;Nein;
+WC;Wohnung;Sanitärobjekte;Standard;1–2;Ja;WC + Handwaschbecken
+WC;Wohnung;Bauphysik – Türen;Standard;1;Nein;
+WC;Gewerbe;Sanitärobjekte;Standard;2–5;Ja;WC + Urinal + Waschbecken (mehrere)
+WC;Gewerbe;Abwasser-Sonderbauteile;Optional;0–1;Nein;Bodenablauf
+WC;Gewerbe;Bauphysik – Türen;Standard;1;Nein;
+Heizungsraum;Technik;Wärmeerzeuger;Standard;1–2;Ja;
+Heizungsraum;Technik;Wärmespeicher;Standard;1;Ja;
+Heizungsraum;Technik;Heizungsverteiler;Standard;1;Ja;
+Heizungsraum;Technik;Heizungsregelung;Standard;1;Nein;
+Heizungsraum;Technik;TWW-Erzeugung;Optional;0–1;Nein;
+Heizungsraum;Technik;Bauphysik – Türen;Standard;1;Nein;
+Technikraum (allgemein);Technik;Wärmeerzeuger;Optional;0–2;Nein;
+Technikraum (allgemein);Technik;Wärmespeicher;Optional;0–1;Nein;
+Technikraum (allgemein);Technik;Heizungsverteiler;Optional;0–1;Nein;
+Technikraum (allgemein);Technik;Wasseraufbereitung;Optional;0–1;Nein;
+Technikraum (allgemein);Technik;Elektroverteilung;Optional;0–1;Nein;
+Technikraum (allgemein);Technik;Bauphysik – Türen;Standard;1;Nein;
