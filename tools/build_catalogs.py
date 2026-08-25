@@ -82,7 +82,11 @@ def main():
     tpl = (ROOT / "app_template.html").read_text(encoding="utf-8")
     if "/*__KATALOGE__*/" not in tpl:
         sys.exit("Platzhalter /*__KATALOGE__*/ fehlt in app_template.html")
-    (ROOT / "index.html").write_text(tpl.replace("/*__KATALOGE__*/", js, 1), encoding="utf-8")
+    out = tpl.replace("/*__KATALOGE__*/", js, 1)
+    cfg = ROOT / "supabase" / "config.json"
+    if cfg.exists():
+        out = out.replace("/*__SB__*/null", "/*__SB__*/" + cfg.read_text(encoding="utf-8").strip(), 1)
+    (ROOT / "index.html").write_text(out, encoding="utf-8")
     print(f"OK: {len(O)} Objekte, {len(F)} Fragen, {len(K)} Kluster -> index.html ({round(len(js)/1024)} KB Kataloge)")
 
 if __name__ == "__main__":

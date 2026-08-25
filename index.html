@@ -242,6 +242,7 @@
 
 <div class="wz-overlay" id="start" style="display:none">
   <div class="wz" style="max-width:560px">
+    <button class="btn small ghost" id="langBtn2" style="float:right" title="Deutsch / English"></button>
     <div id="loginView" style="display:none">
       <h2 id="loginTitle"></h2>
       <p class="hint" id="loginText"></p>
@@ -295,6 +296,7 @@ var KAT={"O":[["Heizflächen – statisch","Röhrenheizkörper","O","Heizung",["
 (function(){
 "use strict";
 var KEY="floorplan_pins_v1";
+var SBCFG=/*__SB__*/{"url":"https://rlvgrujtzmwbhhidspys.supabase.co","key":"sb_publishable_J8jvyyehSyhFL7-blDXTrg_1kB0UjHI"};
 var RAUMTYPEN=["Küche","Bad","Zimmer","Flur/Eingang"];
 
 /* ================= i18n ================= */
@@ -306,6 +308,10 @@ loginName:"Ihr Name",loginGo:"Weiter",projTitle:"Projektübersicht",projNew:"＋
 projEmpty:"Noch keine Projekte – lege das erste an.",projRooms:"Räume",projDelete:"Löschen",
 projConfirmDel:"Projekt und alle zugehörigen Fotos/Memos endgültig löschen?",projChanged:"geändert",
 switchUser:"Name ändern",projects:"📁 Projekte",noName:"(ohne Namen)",
+sbEmail:"E-Mail",sbPw:"Passwort",sbLogin:"Anmelden",sbRegister:"Registrieren",
+sbConfirm:"Bestätigungs-E-Mail gesendet – Posteingang prüfen, dann anmelden.",logout:"Abmelden",
+cloudSave:"☁ Sichern",cloudList:"☁ Cloud-Projekte anzeigen",cloudLoad:"Laden",cloudBusy:"überträgt …",
+cloudDone:"✓ gesichert",cloudErr:"Cloud-Fehler: ",cloudHave:"lokal vorhanden",
 errStorage:"Browser-Speicher (Struktur) voll. Bitte Projekt exportieren und alte Bilder/Videos entfernen.",
 errPhoto:"Foto konnte nicht verarbeitet werden.",errFile:"Datei konnte nicht gelesen werden.",errFormat:"Unbekanntes Format.",
 appSub:"TGA · Gebäude → Raum → Objekt",legEmpty:"leer",legPart:"begonnen",legFull:"Pflicht erfüllt",
@@ -345,6 +351,10 @@ loginName:"Your name",loginGo:"Continue",projTitle:"Project overview",projNew:"�
 projEmpty:"No projects yet – create the first one.",projRooms:"rooms",projDelete:"Delete",
 projConfirmDel:"Permanently delete this project and all its photos/memos?",projChanged:"changed",
 switchUser:"Change name",projects:"📁 Projects",noName:"(unnamed)",
+sbEmail:"Email",sbPw:"Password",sbLogin:"Sign in",sbRegister:"Register",
+sbConfirm:"Confirmation email sent – check your inbox, then sign in.",logout:"Sign out",
+cloudSave:"☁ Save",cloudList:"☁ Show cloud projects",cloudLoad:"Load",cloudBusy:"transferring …",
+cloudDone:"✓ saved",cloudErr:"Cloud error: ",cloudHave:"available locally",
 errStorage:"Browser storage (structure) full. Please export the project and remove old images/videos.",
 errPhoto:"Photo could not be processed.",errFile:"File could not be read.",errFormat:"Unknown format.",
 appSub:"Building services · Building → Room → Object",legEmpty:"empty",legPart:"in progress",legFull:"required done",
@@ -1409,6 +1419,7 @@ function applyLang(){
   set("gebBtn","geb"); set("imgBtn","loadPlan"); set("placeBtn","placePt");
   set("exportBtn","export"); set("importBtn","import");
   document.getElementById("langBtn").textContent=LANG==="de"?"EN":"DE";
+  var lb2=document.getElementById("langBtn2"); if(lb2) lb2.textContent=LANG==="de"?"EN":"DE";
   set("dropTitle","dropTitle"); set("dropOr","dropOr"); set("dropHint","dropHint");
   document.getElementById("emptyState").innerHTML=
     "<h2>"+t("esTitle")+"</h2><ol><li>"+t("es1")+"</li><li>"+t("es2")+"</li><li>"+t("es3")+"</li><li>"+t("es4")+"</li></ol><p class='hint'>"+t("esHint")+"</p>";
@@ -1420,9 +1431,14 @@ function applyLang(){
   else if(view.mode==="geb"&&document.getElementById("editor").style.display==="block") openGeb();
   else if(current) openRoom(current);
 }
-document.getElementById("langBtn").addEventListener("click",function(){
+function toggleLang(){
   LANG=LANG==="de"?"en":"de"; localStorage.setItem("tga_lang",LANG); applyLang();
-});
+  var lv=document.getElementById("loginView"), pv=document.getElementById("projView");
+  if(lv&&lv.style.display==="block") showLogin();
+  else if(pv&&pv.style.display==="block") showProjects();
+}
+document.getElementById("langBtn").addEventListener("click",toggleLang);
+document.getElementById("langBtn2").addEventListener("click",toggleLang);
 
 /* ================= Projekt-Wizard ================= */
 var wz=document.getElementById("wizard");
@@ -1459,13 +1475,126 @@ document.getElementById("wzLater2").addEventListener("click",function(){ wzShow(
 document.getElementById("wzUpload3").addEventListener("click",function(){ wzHide(); document.getElementById("imgFile").click(); });
 document.getElementById("wzDone3").addEventListener("click",function(){ wzHide(); });
 
+/* ================= Supabase (optional, ohne SDK) ================= */
+var SB=null;
+(function(){
+  if(!SBCFG||!SBCFG.url||!SBCFG.key) return;
+  var sess=null; try{ sess=JSON.parse(localStorage.getItem("tga_sb_session")||"null"); }catch(e){}
+  function storeSess(x){ sess=x; try{ x?localStorage.setItem("tga_sb_session",JSON.stringify(x)):localStorage.removeItem("tga_sb_session"); }catch(e){} }
+  function authFetch(path,opts,retried){
+    opts=opts||{}; opts.headers=opts.headers||{};
+    opts.headers["apikey"]=SBCFG.key;
+    if(sess&&sess.access_token) opts.headers["Authorization"]="Bearer "+sess.access_token;
+    return fetch(SBCFG.url+path,opts).then(function(r){
+      if(r.status===401&&sess&&sess.refresh_token&&!retried){
+        return fetch(SBCFG.url+"/auth/v1/token?grant_type=refresh_token",{method:"POST",
+          headers:{apikey:SBCFG.key,"Content-Type":"application/json"},
+          body:JSON.stringify({refresh_token:sess.refresh_token})})
+        .then(function(rr){return rr.json();})
+        .then(function(j){ if(j.access_token){ storeSess(j); return authFetch(path,opts,true); } storeSess(null); throw new Error("Sitzung abgelaufen"); });
+      }
+      return r;
+    });
+  }
+  SB={
+    session:function(){ return sess&&sess.access_token?sess:null; },
+    email:function(){ return (sess&&sess.user&&sess.user.email)||""; },
+    logout:function(){ storeSess(null); },
+    signup:function(email,pw){
+      return fetch(SBCFG.url+"/auth/v1/signup",{method:"POST",headers:{apikey:SBCFG.key,"Content-Type":"application/json"},
+        body:JSON.stringify({email:email,password:pw})}).then(function(r){return r.json();})
+      .then(function(j){ if(j.error_description||j.msg&&j.code) throw new Error(j.error_description||j.msg); if(j.access_token) storeSess(j); return j; });
+    },
+    login:function(email,pw){
+      return fetch(SBCFG.url+"/auth/v1/token?grant_type=password",{method:"POST",headers:{apikey:SBCFG.key,"Content-Type":"application/json"},
+        body:JSON.stringify({email:email,password:pw})}).then(function(r){return r.json();})
+      .then(function(j){ if(!j.access_token) throw new Error(j.error_description||j.msg||"Login fehlgeschlagen"); storeSess(j); return j; });
+    },
+    upload:function(pid,onMsg){
+      var raw=localStorage.getItem("tga_proj_"+pid); if(!raw) return Promise.reject(new Error("Projekt nicht gefunden"));
+      var d=JSON.parse(raw);
+      return authFetch("/rest/v1/project_blobs",{method:"POST",
+        headers:{"Content-Type":"application/json","Prefer":"resolution=merge-duplicates"},
+        body:JSON.stringify([{project_id:pid,name:(d.projekt&&d.projekt.name)||"",payload:d}])})
+      .then(function(r){
+        if(!r.ok) return r.text().then(function(x){throw new Error(x.slice(0,140));});
+        var ids=collectMediaIds(d), i=0, uid=sess.user.id;
+        function next(){
+          if(i>=ids.length) return Promise.resolve();
+          var mid=ids[i++]; if(onMsg) onMsg(i+"/"+ids.length);
+          return mediaGet(mid).then(function(blob){
+            if(!blob) return next();
+            return authFetch("/storage/v1/object/media/"+uid+"/"+pid+"/"+mid,{method:"POST",
+              headers:{"x-upsert":"true","Content-Type":blob.type||"application/octet-stream"},body:blob}).then(next);
+          });
+        }
+        return next();
+      });
+    },
+    list:function(){
+      return authFetch("/rest/v1/project_blobs?select=project_id,name,updated_at&order=updated_at.desc")
+        .then(function(r){ if(!r.ok) throw new Error("Liste fehlgeschlagen ("+r.status+")"); return r.json(); });
+    },
+    download:function(pid,onMsg){
+      return authFetch("/rest/v1/project_blobs?project_id=eq."+encodeURIComponent(pid)+"&select=payload")
+      .then(function(r){return r.json();}).then(function(rows){
+        if(!rows.length) throw new Error("nicht gefunden");
+        var d=rows[0].payload;
+        localStorage.setItem("tga_proj_"+pid,JSON.stringify(d));
+        var ix=readIndex();
+        if(!ix.some(function(e){return e.pid===pid;}))
+          ix.unshift({pid:pid,name:(d.projekt&&d.projekt.name)||"",ort:"",rooms:(d.pins||[]).length,updated:Date.now()});
+        writeIndex(ix);
+        var ids=collectMediaIds(d), i=0, uid=sess.user.id;
+        function next(){
+          if(i>=ids.length) return Promise.resolve();
+          var mid=ids[i++]; if(onMsg) onMsg(i+"/"+ids.length);
+          return authFetch("/storage/v1/object/authenticated/media/"+uid+"/"+pid+"/"+mid).then(function(r){
+            if(!r.ok) return next();
+            return r.blob().then(function(b){ return mediaPut(mid,b).then(next); });
+          });
+        }
+        return next();
+      });
+    }
+  };
+})();
+
 /* ================= Login & Projektübersicht ================= */
 var USER=null; try{ USER=JSON.parse(localStorage.getItem("tga_user")||"null"); }catch(e){}
 var startOv=document.getElementById("start");
 function showLogin(){
   startOv.style.display="flex";
-  document.getElementById("loginView").style.display="block";
+  var lv=document.getElementById("loginView");
+  lv.style.display="block";
   document.getElementById("projView").style.display="none";
+  if(SB){
+    lv.innerHTML="";
+    lv.appendChild(el("h2",null,t("loginTitle")));
+    var reg=false;
+    var em=el("input"); em.type="email"; em.placeholder=t("sbEmail"); em.autocomplete="email";
+    var pw=el("input"); pw.type="password"; pw.placeholder=t("sbPw"); pw.autocomplete="current-password";
+    var f1=el("div","field"); f1.appendChild(em);
+    var f2=el("div","field"); f2.appendChild(pw);
+    var msg=el("p","hint","");
+    var go=el("button","btn on",t("sbLogin"));
+    var tog=el("button","btn ghost",t("sbRegister"));
+    var row=el("div","wz-actions"); row.appendChild(tog); row.appendChild(go);
+    lv.appendChild(f1); lv.appendChild(f2); lv.appendChild(row); lv.appendChild(msg);
+    tog.addEventListener("click",function(){
+      reg=!reg; go.textContent=reg?t("sbRegister"):t("sbLogin"); tog.textContent=reg?t("sbLogin"):t("sbRegister");
+      pw.autocomplete=reg?"new-password":"current-password";
+    });
+    function done(){ USER={name:SB.email()}; try{localStorage.setItem("tga_user",JSON.stringify(USER));}catch(e){} showProjects(); }
+    go.addEventListener("click",function(){
+      msg.textContent="…";
+      (reg?SB.signup(em.value.trim(),pw.value):SB.login(em.value.trim(),pw.value))
+      .then(function(){ SB.session()?done():msg.textContent=t("sbConfirm"); })
+      .catch(function(e){ msg.textContent=(e&&e.message)||"Fehler"; });
+    });
+    pw.addEventListener("keydown",function(e){ if(e.key==="Enter") go.click(); });
+    return;
+  }
   if(USER) document.getElementById("loginName").value=USER.name||"";
 }
 function showProjects(){
@@ -1473,6 +1602,7 @@ function showProjects(){
   document.getElementById("loginView").style.display="none";
   document.getElementById("projView").style.display="block";
   document.getElementById("projUserName").textContent=USER?USER.name:"";
+  document.getElementById("switchUser").textContent=SB?t("logout"):t("switchUser");
   renderProjList();
 }
 function fmtDate(ts){ try{ return new Date(ts).toLocaleDateString(LANG==="en"?"en-GB":"de-DE"); }catch(e){ return ""; } }
@@ -1492,10 +1622,51 @@ function renderProjList(){
       if(!confirm(t("projConfirmDel"))) return;
       deleteProject(e.pid); renderProjList();
     });
-    row.appendChild(pn); row.appendChild(del);
+    row.appendChild(pn);
+    if(SB&&SB.session()){
+      var cs=el("button","del",t("cloudSave"));
+      cs.addEventListener("click",function(ev){
+        ev.stopPropagation(); cs.textContent=t("cloudBusy");
+        SB.upload(e.pid,function(p){ cs.textContent="☁ "+p; })
+          .then(function(){ cs.textContent=t("cloudDone"); })
+          .catch(function(err){ cs.textContent=t("cloudSave"); alert(t("cloudErr")+((err&&err.message)||"")); });
+      });
+      row.appendChild(cs);
+    }
+    row.appendChild(del);
     row.addEventListener("click",function(){ openProject(e.pid); });
     box.appendChild(row);
   });
+  if(SB&&SB.session()){
+    var clBtn=el("button","btn ghost small",t("cloudList"));
+    clBtn.style.marginTop="8px";
+    clBtn.addEventListener("click",function(){
+      clBtn.disabled=true; clBtn.textContent=t("cloudBusy");
+      SB.list().then(function(rows){
+        clBtn.style.display="none";
+        rows.forEach(function(r){
+          var have=readIndex().some(function(x){return x.pid===r.project_id;});
+          var row=el("div","prow");
+          var pn=el("div","pn");
+          pn.appendChild(el("div","t","☁ "+(r.name||t("noName"))));
+          pn.appendChild(el("div","s",t("projChanged")+" "+fmtDate(Date.parse(r.updated_at))+(have?" · "+t("cloudHave"):"")));
+          var ld=el("button","del",t("cloudLoad"));
+          ld.addEventListener("click",function(ev){
+            ev.stopPropagation(); ld.textContent=t("cloudBusy");
+            SB.download(r.project_id,function(p){ ld.textContent=p; })
+              .then(function(){ renderProjList(); })
+              .catch(function(err){ ld.textContent=t("cloudLoad"); alert(t("cloudErr")+((err&&err.message)||"")); });
+          });
+          row.appendChild(pn); row.appendChild(ld);
+          box.appendChild(row);
+        });
+      }).catch(function(err){
+        clBtn.disabled=false; clBtn.textContent=t("cloudList");
+        alert(t("cloudErr")+((err&&err.message)||""));
+      });
+    });
+    box.appendChild(clBtn);
+  }
 }
 function collectMediaIds(d){
   var ids=[];
@@ -1535,12 +1706,13 @@ document.getElementById("loginGo").addEventListener("click",function(){
   showProjects();
 });
 document.getElementById("loginName").addEventListener("keydown",function(e){ if(e.key==="Enter") document.getElementById("loginGo").click(); });
-document.getElementById("switchUser").addEventListener("click",showLogin);
+document.getElementById("switchUser").addEventListener("click",function(){ if(SB){ SB.logout(); USER=null; } showLogin(); });
 document.getElementById("projNewBtn").addEventListener("click",newProject);
 document.getElementById("projBtn").addEventListener("click",function(){ save(true); showProjects(); });
 
 applyLang();
 renderCanvas(); updateStorageChip();
-if(!USER) showLogin(); else showProjects();
+if(SB){ if(SB.session()){ USER={name:SB.email()}; showProjects(); } else showLogin(); }
+else if(!USER) showLogin(); else showProjects();
 })();
 </script>

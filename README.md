@@ -18,7 +18,10 @@ je Raum: Raumtyp → Objekt-Checkliste → Fragen mit Folgelogik. Oberfläche ko
 | `data/*.csv` | Die 4 Fachkataloge (Quelle der Wahrheit, gepflegt von Tobias): Objektkatalog, Fragekatalog, Klusterkatalog, Raumtyp-Zuordnung |
 | `data/catalogs.json` | Kompilierte Kataloge (generiert) |
 | `tools/build_catalogs.py` | CSVs → `catalogs.json` → `index.html` |
-| `supabase/schema.sql` | Datenbank-Schema für das Supabase-Backend (MVP) |
+| `supabase/schema.sql` | Normalisiertes Zielschema (projects, rooms, objects, answers, media) |
+| `supabase/02_cloud.sql` | Cloud-Backup (project_blobs) + Storage-Policies – MVP-Sync |
+| `supabase/03_catalogs.sql` | Katalog-Tabellen (1:1 zu den CSVs, laufend erweiterbar) |
+| `supabase/04_seed_catalogs.sql` | Generierter CSV-Import (via `tools/csv_to_seed.py`) |
 
 ## Entwickeln
 
@@ -50,8 +53,8 @@ Aufnahmetiefe über `Min_LOD` (Schnell 200 / Standard 300 / Detail 400).
 
 - [x] App offline-fähig (localStorage-Struktur + IndexedDB-Medien), Export/Import als JSON
 - [x] Login (lokal) + Projektübersicht, Mehrprojekt-Verwaltung
-- [ ] Supabase-Projekt anlegen (EU-Region), `supabase/schema.sql` ausführen, Bucket `media`
-- [ ] Login auf Supabase Auth umstellen
+- [x] Supabase-Projekt angelegt; SQL-Reihenfolge: `schema.sql` → `02_cloud.sql` → `03_catalogs.sql` → `04_seed_catalogs.sql`; Bucket `media` (privat)
+- [x] Login auf Supabase Auth (E-Mail/Passwort) + Cloud-Backup je Projekt
 - [ ] Sync-Schicht: lokale Warteschlange → Postgres/Storage (offline-first bleibt)
 - [ ] Deployment als statische Site (Cloudflare Pages / Netlify) + eigene Domain, PWA
 - [ ] Katalog-Pflege: CSV-Upload oder Admin-Maske, Kataloge aus `catalogs`-Tabelle laden
