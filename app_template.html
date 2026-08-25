@@ -336,6 +336,7 @@
       <button class="btn ghost" id="exportBtn"></button>
       <button class="btn ghost" id="importBtn"></button>
       <input type="file" id="importFile" accept="application/json" class="visually-file">
+      <button class="btn on" id="cloudBtn" style="display:none"></button>
     </div>
   </header>
 
@@ -726,6 +727,22 @@ function save(silent){
   catch(e){ alert(t("errStorage")); }
 }
 function flashSaved(){ var c=document.getElementById("savechip"); c.classList.add("show"); clearTimeout(saveTimer); saveTimer=setTimeout(function(){c.classList.remove("show");},1400); }
+/* Zentraler Cloud-Sichern-Button in der Topbar */
+function updCloudBtn(){
+  var b=document.getElementById("cloudBtn"); if(!b) return;
+  var pp=document.getElementById("projPage");
+  var show=!!(SB&&SB.session()&&currentPid&&pp&&pp.style.display==="none");
+  b.style.display=show?"":"none";
+  if(show&&!b.dataset.busy) b.textContent=t("cloudSave");
+}
+document.getElementById("cloudBtn").addEventListener("click",function(){
+  var b=this; if(b.dataset.busy||!currentPid||!SB||!SB.session()) return;
+  b.dataset.busy="1"; b.textContent=t("cloudBusy");
+  save(true);
+  SB.upload(currentPid,function(p){ b.textContent="\u2601 "+p; })
+    .then(function(){ b.textContent=t("cloudDone"); setTimeout(function(){ delete b.dataset.busy; updCloudBtn(); },2200); })
+    .catch(function(err){ delete b.dataset.busy; updCloudBtn(); alert(t("cloudErr")+((err&&err.message)||"")); });
+});
 function pinById(id){ return data.pins.filter(function(p){return p.id===id;})[0]; }
 
 /* ================= IndexedDB für Medien ================= */
@@ -1893,6 +1910,7 @@ function applyLang(){
   set("lodQ","lodQ"); set("lodS","lodS"); set("lodD","lodD");
   set("gebBtn","geb"); set("imgBtn","loadPlan"); set("placeBtn","placePt");
   set("exportBtn","export"); set("importBtn","import");
+  updCloudBtn();
   document.getElementById("langBtn").textContent=LANG==="de"?"EN":"DE";
   var lb2=document.getElementById("langBtn2"); if(lb2) lb2.textContent=LANG==="de"?"EN":"DE";
   set("dropTitle","dropTitle"); set("dropOr","dropOr"); set("dropHint","dropHint");
@@ -2229,6 +2247,7 @@ function setView(name){
   document.getElementById("gebBtn").classList.toggle("on",name==="infoPage");
   document.getElementById("projBtn").classList.toggle("on",name==="projPage");
   renderSideAreas();
+  updCloudBtn();
 }
 function showDash(){
   if(!currentPid){ showProjects(); return; }
