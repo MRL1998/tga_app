@@ -73,7 +73,32 @@ def main():
             geb.add(k)
     GEB = {"S": ["Bauphysik – Hülle (opak)"], "O": sorted(geb - {"Bauphysik – Hülle (opak)"})}
 
-    out = {"O": O, "F": F, "K": K, "D": D, "GEB": GEB,
+    # Standard-Raumfragen (App-definiert; kann später in eine CSV von Tobias wandern)
+    R = [
+        {"t":"R_Flaeche","q":"Grundfläche des Raums (ca.)?","at":"Zahl","u":"m²","b":"immer","p":True,"fp":False,
+         "kl":"Geometrie & Maße (Dimensionen)","r":10,"lod":200,"z":"Laie","ao":[],
+         "h":"Länge × Breite reicht als Schätzung."},
+        {"t":"R_Hoehe","q":"Lichte Raumhöhe (ca.)?","at":"Zahl","u":"m","b":"immer","p":True,"fp":False,
+         "kl":"Geometrie & Maße (Dimensionen)","r":20,"lod":200,"z":"Laie","ao":[],
+         "h":"Boden bis Decke, z. B. 2,50."},
+        {"t":"R_Beheizt","q":"Wird der Raum beheizt?","at":"Ja/Nein","b":"immer","p":True,"fp":False,
+         "kl":"Nutzung & Betrieb","r":30,"lod":200,"z":"Laie","ao":[]},
+        {"t":"R_Temp","q":"Übliche Raumtemperatur (ca.)?","at":"Zahl","u":"°C","b":"«R_Beheizt» = Ja","p":False,"fp":False,
+         "kl":"Nutzung & Betrieb","r":40,"lod":300,"z":"Laie","ao":[]},
+        {"t":"R_Boden","q":"Welcher Bodenbelag liegt im Raum?","at":"Einzelauswahl","b":"immer","p":False,"fp":False,
+         "kl":"Bauphysik – Hülle","r":50,"lod":300,"z":"Laie",
+         "ao":["Fliesen","Parkett/Holz","Laminat/Vinyl","Teppich","Estrich/Beton","sonstiger","weiß nicht"]},
+        {"t":"R_Feuchte","q":"Feuchtigkeit, Schimmel oder Stockflecken sichtbar?","at":"Ja/Nein","b":"immer","p":True,"fp":False,
+         "kl":"Schäden / Mangel","r":60,"lod":200,"z":"Laie","ao":[]},
+        {"t":"R_FeuchteFoto","q":"Foto der feuchten Stelle","at":"Foto-Upload","b":"«R_Feuchte» = Ja","p":True,"fp":True,
+         "kl":"Schäden / Mangel","r":70,"lod":200,"z":"Laie","ao":[],"ft":"Schaden"},
+        {"t":"R_Foto","q":"Foto Raumübersicht","at":"Foto-Upload","b":"immer","p":True,"fp":True,
+         "kl":"Dokumentation / Foto","r":80,"lod":200,"z":"Laie","ao":[],"ft":"Übersicht"},
+    ]
+    for q in R:
+        q.setdefault("k","(Raum)"); q.setdefault("y",""); q.setdefault("e","Raum")
+
+    out = {"O": O, "F": F, "K": K, "R": R, "D": D, "GEB": GEB,
            "ALIAS": {"Sanitärobjekt": "Sanitärobjekte", "Regelung": "Heizungsregelung",
                      "Heizungsinstallation": "Heizungsinstallation"}}
     js = json.dumps(out, ensure_ascii=False, separators=(",", ":"))

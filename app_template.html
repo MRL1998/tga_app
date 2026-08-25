@@ -213,7 +213,7 @@
     .side{width:100%!important;flex:0 0 auto!important;position:fixed;left:0;right:0;bottom:0;top:auto;height:auto;
       flex-direction:row;padding:0;border-right:0;border-top:1px solid var(--line);z-index:60;
       box-shadow:0 -4px 16px rgba(0,0,0,.08);}
-    .sbrand,.sfoot,#sideToggle{display:none!important;}
+    .sbrand,.sfoot,#sideToggle,.sgroup,#sideAreas{display:none!important;}
     .snav{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin:0;flex:1;}
     .sitem{flex-direction:column;gap:2px;justify-content:center;align-items:center;border-radius:0;
       padding:8px 2px calc(8px + env(safe-area-inset-bottom));font-size:10.5px;font-weight:600;}
@@ -231,8 +231,18 @@
   .arearow{display:flex;gap:6px;align-items:center;margin-bottom:6px;}
   .arearow .an{flex:1;font-size:13px;font-weight:550;}
   .arearow .at{font-size:11px;color:var(--muted);}
-  .areafilter{display:inline-flex;align-items:center;gap:6px;}
-  .areafilter select{width:auto;font-size:12px;padding:5px 8px;}
+  .sgroup{display:flex;align-items:center;gap:6px;margin-top:14px;padding:4px 11px 2px;
+    font:600 10.5px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--faint);}
+  .sgroup .areaadd{margin-left:auto;border:1px solid var(--line);background:transparent;color:var(--muted);
+    border-radius:6px;width:22px;height:22px;cursor:pointer;font-size:13px;line-height:1;}
+  .sgroup .areaadd:hover{color:var(--accent);border-color:var(--accent);}
+  #sideAreas .sitem{font-size:12.5px;padding:7px 11px 7px 18px;}
+  .side.collapsed .sgroup,.side.collapsed #sideAreas{display:none;}
+  #planHead .ctxsel{width:auto;font-size:12.5px;padding:6px 9px;}
+  #planHead .dtitle{font-size:17px;}
+  #planHead input.bname{font-weight:650;font-size:15px;max-width:220px;}
+  .typbadge{font-family:var(--mono);font-size:10px;background:var(--accent-soft);color:var(--accent);
+    border-radius:5px;padding:2px 7px;white-space:nowrap;}
   /* Auth */
   .auth-logo{width:52px;height:52px;border-radius:14px;background:var(--accent-soft);display:flex;
     align-items:center;justify-content:center;font-size:26px;margin-bottom:14px;}
@@ -286,6 +296,8 @@
       <button class="sitem" id="navPlan"><span class="ic">🗺</span> <span id="navPlanL"></span></button>
       <button class="sitem" id="gebBtn"></button>
       <button class="sitem" id="projBtn"></button>
+      <div class="sgroup" id="navAreasHead"><span id="navAreasL"></span><button class="areaadd" id="areaAddBtn" title="＋">＋</button></div>
+      <div id="sideAreas"></div>
     </div>
     <div class="sfoot">
       <div class="userchip" id="sideUser"></div>
@@ -333,9 +345,10 @@
         </div>
       </div>
       <div id="dashView" class="dash" style="display:none"></div>
+      <div id="infoPage" class="ppage" style="display:none"></div>
       <div id="planView">
+      <div id="planHead" class="dash-head" style="margin-bottom:10px"></div>
       <div class="legend">
-        <span class="areafilter"><span id="areaFilterL"></span><select id="areaFilter"></select></span>
         <span class="item"><span class="dotm empty"></span> <span id="legEmpty"></span></span>
         <span class="item"><span class="dotm part"></span> <span id="legPart"></span></span>
         <span class="item"><span class="dotm filled"></span> <span id="legFull"></span></span>
@@ -350,6 +363,7 @@
           </div>
         </div>
       </div>
+      <div id="planRooms" style="margin-top:12px"></div>
       </div>
     </section>
 
@@ -436,11 +450,13 @@ bereiche:"Bereiche (Etagen / Wohnungen)",bereichAdd:"＋ Bereich",bereichNamePh:
 bereichTypEtage:"Etage",bereichTypWhg:"Wohnung",bereichTypSonst:"Sonstiges",
 bereichAll:"Alle Bereiche",bereichNone:"ohne Bereich",raumBereich:"Bereich",areaFilterL:"Bereich:",
 bereichDelConfirm:"Bereich entfernen? Räume bleiben erhalten (ohne Bereich).",
+navAreas:"Bereiche",planAll:"Gesamt / ohne Bereich",planCtxL:"Plan:",roomQs:"Raumfragen",
+bereichNotes:"Bereichs-Notizen",
 errStorage:"Browser-Speicher (Struktur) voll. Bitte Projekt exportieren und alte Bilder/Videos entfernen.",
 errPhoto:"Foto konnte nicht verarbeitet werden.",errFile:"Datei konnte nicht gelesen werden.",errFormat:"Unbekanntes Format.",
 appSub:"TGA · Gebäude → Raum → Objekt",legEmpty:"leer",legPart:"begonnen",legFull:"Pflicht erfüllt",
 hintDefault:"Punkt anklicken = öffnen · ziehen = verschieben",hintPlace:"Klicke auf den Plan, um einen Raum-Punkt zu setzen",
-geb:"🏢 Gebäude",loadPlan:"Plan hochladen",placePt:"＋ Punkt setzen",export:"Projekt-Export",import:"Import",
+geb:"🏢 Grundlagen",loadPlan:"Plan hochladen",placePt:"＋ Punkt setzen",export:"Projekt-Export",import:"Import",
 lodQ:"Schnell",lodS:"Standard",lodD:"Detail",
 dropTitle:"Plan (Grundriss) hierher ziehen",dropOr:"oder oben „Plan hochladen“",dropHint:"Danach Raum-Punkte per „＋ Punkt setzen“ auf den Plan klicken.",
 esTitle:"Aufnahme in 4 Schritten",es1:"<strong>Projekt anlegen</strong> (Gebäude + Adresse) – Formular erscheint automatisch.",
@@ -454,7 +470,7 @@ notes:"Notizen / Text",deleteRoom:"Raum löschen",confirmDeleteRoom:"Raum wirkli
 nvOn:"n. vorh.",nvOff:"n. v.?",required:"Pflicht",copiedCheck:"kopiert – prüfen",
 pickObject:"Objekt wählen",pickClass:"Objektklasse wählen",newType:"Neu anlegen – Objekttyp",objType:"Objekttyp",
 copyHeader:"Aus anderem Raum übernehmen (ohne Fotos/Memos)",fromRoom:"aus",copyNote:"Antworten werden kopiert",
-gebFirst:"🏢 Gebäude – zuerst erfassen",gebHull:"Gebäudehülle & Anlagen (einmal je Gebäude)",gebObjects:"Angelegte Gebäude-Objekte",gebNotes:"Gebäude-Notizen",
+gebFirst:"🏢 Grundlagen – Stammdaten, Bereiche & Gebäudehülle",gebHull:"Gebäudehülle & Anlagen (einmal je Gebäude)",gebObjects:"Angelegte Gebäude-Objekte",gebNotes:"Gebäude-Notizen",
 projekt:"Projekt / Stammdaten",labelPh:"Bezeichnung (optional, z. B. „links neben Tür“)",copiedMeta:"aus anderem Raum kopiert – Werte prüfen!",
 lodNote:"Pflicht beantwortet",subObjects:"Bauteile / Sub-Objekte",memoObj:"Sprachmemo zum Objekt",duplicate:"Duplizieren",
 deleteObj:"Objekt löschen",confirmDeleteObj:"löschen (inkl. Bauteile)?",confirmRemove:"entfernen?",open:"offen",
@@ -487,11 +503,13 @@ bereiche:"Areas (floors / apartments)",bereichAdd:"＋ Area",bereichNamePh:"e.g.
 bereichTypEtage:"Floor",bereichTypWhg:"Apartment",bereichTypSonst:"Other",
 bereichAll:"All areas",bereichNone:"no area",raumBereich:"Area",areaFilterL:"Area:",
 bereichDelConfirm:"Remove this area? Rooms are kept (without area).",
+navAreas:"Areas",planAll:"Overall / no area",planCtxL:"Plan:",roomQs:"Room questions",
+bereichNotes:"Area notes",
 errStorage:"Browser storage (structure) full. Please export the project and remove old images/videos.",
 errPhoto:"Photo could not be processed.",errFile:"File could not be read.",errFormat:"Unknown format.",
 appSub:"Building services · Building → Room → Object",legEmpty:"empty",legPart:"in progress",legFull:"required done",
 hintDefault:"Click a point to open · drag to move",hintPlace:"Click on the plan to place a room point",
-geb:"🏢 Building",loadPlan:"Upload plan",placePt:"＋ Add point",export:"Export project",import:"Import",
+geb:"🏢 Basics",loadPlan:"Upload plan",placePt:"＋ Add point",export:"Export project",import:"Import",
 lodQ:"Quick",lodS:"Standard",lodD:"Detail",
 dropTitle:"Drop the floor plan here",dropOr:"or use “Upload plan” above",dropHint:"Then click “＋ Add point” to place room points on the plan.",
 esTitle:"Survey in 4 steps",es1:"<strong>Create a project</strong> (building + address) – the form opens automatically.",
@@ -505,7 +523,7 @@ notes:"Notes / text",deleteRoom:"Delete room",confirmDeleteRoom:"Really remove t
 nvOn:"none",nvOff:"n/a?",required:"required",copiedCheck:"copied – verify",
 pickObject:"Choose object",pickClass:"Choose object class",newType:"Create new – object type",objType:"Object type",
 copyHeader:"Copy from another room (without photos/memos)",fromRoom:"from",copyNote:"answers will be copied",
-gebFirst:"🏢 Building – capture first",gebHull:"Envelope & systems (once per building)",gebObjects:"Created building objects",gebNotes:"Building notes",
+gebFirst:"🏢 Basics – master data, areas & envelope",gebHull:"Envelope & systems (once per building)",gebObjects:"Created building objects",gebNotes:"Building notes",
 projekt:"Project / master data",labelPh:"Label (optional, e.g. “left of door”)",copiedMeta:"copied from another room – verify values!",
 lodNote:"required answered",subObjects:"Components / sub-objects",memoObj:"Voice memo for this object",duplicate:"Duplicate",
 deleteObj:"Delete object",confirmDeleteObj:"delete (incl. components)?",confirmRemove:"remove?",open:"open",
@@ -604,7 +622,8 @@ function migrate(d){
   });
   d.gebaeude=d.gebaeude||{objekte:[],notes:"",memos:[],nv:{}};
   d.bereiche=d.bereiche||[];
-  d.pins.forEach(function(p){ if(p.bereichId===undefined) p.bereichId=""; });
+  d.bereiche.forEach(function(b){ if(b.image===undefined) b.image=null; if(b.notes===undefined) b.notes=""; });
+  d.pins.forEach(function(p){ if(p.bereichId===undefined) p.bereichId=""; p.a=p.a||{}; p.fotos=p.fotos||{}; });
   return d;
 }
 function loadProj(pid){
@@ -698,7 +717,7 @@ function shrinkImage(file,max){ return new Promise(function(res,rej){
 var canvas=document.getElementById("canvas");
 var drop=document.getElementById("drop");
 var bgImg=null;
-function posRef(){ return (data.image&&bgImg&&bgImg.offsetWidth)?bgImg:canvas; }
+function posRef(){ return (ctxObj().image&&bgImg&&bgImg.offsetWidth)?bgImg:canvas; }
 function placePinEl(el,p){
   var r=posRef();
   el.style.left=(r.offsetLeft+p.xp/100*r.offsetWidth)+"px";
@@ -714,9 +733,10 @@ function instProgress(inst){
 }
 function pinState(p){
   var objs=objAll(p);
-  var any=objs.length||((p.notes||"").trim())||(p.images||[]).length||(p.memos||[]).length;
+  var rp=roomProgress(p);
+  var any=objs.length||rp.done||((p.notes||"").trim())||(p.images||[]).length||(p.memos||[]).length;
   if(!any) return "";
-  var open=0;
+  var open=(rp.done<rp.total)?1:0;
   objs.forEach(function(o){ var pr=instProgress(o); if(pr.done<pr.total) open++; });
   var nvCount=Object.keys(p.nv||{}).filter(function(k){return p.nv[k];}).length;
   var std=(DEF[p.raumtyp]||{}).S||[];
@@ -724,33 +744,106 @@ function pinState(p){
   if(objs.length&&open===0&&covered) return "has";
   return "part";
 }
-var areaFilter="";
+var planCtx="";
 function bereichById(id){ return (data.bereiche||[]).filter(function(b){return b.id===id;})[0]; }
-function renderAreaFilter(){
-  var sel=document.getElementById("areaFilter"); if(!sel) return;
-  var cur=areaFilter; sel.innerHTML="";
-  sel.appendChild(new Option(t("bereichAll"),""));
-  (data.bereiche||[]).forEach(function(b){ sel.appendChild(new Option(b.name,b.id)); });
-  sel.value=cur; sel.onchange=function(){ areaFilter=sel.value; renderCanvas(); };
-  sel.parentNode.style.display=(data.bereiche||[]).length?"inline-flex":"none";
+function ctxObj(){ return planCtx?(bereichById(planCtx)||data):data; }
+function renderPlanHead(){
+  var h=document.getElementById("planHead"); if(!h) return;
+  h.innerHTML="";
+  var b=planCtx?bereichById(planCtx):null;
+  if(b){
+    var ni=el("input","bname"); ni.value=b.name;
+    ni.addEventListener("input",function(){ b.name=ni.value; save(true); renderSideAreas(); });
+    h.appendChild(ni);
+    h.appendChild(el("span","typbadge",b.typ||""));
+  } else {
+    h.appendChild(el("h2","dtitle",t("planAll")));
+  }
+  h.appendChild(el("div","spacer"));
+  var lbl=el("span","hint",t("planCtxL"));
+  var sel=el("select","ctxsel");
+  sel.appendChild(new Option(t("planAll"),""));
+  (data.bereiche||[]).forEach(function(x){ sel.appendChild(new Option(x.name,x.id)); });
+  sel.value=planCtx;
+  sel.addEventListener("change",function(){ openPlanCtx(sel.value); });
+  h.appendChild(lbl); h.appendChild(sel);
+  if(b){
+    var del=el("button","btn small ghost"); del.innerHTML='<span class="danger">✕</span>';
+    del.title=t("projDelete");
+    del.addEventListener("click",function(){
+      if(!confirm(t("bereichDelConfirm"))) return;
+      data.pins.forEach(function(p){ if(p.bereichId===b.id) p.bereichId=""; });
+      data.bereiche=data.bereiche.filter(function(x){return x.id!==b.id;});
+      save(); renderSideAreas(); openPlanCtx("");
+    });
+    h.appendChild(del);
+  }
+  if(b){
+    var nt=el("textarea","notes"); nt.style.minHeight="46px"; nt.style.width="100%";
+    nt.placeholder=t("bereichNotes"); nt.value=b.notes||"";
+    nt.addEventListener("input",function(){ b.notes=nt.value; save(true); });
+    var wrap=el("div"); wrap.style.width="100%"; wrap.appendChild(nt);
+    h.appendChild(wrap);
+  }
+}
+function roomInst(p){ p.a=p.a||{}; p.fotos=p.fotos||{}; return {k:"(Raum)",y:"",art:"O",a:p.a,fotos:p.fotos,memos:p.memos}; }
+function visibleRoomQuestions(p){
+  var ri=roomInst(p);
+  return (KAT.R||[]).filter(function(q){ return q.lod<=LOD && condMet(ri,q.b); });
+}
+function roomProgress(p){
+  var ri=roomInst(p), qs=visibleRoomQuestions(p).filter(function(q){return q.p;});
+  var d=0; qs.forEach(function(q){ if(answered(ri,q)) d++; });
+  return {done:d,total:qs.length};
+}
+function renderPlanRooms(){
+  var box=document.getElementById("planRooms"); if(!box) return;
+  box.innerHTML="";
+  var pinsIn=(data.pins||[]).filter(function(p){return (p.bereichId||"")===planCtx;});
+  if(!pinsIn.length) return;
+  var card=el("div","dcard");
+  card.appendChild(el("h3",null,t("dashRoomsList")+" ("+pinsIn.length+")"));
+  pinsIn.forEach(function(p){
+    var objs=objAll(p);
+    var d=0,tt=0; objs.forEach(function(o){var pr=instProgress(o); d+=pr.done; tt+=pr.total;});
+    var rp=roomProgress(p); d+=rp.done; tt+=rp.total;
+    var row=el("div","rrow");
+    var left=el("div");
+    left.appendChild(el("span","rn",p.num+" · "+p.name));
+    left.appendChild(el("div","rt",(p.raumtyp?rtLabel(p.raumtyp)+" · ":"")+objs.length+" "+t("dashObjects")));
+    row.appendChild(left);
+    row.appendChild(el("span","rp"+(tt&&d>=tt?" done":""),d+"/"+tt));
+    row.appendChild(el("span",null,"›"));
+    row.addEventListener("click",function(){ openRoom(p.id); });
+    card.appendChild(row);
+  });
+  box.appendChild(card);
 }
 function renderCanvas(){
-  renderAreaFilter();
   canvas.querySelectorAll(".pin").forEach(function(n){n.remove()});
   if(!bgImg){ canvas.querySelectorAll("img.bg").forEach(function(n){n.remove()}); }
-  if(data.image){
+  var img=ctxObj().image;
+  if(img){
     drop.style.display="none";
     if(!bgImg){ bgImg=document.createElement("img"); bgImg.className="bg"; bgImg.alt="Plan"; bgImg.onload=function(){ renderCanvas(); }; canvas.appendChild(bgImg); }
-    if(bgImg.src!==data.image) bgImg.src=data.image;
+    if(bgImg.src!==img) bgImg.src=img;
     bgImg.style.display="block";
   }else{
     drop.style.display="flex";
     if(bgImg) bgImg.style.display="none";
   }
-  data.pins.forEach(function(p){ if(areaFilter&&p.bereichId!==areaFilter) return; canvas.appendChild(makePin(p)); });
+  data.pins.forEach(function(p){ if((p.bereichId||"")!==planCtx) return; canvas.appendChild(makePin(p)); });
+  renderPlanRooms();
+}
+/* Pins bleiben stabil bei Layout-Änderungen (Panel öffnet, Sidebar klappt, Split ändert sich) */
+if(window.ResizeObserver){
+  new ResizeObserver(function(){
+    canvas.querySelectorAll(".pin").forEach(function(pe){ if(pe._pin) placePinEl(pe,pe._pin); });
+  }).observe(canvas);
 }
 function makePin(p){
   var el=document.createElement("div");
+  el._pin=p;
   var st=pinState(p);
   el.className="pin"+(st?" "+st:"")+(current===p.id?" sel":"");
   placePinEl(el,p);
@@ -768,7 +861,7 @@ function makePin(p){
     if(!dragging) return;
     if(Math.abs(ev.clientX-sx)>4||Math.abs(ev.clientY-sy)>4) moved=true;
     if(moved){
-      var box=(data.image&&bgImg?bgImg:canvas).getBoundingClientRect();
+      var box=(ctxObj().image&&bgImg?bgImg:canvas).getBoundingClientRect();
       p.xp=Math.max(0,Math.min(100,((ev.clientX-box.left)/box.width)*100));
       p.yp=Math.max(0,Math.min(100,((ev.clientY-box.top)/box.height)*100));
       placePinEl(el,p);
@@ -784,10 +877,10 @@ function makePin(p){
 canvas.addEventListener("click",function(ev){
   if(!placing) return;
   if(ev.target.closest(".pin")) return;
-  var box=(data.image&&bgImg?bgImg:canvas).getBoundingClientRect();
+  var box=(ctxObj().image&&bgImg?bgImg:canvas).getBoundingClientRect();
   var xp=((ev.clientX-box.left)/box.width)*100, yp=((ev.clientY-box.top)/box.height)*100;
   var maxNum=data.pins.reduce(function(m,p){var n=parseInt(p.num,10);return isNaN(n)?m:Math.max(m,n);},0);
-  var np={ id:uid(), num:maxNum+1, name:t("newRoom"), xp:xp, yp:yp, notes:"", images:[], videos:[], raumtyp:"", raumtypSource:"", objekte:[], nv:{}, memos:[], bereichId:areaFilter||"" };
+  var np={ id:uid(), num:maxNum+1, name:t("newRoom"), xp:xp, yp:yp, notes:"", images:[], videos:[], raumtyp:"", raumtypSource:"", objekte:[], nv:{}, memos:[], bereichId:planCtx||"", a:{}, fotos:{} };
   data.pins.push(np); save(); setPlacing(false); renderCanvas(); openRoom(np.id);
 });
 function setPlacing(on){
@@ -799,9 +892,15 @@ function setPlacing(on){
 document.getElementById("placeBtn").addEventListener("click",function(){ showPlan(); setPlacing(!placing); });
 function loadImageFile(file){
   if(!file||!/^image\//.test(file.type)) return;
-  var rd=new FileReader();
-  rd.onload=function(){ data.image=rd.result; bgImg=null; save(); renderCanvas(); if(!data.pins.length){ setPlacing(true); } };
-  rd.readAsDataURL(file);
+  shrinkImage(file,1600).then(function(blob){
+    var rd=new FileReader();
+    rd.onload=function(){
+      ctxObj().image=rd.result; bgImg=null; save(); renderCanvas();
+      var mine=data.pins.filter(function(p){return (p.bereichId||"")===planCtx;});
+      if(!mine.length){ setPlacing(true); }
+    };
+    rd.readAsDataURL(blob);
+  }).catch(function(){ alert(t("errPhoto")); });
 }
 document.getElementById("imgBtn").addEventListener("click",function(){ showPlan(); document.getElementById("imgFile").click(); });
 document.getElementById("imgFile").addEventListener("change",function(e){ if(e.target.files[0]) loadImageFile(e.target.files[0]); e.target.value=""; });
@@ -919,10 +1018,23 @@ function openRoom(id){
     bsel.appendChild(new Option("– "+t("bereichNone")+" –",""));
     data.bereiche.forEach(function(b){ bsel.appendChild(new Option(b.name,b.id)); });
     bsel.value=p.bereichId||"";
-    bsel.addEventListener("change",function(){ p.bereichId=bsel.value; save(); renderCanvas(); });
+    bsel.addEventListener("change",function(){ p.bereichId=bsel.value; save(); renderCanvas(); renderSideAreas(); });
     fb.appendChild(bsel); ed.appendChild(fb);
   }
 
+  // Standard-Raumfragen
+  if((KAT.R||[]).length){
+    var ri=roomInst(p);
+    var rqs=visibleRoomQuestions(p);
+    var rg=el("div","qgroup");
+    var rh=el("h4"); rh.appendChild(el("span",null,t("roomQs")));
+    var rOpen=rqs.filter(function(q){return q.p&&!answered(ri,q);}).length;
+    if(rOpen) rh.appendChild(el("span",null,rOpen+" "+t("open")));
+    rg.appendChild(rh);
+    var rb=el("div","qbody");
+    rqs.forEach(function(q){ rb.appendChild(qRow(ri,q,"pin",p.id)); });
+    rg.appendChild(rb); ed.appendChild(rg);
+  }
   // Checkliste + Objekte
   if(p.raumtyp){
     var defs=DEF[p.raumtyp]||{S:[],O:[]};
@@ -1045,8 +1157,10 @@ function openTypePicker(p,klasse){
 
 /* -------- Gebäude -------- */
 function openGeb(){
-  current=null; renderCanvas(); view={mode:"geb"};
-  var ed=showEditor();
+  if(!currentPid){ showProjects(); return; }
+  current=null; view={mode:"geb"};
+  setView("infoPage");
+  var ed=document.getElementById("infoPage"); ed.innerHTML="";
   crumb(ed,[[t("gebFirst"),null]]);
   var g=data.gebaeude;
   var pj=data.projekt||(data.projekt={type:"gebaeude"});
@@ -1073,7 +1187,8 @@ function openGeb(){
     x.addEventListener("click",function(){
       if(!confirm(t("bereichDelConfirm"))) return;
       data.pins.forEach(function(p){ if(p.bereichId===b.id) p.bereichId=""; });
-      data.bereiche.splice(bi,1); save(); renderCanvas(); openGeb();
+      data.bereiche.splice(bi,1); if(planCtx===b.id) planCtx="";
+      save(); renderSideAreas(); openGeb();
     });
     r.appendChild(x); fa2.appendChild(r);
   });
@@ -1084,8 +1199,8 @@ function openGeb(){
   var abtn=el("button","btn small",t("bereichAdd"));
   abtn.addEventListener("click",function(){
     var n=ain.value.trim(); if(!n) return;
-    data.bereiche.push({id:uid(),name:n,typ:atyp.value});
-    save(); renderCanvas(); openGeb();
+    data.bereiche.push({id:uid(),name:n,typ:atyp.value,image:null,notes:""});
+    save(); renderSideAreas(); openGeb();
   });
   ain.addEventListener("keydown",function(e){ if(e.key==="Enter") abtn.click(); });
   addr2.appendChild(ain); addr2.appendChild(atyp); addr2.appendChild(abtn);
@@ -1301,6 +1416,7 @@ function qRow(inst,q,ctx,pinId){
   inst.a=inst.a||{}; inst.fotos=inst.fotos||{};
   var refresh=function(){ // Bedingungen können sich ändern → Formular neu zeichnen
     if(view.mode==="object") openObject(view.ctx,view.pinId,view.instId);
+    else if(view.mode==="room"&&current) openRoom(current);
   };
   if(q.at==="Ja/Nein"){
     var r=el("div","ynrow");
@@ -1608,7 +1724,8 @@ function applyLang(){
   set("projBtn","projects");
   set("navDashL","navDash"); set("navPlanL","navPlan");
   var sl=document.getElementById("sideLogoutL"); if(sl) sl.textContent=SB?t("logout"):t("switchUser");
-  set("areaFilterL","areaFilterL");
+  set("navAreasL","navAreas");
+  if(document.getElementById("planView").style.display!=="none") renderPlanHead();
   var ml=document.getElementById("mobLang"); if(ml) ml.textContent=LANG==="de"?"EN":"DE";
   var mo=document.getElementById("mobLogout"); if(mo) mo.textContent=SB?t("logout"):t("switchUser");
   if(document.getElementById("projPage").style.display!=="none"){ document.getElementById("projUserName").textContent=USER?USER.name:""; renderProjList(); }
@@ -1898,7 +2015,7 @@ function deleteProject(pid){
 }
 function openProject(pid){
   currentPid=pid; data=loadProj(pid);
-  bgImg=null; current=null; view={mode:"room"}; setPlacing(false);
+  bgImg=null; current=null; view={mode:"room"}; setPlacing(false); planCtx="";
   startOv.style.display="none"; wzHide(); closePanel(); renderCanvas(); updateStorageChip(); applyLang();
   if(!data.projekt){ showPlan(); wzShow(1); } else { showDash(); }
 }
@@ -1914,12 +2031,14 @@ var DASH_LBL={"Bauphysik – Fenster":"Fenster / Windows","Bauphysik – Türen"
   "Sanitärobjekte":"Sanitärobjekte","Elektro-Endstellen":"Steckdosen & Leuchten",
   "Bauphysik – Hülle (opak)":"Gebäudehülle"};
 function setView(name){
-  ["projPage","dashView","planView"].forEach(function(id){
+  ["projPage","dashView","planView","infoPage"].forEach(function(id){
     document.getElementById(id).style.display=(id===name)?(id==="planView"?"block":"flex"):"none";
   });
   document.getElementById("navDash").classList.toggle("on",name==="dashView");
-  document.getElementById("navPlan").classList.toggle("on",name==="planView");
+  document.getElementById("navPlan").classList.toggle("on",name==="planView"&&!planCtx);
+  document.getElementById("gebBtn").classList.toggle("on",name==="infoPage");
   document.getElementById("projBtn").classList.toggle("on",name==="projPage");
+  renderSideAreas();
 }
 function showDash(){
   if(!currentPid){ showProjects(); return; }
@@ -1927,10 +2046,37 @@ function showDash(){
 }
 function showPlan(){
   if(!currentPid){ showProjects(); return; }
-  setView("planView");
+  setView("planView"); renderPlanHead(); renderCanvas();
 }
+function openPlanCtx(id){
+  if(!currentPid){ showProjects(); return; }
+  planCtx=id||""; bgImg=null; setPlacing(false); closePanel();
+  showPlan();
+}
+function renderSideAreas(){
+  var box=document.getElementById("sideAreas"); if(!box) return;
+  box.innerHTML="";
+  var pv=document.getElementById("planView").style.display!=="none";
+  (data.bereiche||[]).forEach(function(b){
+    var cnt=data.pins.filter(function(p){return p.bereichId===b.id;}).length;
+    var it=el("button","sitem"+(pv&&planCtx===b.id?" on":""));
+    it.appendChild(el("span","ic","▸"));
+    var sp=el("span",null,b.name+(cnt?" ("+cnt+")":""));
+    it.appendChild(sp);
+    it.addEventListener("click",function(){ openPlanCtx(b.id); });
+    box.appendChild(it);
+  });
+  var head=document.getElementById("navAreasHead");
+  if(head) head.style.display=currentPid?"flex":"none";
+}
+document.getElementById("areaAddBtn").addEventListener("click",function(){
+  if(!currentPid){ showProjects(); return; }
+  var n=prompt(t("bereichNamePh")); if(!n||!n.trim()) return;
+  var nb={id:uid(),name:n.trim(),typ:t("bereichTypEtage"),image:null,notes:""};
+  data.bereiche.push(nb); save(); renderSideAreas(); openPlanCtx(nb.id);
+});
 document.getElementById("navDash").addEventListener("click",showDash);
-document.getElementById("navPlan").addEventListener("click",showPlan);
+document.getElementById("navPlan").addEventListener("click",function(){ openPlanCtx(""); });
 function dashData(){
   var st={rooms:(data.pins||[]).length,mains:0,subs:0,fotos:0,memos:(data.gebaeude.memos||[]).length,
           reqD:0,reqT:0,byClass:{}};
@@ -1941,7 +2087,12 @@ function dashData(){
     if(o.art==="O"){ st.mains++; st.byClass[o.k]=(st.byClass[o.k]||0)+1; } else st.subs++;
     (o.subs||[]).forEach(walk);
   }
-  (data.pins||[]).forEach(function(p){ st.memos+=(p.memos||[]).length; (p.objekte||[]).forEach(walk); });
+  (data.pins||[]).forEach(function(p){
+    st.memos+=(p.memos||[]).length;
+    var rp=roomProgress(p); st.reqD+=rp.done; st.reqT+=rp.total;
+    var rf=p.fotos||{}; Object.keys(rf).forEach(function(k){ st.fotos+=(rf[k]||[]).length; });
+    (p.objekte||[]).forEach(walk);
+  });
   (data.gebaeude.objekte||[]).forEach(walk);
   return st;
 }
@@ -1996,15 +2147,15 @@ function renderDashboard(){
     pinsIn.forEach(function(p){
     var objs=objAll(p);
     var d=0,tt=0; objs.forEach(function(o){var pr=instProgress(o); d+=pr.done; tt+=pr.total;});
+    var rp2=roomProgress(p); d+=rp2.done; tt+=rp2.total;
     var row=el("div","rrow");
     var left=el("div");
     left.appendChild(el("span","rn",p.num+" · "+p.name));
     left.appendChild(el("div","rt",(p.raumtyp?rtLabel(p.raumtyp)+" · ":"")+objs.length+" "+t("dashObjects")));
     row.appendChild(left);
     row.appendChild(el("span","rp"+(tt&&d>=tt?" done":""),d+"/"+tt));
-    var open=el("span",null,"›");
-    row.appendChild(open);
-    row.addEventListener("click",function(){ showPlan(); openRoom(p.id); });
+    row.appendChild(el("span",null,"›"));
+    row.addEventListener("click",function(){ openPlanCtx(p.bereichId||""); openRoom(p.id); });
     c2.appendChild(row);
     });
   });
