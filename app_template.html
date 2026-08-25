@@ -1158,6 +1158,7 @@ function openTypePicker(p,klasse){
 /* -------- Gebäude -------- */
 function openGeb(){
   if(!currentPid){ showProjects(); return; }
+  nav("/grundlagen");
   current=null; view={mode:"geb"};
   setView("infoPage");
   var ed=document.getElementById("infoPage"); ed.innerHTML="";
@@ -1879,10 +1880,39 @@ var SB=null;
   };
 })();
 
+/* ================= URL-Routing (echte Pfade je Seite) ================= */
+var ROUTED=/^https?:$/.test(location.protocol);
+function nav(path,replace){
+  if(!ROUTED) return;
+  if(location.pathname===path) return;
+  try{ history[replace?"replaceState":"pushState"](null,"",path); }catch(e){}
+}
+function openLast(){
+  if(currentPid) return true;
+  var pid=null; try{ pid=localStorage.getItem("tga_last"); }catch(e){}
+  if(pid&&localStorage.getItem("tga_proj_"+pid)){ openProject(pid); return true; }
+  showProjects(); return false;
+}
+function router(){
+  var authed = SB ? !!SB.session() : !!USER;
+  if(!authed){ showLogin(); return; }
+  var p=ROUTED?location.pathname:"/projekte";
+  if(p==="/login"){ showProjects(); return; }
+  if(p==="/projekte"||p==="/"||p===""){ showProjects(); return; }
+  if(p==="/dashboard"){ if(openLast()) showDash(); return; }
+  if(p==="/grundlagen"){ if(openLast()) openGeb(); return; }
+  if(p==="/aufnahme"){ if(openLast()) openPlanCtx(""); return; }
+  var m=p.match(/^\/bereich\/(.+)$/);
+  if(m){ if(openLast()){ bereichById(m[1])?openPlanCtx(m[1]):openPlanCtx(""); } return; }
+  showProjects();
+}
+if(ROUTED) window.addEventListener("popstate",router);
+
 /* ================= Login & Projektübersicht ================= */
 var USER=null; try{ USER=JSON.parse(localStorage.getItem("tga_user")||"null"); }catch(e){}
 var startOv=document.getElementById("start");
 function showLogin(){
+  nav("/login",true);
   startOv.style.display="flex";
   var lv=document.getElementById("loginView");
   lv.style.display="block";
@@ -1925,6 +1955,7 @@ function showLogin(){
   if(USER) document.getElementById("loginName").value=USER.name||"";
 }
 function showProjects(){
+  nav("/projekte");
   startOv.style.display="none";
   setView("projPage");
   document.getElementById("projUserName").textContent=USER?USER.name:"";
@@ -2015,6 +2046,7 @@ function deleteProject(pid){
 }
 function openProject(pid){
   currentPid=pid; data=loadProj(pid);
+  try{ localStorage.setItem("tga_last",pid); }catch(e){}
   bgImg=null; current=null; view={mode:"room"}; setPlacing(false); planCtx="";
   startOv.style.display="none"; wzHide(); closePanel(); renderCanvas(); updateStorageChip(); applyLang();
   if(!data.projekt){ showPlan(); wzShow(1); } else { showDash(); }
@@ -2042,10 +2074,12 @@ function setView(name){
 }
 function showDash(){
   if(!currentPid){ showProjects(); return; }
+  nav("/dashboard");
   setView("dashView"); renderDashboard();
 }
 function showPlan(){
   if(!currentPid){ showProjects(); return; }
+  nav(planCtx?"/bereich/"+planCtx:"/aufnahme");
   setView("planView"); renderPlanHead(); renderCanvas();
 }
 function openPlanCtx(id){
@@ -2174,7 +2208,7 @@ document.getElementById("projBtn").addEventListener("click",function(){ save(tru
 
 applyLang();
 renderCanvas(); updateStorageChip();
-if(SB){ if(SB.session()){ USER={name:SB.email()}; showProjects(); } else showLogin(); }
-else if(!USER) showLogin(); else showProjects();
+if(SB&&SB.session()) USER={name:SB.email()};
+router();
 })();
 </script>

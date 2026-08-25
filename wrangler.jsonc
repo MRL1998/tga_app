@@ -1,0 +1,12 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "tga-app",
+  "compatibility_date": "2026-08-20",
+  "observability": { "enabled": true },
+  "assets": {
+    "directory": ".",
+    // Unbekannte Pfade (/projekte, /dashboard, /bereich/…) liefern index.html aus –
+    // nötig für das URL-Routing der Single-Page-App.
+    "not_found_handling": "single-page-application"
+  }
+}
