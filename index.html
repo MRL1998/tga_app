@@ -152,6 +152,14 @@
   .fthumb img{width:100%;height:100%;object-fit:cover;display:block;}
   .fthumb button{position:absolute;top:2px;right:2px;width:20px;height:20px;border-radius:50%;border:0;background:#000a;color:#fff;font-size:11px;cursor:pointer;line-height:1;}
   .fotomiss{font-size:11px;color:var(--danger);}
+  .fotostatus{display:inline-flex;align-items:center;gap:10px;font-size:12.5px;color:var(--muted);
+    background:color-mix(in srgb,var(--good) 10%,transparent);border:1px solid color-mix(in srgb,var(--good) 30%,transparent);
+    border-radius:8px;padding:6px 11px;}
+  .fotostatus .ok{color:var(--good);font-weight:600;}
+  .fotostatus .rm{border:0;background:transparent;color:var(--muted);cursor:pointer;font-size:12px;
+    text-decoration:underline;padding:0;}
+  .fotostatus .rm:hover{color:var(--danger);}
+  .fthumb button{width:24px;height:24px;font-size:13px;}
   .subwrap{border-top:1px dashed var(--line);margin-top:4px;padding-top:12px;}
   .subrow{border:1px solid var(--line);border-left:3px solid var(--faint);border-radius:10px;margin-bottom:8px;overflow:hidden;
     background:color-mix(in srgb,var(--ink) 5%,var(--panel));}
@@ -457,7 +465,7 @@ bereichTypEtage:"Etage",bereichTypWhg:"Wohnung",bereichTypSonst:"Sonstiges",
 bereichAll:"Alle Bereiche",bereichNone:"ohne Bereich",raumBereich:"Bereich",areaFilterL:"Bereich:",
 bereichDelConfirm:"Bereich entfernen? Räume bleiben erhalten (ohne Bereich).",
 navAreas:"Bereiche",planAll:"Gesamt / ohne Bereich",planCtxL:"Plan:",roomQs:"Raumfragen",
-bereichNotes:"Bereichs-Notizen",subMore:"＋ weiteres:",pdfPage:"PDF hat {n} Seiten – welche Seite übernehmen? (1–{n})",pdfErr:"PDF konnte nicht geladen werden (Offline-Ansicht? Dann bitte ein Bild verwenden).",
+bereichNotes:"Bereichs-Notizen",subMore:"＋ weiteres:",fotoDone:"✓ Foto hochgeladen",fotosDone:"✓ {n} Fotos hochgeladen",fotoRemove:"entfernen",fotoMore:"📷 weiteres Foto",pdfPage:"PDF hat {n} Seiten – welche Seite übernehmen? (1–{n})",pdfErr:"PDF konnte nicht geladen werden (Offline-Ansicht? Dann bitte ein Bild verwenden).",
 errStorage:"Browser-Speicher (Struktur) voll. Bitte Projekt exportieren und alte Bilder/Videos entfernen.",
 errPhoto:"Foto konnte nicht verarbeitet werden.",errFile:"Datei konnte nicht gelesen werden.",errFormat:"Unbekanntes Format.",
 appSub:"TGA · Gebäude → Raum → Objekt",legEmpty:"leer",legPart:"begonnen",legFull:"Pflicht erfüllt",
@@ -510,7 +518,7 @@ bereichTypEtage:"Floor",bereichTypWhg:"Apartment",bereichTypSonst:"Other",
 bereichAll:"All areas",bereichNone:"no area",raumBereich:"Area",areaFilterL:"Area:",
 bereichDelConfirm:"Remove this area? Rooms are kept (without area).",
 navAreas:"Areas",planAll:"Overall / no area",planCtxL:"Plan:",roomQs:"Room questions",
-bereichNotes:"Area notes",subMore:"＋ another:",pdfPage:"PDF has {n} pages – which page to use? (1–{n})",pdfErr:"Could not load the PDF (offline view? Please use an image instead).",
+bereichNotes:"Area notes",subMore:"＋ another:",fotoDone:"✓ photo uploaded",fotosDone:"✓ {n} photos uploaded",fotoRemove:"remove",fotoMore:"📷 another photo",pdfPage:"PDF has {n} pages – which page to use? (1–{n})",pdfErr:"Could not load the PDF (offline view? Please use an image instead).",
 errStorage:"Browser storage (structure) full. Please export the project and remove old images/videos.",
 errPhoto:"Photo could not be processed.",errFile:"File could not be read.",errFormat:"Unknown format.",
 appSub:"Building services · Building → Room → Object",legEmpty:"empty",legPart:"in progress",legFull:"required done",
@@ -1611,29 +1619,44 @@ function qRow(inst,q,ctx,pinId){
 /* -------- Foto-Widget (IndexedDB) -------- */
 function fotoWidget(inst,q){
   var wrap=el("div");
-  var row=el("div","fotorow");
+  var refreshW=function(){
+    if(view.mode==="object") openObject(view.ctx,view.pinId,view.instId);
+    else if(view.mode==="room"&&current) openRoom(current);
+    else if(view.mode==="geb") openGeb();
+  };
   var ids=(inst.fotos[q.t]=inst.fotos[q.t]||[]);
+  if(ids.length){
+    var st=el("div","fotostatus");
+    st.appendChild(el("span","ok",ids.length===1?t("fotoDone"):t("fotosDone").replace("{n}",String(ids.length))));
+    if(ids.length===1){
+      var rm=el("button","rm",t("fotoRemove"));
+      rm.addEventListener("click",function(){
+        var mid=ids[0]; ids.splice(0,1); mediaDel(mid); save(); refreshW();
+      });
+      st.appendChild(rm);
+    }
+    wrap.appendChild(st);
+  }
+  var row=el("div","fotorow");
+  if(ids.length) row.style.marginTop="8px";
   ids.forEach(function(mid){
     var th=el("div","fthumb");
     var im=el("img"); im.alt=q.t;
     mediaGet(mid).then(function(b){ if(b) im.src=URL.createObjectURL(b); });
-    var x=el("button",null,"✕");
+    var x=el("button",null,"✕"); x.title=t("fotoRemove");
     x.addEventListener("click",function(){
-      ids.splice(ids.indexOf(mid),1); mediaDel(mid); save(); th.remove();
+      ids.splice(ids.indexOf(mid),1); mediaDel(mid); save(); refreshW();
     });
     th.appendChild(im); th.appendChild(x); row.appendChild(th);
   });
-  var btn=el("button","btn small","📷 "+(q.ft||t("photo")));
+  var btn=el("button","btn small",ids.length?t("fotoMore"):"📷 "+(q.ft||t("photo")));
   var inp=el("input","visually-file"); inp.type="file"; inp.accept="image/*"; inp.multiple=true; inp.setAttribute("capture","environment");
   btn.addEventListener("click",function(){ inp.click(); });
   inp.addEventListener("change",function(){
     Array.prototype.slice.call(inp.files).forEach(function(f){
       shrinkImage(f,1280).then(function(blob){
         var mid="m"+uid();
-        return mediaPut(mid,blob).then(function(){
-          ids.push(mid); save();
-          if(view.mode==="object") openObject(view.ctx,view.pinId,view.instId);
-        });
+        return mediaPut(mid,blob).then(function(){ ids.push(mid); save(); refreshW(); });
       }).catch(function(){ alert(t("errPhoto")); });
     });
     inp.value="";
