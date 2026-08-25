@@ -201,15 +201,38 @@
   .userchip{font-size:11.5px;color:var(--muted);word-break:break-all;padding:0 4px;}
   .srow{display:flex;gap:6px;}
   .content{flex:1;min-width:0;display:flex;flex-direction:column;}
+  .sitem .ic{width:20px;display:inline-block;text-align:center;flex:0 0 20px;}
+  .side.collapsed{width:64px;flex-basis:64px;padding:16px 8px 12px;}
+  .side.collapsed .sbrand,.side.collapsed .sitem span,.side.collapsed .userchip{display:none;}
+  .side.collapsed .sitem{justify-content:center;padding:10px 0;}
+  .side.collapsed .srow{flex-direction:column;}
+  #sideToggle{align-self:flex-end;margin-bottom:4px;}
+  .mob-only{display:none;}
   @media (max-width:920px){
     .shell{flex-direction:column;}
-    .side{width:100%;height:auto;position:static;flex-direction:row;align-items:center;gap:8px;padding:8px 10px;overflow-x:auto;}
-    .sbrand{display:none;}
-    .snav{flex-direction:row;margin:0;flex:1;}
-    .sitem{width:auto;white-space:nowrap;padding:7px 10px;}
-    .sfoot{flex-direction:row;border:0;padding:0;align-items:center;}
-    .userchip{display:none;}
+    .side{width:100%!important;flex:0 0 auto!important;position:fixed;left:0;right:0;bottom:0;top:auto;height:auto;
+      flex-direction:row;padding:0;border-right:0;border-top:1px solid var(--line);z-index:60;
+      box-shadow:0 -4px 16px rgba(0,0,0,.08);}
+    .sbrand,.sfoot,#sideToggle{display:none!important;}
+    .snav{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin:0;flex:1;}
+    .sitem{flex-direction:column;gap:2px;justify-content:center;align-items:center;border-radius:0;
+      padding:8px 2px calc(8px + env(safe-area-inset-bottom));font-size:10.5px;font-weight:600;}
+    .sitem .ic{font-size:18px;width:auto;flex:none;}
+    .content{padding-bottom:64px;}
+    .mob-only{display:flex;gap:8px;margin-top:14px;}
+    .bar{padding:8px 10px;}
+    .tools{gap:6px;}
   }
+  /* Projektseite */
+  .ppage{display:flex;flex-direction:column;gap:14px;}
+  .pp-head{display:flex;align-items:flex-start;gap:14px;flex-wrap:wrap;}
+  .ppage .plist{max-height:none;}
+  /* Bereiche */
+  .arearow{display:flex;gap:6px;align-items:center;margin-bottom:6px;}
+  .arearow .an{flex:1;font-size:13px;font-weight:550;}
+  .arearow .at{font-size:11px;color:var(--muted);}
+  .areafilter{display:inline-flex;align-items:center;gap:6px;}
+  .areafilter select{width:auto;font-size:12px;padding:5px 8px;}
   /* Auth */
   .auth-logo{width:52px;height:52px;border-radius:14px;background:var(--accent-soft);display:flex;
     align-items:center;justify-content:center;font-size:26px;margin-bottom:14px;}
@@ -252,14 +275,15 @@
 
 <div class="app">
 <div class="shell">
-  <nav class="side">
+  <nav class="side" id="sideNav">
+    <button class="btn small ghost" id="sideToggle" title="Ein-/Ausklappen">⟨</button>
     <div class="sbrand">
       <h1 id="brandTitle">Gebäudeaufnahme</h1>
       <span class="ssub" id="brandSub"></span>
     </div>
     <div class="snav">
-      <button class="sitem on" id="navDash">▦ <span id="navDashL"></span></button>
-      <button class="sitem" id="navPlan">🗺 <span id="navPlanL"></span></button>
+      <button class="sitem on" id="navDash"><span class="ic">▦</span> <span id="navDashL"></span></button>
+      <button class="sitem" id="navPlan"><span class="ic">🗺</span> <span id="navPlanL"></span></button>
       <button class="sitem" id="gebBtn"></button>
       <button class="sitem" id="projBtn"></button>
     </div>
@@ -269,7 +293,7 @@
         <button class="btn small ghost" id="langBtn" title="Deutsch / English"></button>
         <button class="btn small ghost" id="themeBtn" title="Hell/Dunkel · Light/Dark">◐</button>
       </div>
-      <button class="sitem" id="sideLogout">⏻ <span id="sideLogoutL"></span></button>
+      <button class="sitem" id="sideLogout"><span class="ic">⏻</span> <span id="sideLogoutL"></span></button>
     </div>
   </nav>
   <div class="content">
@@ -291,9 +315,27 @@
 
   <div class="main">
     <section class="stage">
+      <div id="projPage" class="ppage" style="display:none">
+        <div class="pp-head">
+          <div>
+            <h2 class="dtitle" id="projTitle" style="margin:0"></h2>
+            <div class="daddr"><span id="projUserName"></span></div>
+          </div>
+          <div class="spacer"></div>
+          <button class="btn on" id="projNewBtn"></button>
+        </div>
+        <div class="plist" id="projList"></div>
+        <p class="hint" id="projEmptyHint"></p>
+        <div class="mob-only">
+          <button class="btn small ghost" id="mobLang"></button>
+          <button class="btn small ghost" id="mobTheme">◐</button>
+          <button class="btn small ghost" id="mobLogout"></button>
+        </div>
+      </div>
       <div id="dashView" class="dash" style="display:none"></div>
       <div id="planView">
       <div class="legend">
+        <span class="areafilter"><span id="areaFilterL"></span><select id="areaFilter"></select></span>
         <span class="item"><span class="dotm empty"></span> <span id="legEmpty"></span></span>
         <span class="item"><span class="dotm part"></span> <span id="legPart"></span></span>
         <span class="item"><span class="dotm filled"></span> <span id="legFull"></span></span>
@@ -328,12 +370,6 @@
       <p class="hint" id="loginText"></p>
       <div class="field"><label id="loginNameL"></label><input id="loginName"></div>
       <div class="wz-actions"><span></span><button class="btn on" id="loginGo"></button></div>
-    </div>
-    <div id="projView" style="display:none">
-      <h2 id="projTitle"></h2>
-      <p class="hint" id="projUserRow"><span id="projUserName"></span> · <button class="btn small ghost" id="switchUser"></button></p>
-      <div class="plist" id="projList"></div>
-      <div class="wz-actions"><span class="hint" id="projEmptyHint"></span><button class="btn on" id="projNewBtn"></button></div>
     </div>
   </div>
 </div>
@@ -396,6 +432,10 @@ navDash:"Dashboard",navPlan:"Aufnahme",authSub:"Gebäudeaufnahme für TGA & Ener
 dashByClass:"Objekte nach Klasse",dashRoomsList:"Räume",dashRooms:"Räume",dashObjects:"Objekte",dashParts:"Bauteile",
 dashPhotos:"Fotos",dashMemos:"Memos",dashOpenReq:"Pflicht offen",dashToPlan:"Zur Aufnahme →",
 dashEmpty:"Noch keine Objekte erfasst – starte mit der Aufnahme.",dashLodNote:"Zählung bei Aufnahmetiefe LOD",
+bereiche:"Bereiche (Etagen / Wohnungen)",bereichAdd:"＋ Bereich",bereichNamePh:"z. B. EG, 1. OG, Whg. 3",
+bereichTypEtage:"Etage",bereichTypWhg:"Wohnung",bereichTypSonst:"Sonstiges",
+bereichAll:"Alle Bereiche",bereichNone:"ohne Bereich",raumBereich:"Bereich",areaFilterL:"Bereich:",
+bereichDelConfirm:"Bereich entfernen? Räume bleiben erhalten (ohne Bereich).",
 errStorage:"Browser-Speicher (Struktur) voll. Bitte Projekt exportieren und alte Bilder/Videos entfernen.",
 errPhoto:"Foto konnte nicht verarbeitet werden.",errFile:"Datei konnte nicht gelesen werden.",errFormat:"Unbekanntes Format.",
 appSub:"TGA · Gebäude → Raum → Objekt",legEmpty:"leer",legPart:"begonnen",legFull:"Pflicht erfüllt",
@@ -443,6 +483,10 @@ navDash:"Dashboard",navPlan:"Survey",authSub:"Building survey for HVAC & energy 
 dashByClass:"Objects by class",dashRoomsList:"Rooms",dashRooms:"Rooms",dashObjects:"Objects",dashParts:"Components",
 dashPhotos:"Photos",dashMemos:"Memos",dashOpenReq:"Required open",dashToPlan:"Go to survey →",
 dashEmpty:"No objects captured yet – start the survey.",dashLodNote:"Counted at survey depth LOD",
+bereiche:"Areas (floors / apartments)",bereichAdd:"＋ Area",bereichNamePh:"e.g. ground floor, apt. 3",
+bereichTypEtage:"Floor",bereichTypWhg:"Apartment",bereichTypSonst:"Other",
+bereichAll:"All areas",bereichNone:"no area",raumBereich:"Area",areaFilterL:"Area:",
+bereichDelConfirm:"Remove this area? Rooms are kept (without area).",
 errStorage:"Browser storage (structure) full. Please export the project and remove old images/videos.",
 errPhoto:"Photo could not be processed.",errFile:"File could not be read.",errFormat:"Unknown format.",
 appSub:"Building services · Building → Room → Object",legEmpty:"empty",legPart:"in progress",legFull:"required done",
@@ -559,6 +603,8 @@ function migrate(d){
     return p;
   });
   d.gebaeude=d.gebaeude||{objekte:[],notes:"",memos:[],nv:{}};
+  d.bereiche=d.bereiche||[];
+  d.pins.forEach(function(p){ if(p.bereichId===undefined) p.bereichId=""; });
   return d;
 }
 function loadProj(pid){
@@ -678,7 +724,18 @@ function pinState(p){
   if(objs.length&&open===0&&covered) return "has";
   return "part";
 }
+var areaFilter="";
+function bereichById(id){ return (data.bereiche||[]).filter(function(b){return b.id===id;})[0]; }
+function renderAreaFilter(){
+  var sel=document.getElementById("areaFilter"); if(!sel) return;
+  var cur=areaFilter; sel.innerHTML="";
+  sel.appendChild(new Option(t("bereichAll"),""));
+  (data.bereiche||[]).forEach(function(b){ sel.appendChild(new Option(b.name,b.id)); });
+  sel.value=cur; sel.onchange=function(){ areaFilter=sel.value; renderCanvas(); };
+  sel.parentNode.style.display=(data.bereiche||[]).length?"inline-flex":"none";
+}
 function renderCanvas(){
+  renderAreaFilter();
   canvas.querySelectorAll(".pin").forEach(function(n){n.remove()});
   if(!bgImg){ canvas.querySelectorAll("img.bg").forEach(function(n){n.remove()}); }
   if(data.image){
@@ -690,7 +747,7 @@ function renderCanvas(){
     drop.style.display="flex";
     if(bgImg) bgImg.style.display="none";
   }
-  data.pins.forEach(function(p){ canvas.appendChild(makePin(p)); });
+  data.pins.forEach(function(p){ if(areaFilter&&p.bereichId!==areaFilter) return; canvas.appendChild(makePin(p)); });
 }
 function makePin(p){
   var el=document.createElement("div");
@@ -730,7 +787,7 @@ canvas.addEventListener("click",function(ev){
   var box=(data.image&&bgImg?bgImg:canvas).getBoundingClientRect();
   var xp=((ev.clientX-box.left)/box.width)*100, yp=((ev.clientY-box.top)/box.height)*100;
   var maxNum=data.pins.reduce(function(m,p){var n=parseInt(p.num,10);return isNaN(n)?m:Math.max(m,n);},0);
-  var np={ id:uid(), num:maxNum+1, name:t("newRoom"), xp:xp, yp:yp, notes:"", images:[], videos:[], raumtyp:"", raumtypSource:"", objekte:[], nv:{}, memos:[] };
+  var np={ id:uid(), num:maxNum+1, name:t("newRoom"), xp:xp, yp:yp, notes:"", images:[], videos:[], raumtyp:"", raumtypSource:"", objekte:[], nv:{}, memos:[], bereichId:areaFilter||"" };
   data.pins.push(np); save(); setPlacing(false); renderCanvas(); openRoom(np.id);
 });
 function setPlacing(on){
@@ -856,6 +913,15 @@ function openRoom(id){
   row.appendChild(sel);
   if(p.raumtyp&&p.raumtypSource==="prediction") row.appendChild(el("span","predbadge","Prediction"));
   f0.appendChild(row); ed.appendChild(f0);
+  if((data.bereiche||[]).length){
+    var fb=field(t("raumBereich"));
+    var bsel=el("select");
+    bsel.appendChild(new Option("– "+t("bereichNone")+" –",""));
+    data.bereiche.forEach(function(b){ bsel.appendChild(new Option(b.name,b.id)); });
+    bsel.value=p.bereichId||"";
+    bsel.addEventListener("change",function(){ p.bereichId=bsel.value; save(); renderCanvas(); });
+    fb.appendChild(bsel); ed.appendChild(fb);
+  }
 
   // Checkliste + Objekte
   if(p.raumtyp){
@@ -997,6 +1063,34 @@ function openGeb(){
     fp.appendChild(bi);
   }
   ed.appendChild(fp);
+  var fa2=field(t("bereiche"));
+  (data.bereiche||[]).forEach(function(b,bi){
+    var r=el("div","arearow");
+    var cnt=data.pins.filter(function(p){return p.bereichId===b.id;}).length;
+    r.appendChild(el("span","an",b.name));
+    r.appendChild(el("span","at",b.typ+" · "+cnt+" "+t("dashRooms")));
+    var x=el("button","icon-btn","✕");
+    x.addEventListener("click",function(){
+      if(!confirm(t("bereichDelConfirm"))) return;
+      data.pins.forEach(function(p){ if(p.bereichId===b.id) p.bereichId=""; });
+      data.bereiche.splice(bi,1); save(); renderCanvas(); openGeb();
+    });
+    r.appendChild(x); fa2.appendChild(r);
+  });
+  var addr2=el("div","arearow");
+  var ain=el("input"); ain.placeholder=t("bereichNamePh");
+  var atyp=el("select"); atyp.style.width="auto";
+  [t("bereichTypEtage"),t("bereichTypWhg"),t("bereichTypSonst")].forEach(function(v){ atyp.appendChild(new Option(v,v)); });
+  var abtn=el("button","btn small",t("bereichAdd"));
+  abtn.addEventListener("click",function(){
+    var n=ain.value.trim(); if(!n) return;
+    data.bereiche.push({id:uid(),name:n,typ:atyp.value});
+    save(); renderCanvas(); openGeb();
+  });
+  ain.addEventListener("keydown",function(e){ if(e.key==="Enter") abtn.click(); });
+  addr2.appendChild(ain); addr2.appendChild(atyp); addr2.appendChild(abtn);
+  fa2.appendChild(addr2);
+  ed.appendChild(fa2);
   var f1=field(t("gebHull"));
   var cl=el("div","checklist");
   GEB.S.forEach(function(k){ cl.appendChild(gebCheckRow(k,true)); });
@@ -1486,11 +1580,24 @@ document.getElementById("importFile").addEventListener("change",function(e){
   };
   rd.readAsText(file); e.target.value="";
 });
-document.getElementById("themeBtn").addEventListener("click",function(){
+function toggleTheme(){
   var root=document.documentElement, cur=root.getAttribute("data-theme");
   var next=cur==="dark"?"light":cur==="light"?"dark":(window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches?"light":"dark");
   root.setAttribute("data-theme",next);
-});
+}
+document.getElementById("themeBtn").addEventListener("click",toggleTheme);
+document.getElementById("mobTheme").addEventListener("click",toggleTheme);
+document.getElementById("mobLang").addEventListener("click",toggleLang);
+function doLogout(){ if(SB){ SB.logout(); USER=null; } showLogin(); }
+document.getElementById("mobLogout").addEventListener("click",doLogout);
+/* Sidebar ein-/ausklappen */
+(function(){
+  var nav=document.getElementById("sideNav"), tb=document.getElementById("sideToggle");
+  function apply(c){ nav.classList.toggle("collapsed",c); tb.textContent=c?"⟩":"⟨"; }
+  var col=localStorage.getItem("tga_side")==="1";
+  apply(col);
+  tb.addEventListener("click",function(){ col=!col; localStorage.setItem("tga_side",col?"1":"0"); apply(col); });
+})();
 document.getElementById("lodwrap").querySelectorAll("button").forEach(function(b){ b.classList.toggle("on",parseInt(b.dataset.lod,10)===LOD); });
 
 /* ================= Sprache anwenden ================= */
@@ -1501,11 +1608,14 @@ function applyLang(){
   set("projBtn","projects");
   set("navDashL","navDash"); set("navPlanL","navPlan");
   var sl=document.getElementById("sideLogoutL"); if(sl) sl.textContent=SB?t("logout"):t("switchUser");
+  set("areaFilterL","areaFilterL");
+  var ml=document.getElementById("mobLang"); if(ml) ml.textContent=LANG==="de"?"EN":"DE";
+  var mo=document.getElementById("mobLogout"); if(mo) mo.textContent=SB?t("logout"):t("switchUser");
+  if(document.getElementById("projPage").style.display!=="none"){ document.getElementById("projUserName").textContent=USER?USER.name:""; renderProjList(); }
   var su=document.getElementById("sideUser"); if(su) su.textContent=(USER&&USER.name)||"";
   if(document.getElementById("dashView").style.display!=="none") renderDashboard();
   set("loginTitle","loginTitle"); set("loginText","loginText"); set("loginNameL","loginName"); set("loginGo","loginGo");
-  set("projTitle","projTitle"); set("switchUser","switchUser"); set("projNewBtn","projNew");
-  if(document.getElementById("projView").style.display==="block") renderProjList();
+  set("projTitle","projTitle"); set("projNewBtn","projNew");
   set("brandSub","appSub"); set("legEmpty","legEmpty"); set("legPart","legPart"); set("legFull","legFull");
   document.getElementById("modeHint").textContent=placing?t("hintPlace"):t("hintDefault");
   set("lodQ","lodQ"); set("lodS","lodS"); set("lodD","lodD");
@@ -1526,9 +1636,8 @@ function applyLang(){
 }
 function toggleLang(){
   LANG=LANG==="de"?"en":"de"; localStorage.setItem("tga_lang",LANG); applyLang();
-  var lv=document.getElementById("loginView"), pv=document.getElementById("projView");
-  if(lv&&lv.style.display==="block") showLogin();
-  else if(pv&&pv.style.display==="block") showProjects();
+  var lv=document.getElementById("loginView");
+  if(lv&&lv.style.display==="block"&&startOv.style.display!=="none") showLogin();
 }
 document.getElementById("langBtn").addEventListener("click",toggleLang);
 document.getElementById("langBtn2").addEventListener("click",toggleLang);
@@ -1660,7 +1769,6 @@ function showLogin(){
   startOv.style.display="flex";
   var lv=document.getElementById("loginView");
   lv.style.display="block";
-  document.getElementById("projView").style.display="none";
   if(SB){
     lv.innerHTML="";
     lv.appendChild(el("div","auth-logo","📍"));
@@ -1700,11 +1808,9 @@ function showLogin(){
   if(USER) document.getElementById("loginName").value=USER.name||"";
 }
 function showProjects(){
-  startOv.style.display="flex";
-  document.getElementById("loginView").style.display="none";
-  document.getElementById("projView").style.display="block";
+  startOv.style.display="none";
+  setView("projPage");
   document.getElementById("projUserName").textContent=USER?USER.name:"";
-  document.getElementById("switchUser").textContent=SB?t("logout"):t("switchUser");
   renderProjList();
 }
 function fmtDate(ts){ try{ return new Date(ts).toLocaleDateString(LANG==="en"?"en-GB":"de-DE"); }catch(e){ return ""; } }
@@ -1788,7 +1894,7 @@ function deleteProject(pid){
   }catch(e){}
   localStorage.removeItem("tga_proj_"+pid);
   writeIndex(readIndex().filter(function(e){return e.pid!==pid;}));
-  if(currentPid===pid){ currentPid=null; data=emptyProject(); renderCanvas(); closePanel(); }
+  if(currentPid===pid){ currentPid=null; data=emptyProject(); renderCanvas(); closePanel(); showProjects(); }
 }
 function openProject(pid){
   currentPid=pid; data=loadProj(pid);
@@ -1807,18 +1913,21 @@ var DASH_LBL={"Bauphysik – Fenster":"Fenster / Windows","Bauphysik – Türen"
   "Heizflächen – statisch":"Heizkörper / Radiators","Heizflächen – Flächenheizung":"Flächenheizung",
   "Sanitärobjekte":"Sanitärobjekte","Elektro-Endstellen":"Steckdosen & Leuchten",
   "Bauphysik – Hülle (opak)":"Gebäudehülle"};
+function setView(name){
+  ["projPage","dashView","planView"].forEach(function(id){
+    document.getElementById(id).style.display=(id===name)?(id==="planView"?"block":"flex"):"none";
+  });
+  document.getElementById("navDash").classList.toggle("on",name==="dashView");
+  document.getElementById("navPlan").classList.toggle("on",name==="planView");
+  document.getElementById("projBtn").classList.toggle("on",name==="projPage");
+}
 function showDash(){
-  document.getElementById("dashView").style.display="flex";
-  document.getElementById("planView").style.display="none";
-  document.getElementById("navDash").classList.add("on");
-  document.getElementById("navPlan").classList.remove("on");
-  renderDashboard();
+  if(!currentPid){ showProjects(); return; }
+  setView("dashView"); renderDashboard();
 }
 function showPlan(){
-  document.getElementById("dashView").style.display="none";
-  document.getElementById("planView").style.display="block";
-  document.getElementById("navPlan").classList.add("on");
-  document.getElementById("navDash").classList.remove("on");
+  if(!currentPid){ showProjects(); return; }
+  setView("planView");
 }
 document.getElementById("navDash").addEventListener("click",showDash);
 document.getElementById("navPlan").addEventListener("click",showPlan);
@@ -1878,7 +1987,13 @@ function renderDashboard(){
   var c2=el("div","dcard");
   c2.appendChild(el("h3",null,t("dashRoomsList")+" ("+st.rooms+")"));
   if(!st.rooms) c2.appendChild(el("div","dash-empty",t("dashEmpty")));
-  (data.pins||[]).forEach(function(p){
+  var groups=[{id:"",name:""}].concat(data.bereiche||[]);
+  groups.forEach(function(g){
+    var pinsIn=(data.pins||[]).filter(function(p){return (p.bereichId||"")===g.id;});
+    if(!pinsIn.length) return;
+    if(g.id||((data.bereiche||[]).length&&pinsIn.length))
+      c2.appendChild(el("div","rt",(g.id?g.name+" ("+g.typ+")":((data.bereiche||[]).length?t("bereichNone"):""))));
+    pinsIn.forEach(function(p){
     var objs=objAll(p);
     var d=0,tt=0; objs.forEach(function(o){var pr=instProgress(o); d+=pr.done; tt+=pr.total;});
     var row=el("div","rrow");
@@ -1891,20 +2006,18 @@ function renderDashboard(){
     row.appendChild(open);
     row.addEventListener("click",function(){ showPlan(); openRoom(p.id); });
     c2.appendChild(row);
+    });
   });
   v.appendChild(c2);
 }
-document.getElementById("sideLogout").addEventListener("click",function(){
-  if(SB){ SB.logout(); USER=null; }
-  showLogin();
-});
+document.getElementById("sideLogout").addEventListener("click",function(){ doLogout(); });
 document.getElementById("loginGo").addEventListener("click",function(){
   var n=document.getElementById("loginName").value.trim(); if(!n) return;
   USER={name:n}; try{ localStorage.setItem("tga_user",JSON.stringify(USER)); }catch(e){}
   showProjects();
 });
 document.getElementById("loginName").addEventListener("keydown",function(e){ if(e.key==="Enter") document.getElementById("loginGo").click(); });
-document.getElementById("switchUser").addEventListener("click",function(){ if(SB){ SB.logout(); USER=null; } showLogin(); });
+
 document.getElementById("projNewBtn").addEventListener("click",newProject);
 document.getElementById("projBtn").addEventListener("click",function(){ save(true); showProjects(); });
 
