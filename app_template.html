@@ -78,9 +78,9 @@
   .hint{font-size:12px;color:var(--muted);}
   .sep{border:0;border-top:1px solid var(--line);margin:14px 0;}
 
-  .ed-head{display:flex;gap:8px;margin-bottom:12px;align-items:center;}
-  .num-input{width:52px;text-align:center;font-weight:700;}
-  .name-input{flex:1;font-weight:650;}
+  .ed-head{display:flex;flex-direction:column;gap:8px;margin-bottom:12px;align-items:stretch;}
+  .num-input{width:64px;text-align:center;font-weight:700;}
+  .name-input{width:100%;font-weight:650;font-size:15px;padding:10px 12px;}
   input[type=text],input[type=number],input:not([type]),select,textarea{
     font-family:var(--sans);font-size:13.5px;color:var(--ink);background:var(--panel);
     border:1px solid var(--line);border-radius:8px;padding:8px 10px;width:100%;}
@@ -153,7 +153,13 @@
   .fthumb button{position:absolute;top:2px;right:2px;width:20px;height:20px;border-radius:50%;border:0;background:#000a;color:#fff;font-size:11px;cursor:pointer;line-height:1;}
   .fotomiss{font-size:11px;color:var(--danger);}
   .subwrap{border-top:1px dashed var(--line);margin-top:4px;padding-top:12px;}
-  .subrow{border:1px solid var(--line);border-radius:10px;margin-bottom:8px;overflow:hidden;background:color-mix(in srgb,var(--paper) 55%,var(--panel));}
+  .subrow{border:1px solid var(--line);border-left:3px solid var(--faint);border-radius:10px;margin-bottom:8px;overflow:hidden;
+    background:color-mix(in srgb,var(--ink) 5%,var(--panel));}
+  .subrow .subrow{background:color-mix(in srgb,var(--ink) 9%,var(--panel));}
+  .gwrow{display:flex;align-items:center;gap:10px;padding:8px 12px;border:1px dashed var(--line);border-radius:9px;margin-bottom:6px;}
+  .gwrow .gq{flex:1;font-size:13px;font-weight:550;}
+  .submore{font-size:11.5px;border:1px dashed var(--line);background:transparent;color:var(--muted);border-radius:7px;padding:5px 9px;cursor:pointer;margin:2px 0 8px;}
+  .submore:hover{color:var(--accent);border-color:var(--accent);}
   .subhead{display:flex;align-items:center;gap:8px;padding:8px 12px;cursor:pointer;font-size:13px;font-weight:600;}
   .subhead .n{flex:1;} .subhead .tw{color:var(--muted);font-weight:400;font-size:12px;}
   .subbody{padding:0 12px 12px;}
@@ -317,7 +323,7 @@
         <button data-lod="200" id="lodQ"></button><button data-lod="300" class="on" id="lodS"></button><button data-lod="400" id="lodD"></button>
       </div>
       <button class="btn" id="imgBtn"></button>
-      <input type="file" id="imgFile" accept="image/*" class="visually-file">
+      <input type="file" id="imgFile" accept="image/*,application/pdf" class="visually-file">
       <button class="btn" id="placeBtn"></button>
       <button class="btn ghost" id="exportBtn"></button>
       <button class="btn ghost" id="importBtn"></button>
@@ -451,7 +457,7 @@ bereichTypEtage:"Etage",bereichTypWhg:"Wohnung",bereichTypSonst:"Sonstiges",
 bereichAll:"Alle Bereiche",bereichNone:"ohne Bereich",raumBereich:"Bereich",areaFilterL:"Bereich:",
 bereichDelConfirm:"Bereich entfernen? Räume bleiben erhalten (ohne Bereich).",
 navAreas:"Bereiche",planAll:"Gesamt / ohne Bereich",planCtxL:"Plan:",roomQs:"Raumfragen",
-bereichNotes:"Bereichs-Notizen",
+bereichNotes:"Bereichs-Notizen",subMore:"＋ weiteres:",pdfPage:"PDF hat {n} Seiten – welche Seite übernehmen? (1–{n})",pdfErr:"PDF konnte nicht geladen werden (Offline-Ansicht? Dann bitte ein Bild verwenden).",
 errStorage:"Browser-Speicher (Struktur) voll. Bitte Projekt exportieren und alte Bilder/Videos entfernen.",
 errPhoto:"Foto konnte nicht verarbeitet werden.",errFile:"Datei konnte nicht gelesen werden.",errFormat:"Unbekanntes Format.",
 appSub:"TGA · Gebäude → Raum → Objekt",legEmpty:"leer",legPart:"begonnen",legFull:"Pflicht erfüllt",
@@ -504,7 +510,7 @@ bereichTypEtage:"Floor",bereichTypWhg:"Apartment",bereichTypSonst:"Other",
 bereichAll:"All areas",bereichNone:"no area",raumBereich:"Area",areaFilterL:"Area:",
 bereichDelConfirm:"Remove this area? Rooms are kept (without area).",
 navAreas:"Areas",planAll:"Overall / no area",planCtxL:"Plan:",roomQs:"Room questions",
-bereichNotes:"Area notes",
+bereichNotes:"Area notes",subMore:"＋ another:",pdfPage:"PDF has {n} pages – which page to use? (1–{n})",pdfErr:"Could not load the PDF (offline view? Please use an image instead).",
 errStorage:"Browser storage (structure) full. Please export the project and remove old images/videos.",
 errPhoto:"Photo could not be processed.",errFile:"File could not be read.",errFormat:"Unknown format.",
 appSub:"Building services · Building → Room → Object",legEmpty:"empty",legPart:"in progress",legFull:"required done",
@@ -562,13 +568,60 @@ FRA.forEach(function(q){
 function klOrder(k){ return (KLU[k]===undefined?900:KLU[k]); }
 function sortQ(a,b){ return klOrder(a.kl)-klOrder(b.kl) || a.r-b.r; }
 function questionsFor(klasse,typ,art){
+  // Reihenfolge fürs Dedupe: spezifisch (Typ) schlägt Klasse schlägt Basis
   var qs=[];
-  if(art!=="S"||true){ qs=qs.concat(qBasis); } // Basis gilt für alle
-  if(qByClass[klasse]) qs=qs.concat(qByClass[klasse]);
   if(qByTyp[klasse+"||"+typ]) qs=qs.concat(qByTyp[klasse+"||"+typ]);
-  // Basis-Sub-Fragen (k=(Basis), y=Typ) für Basis-Subobjekte:
   if(qByTyp["(Basis)||"+typ]) qs=qs.concat(qByTyp["(Basis)||"+typ]);
-  var seen={}; return qs.filter(function(q){ if(seen[q.t])return false; seen[q.t]=1; return true; }).sort(sortQ);
+  if(qByClass[klasse]) qs=qs.concat(qByClass[klasse]);
+  if(art!=="S") qs=qs.concat(qBasis); // Hersteller/Produkt/Typenschild nur an Hauptobjekten
+  var seen={}; qs=qs.filter(function(q){ if(seen[q.t])return false; seen[q.t]=1; return true; });
+  // Typenschild-Gate (mechanisch): Basis-Foto nur nach "Typenschild vorhanden? = Ja"
+  for(var i=0;i<qs.length;i++){
+    if(qs[i].t==="Typenschild_Foto"&&qs[i].k==="(Basis)"&&qs[i].b==="immer"){
+      var gated={}; for(var kk in qs[i]) gated[kk]=qs[i][kk];
+      gated.b="«TS_vorh» = Ja";
+      qs[i]=gated;
+      qs.push({t:"TS_vorh",q:"Typenschild vorhanden?",k:"(Basis)",y:"",at:"Ja/Nein",ao:[],b:"immer",
+               p:false,fp:false,kl:gated.kl,r:(gated.r||90)-1,lod:gated.lod||200,z:"Laie",e:"Objekt"});
+      break;
+    }
+  }
+  // Mangel-Foto (mechanisch): jede *Schaeden-Mehrfachauswahl ohne eigene Foto-Folgefrage
+  var hasFotoFor={};
+  qs.forEach(function(q){ var c=parseCond(q.b); if(c&&q.at==="Foto-Upload") hasFotoFor[c.t]=1; });
+  var add=[];
+  qs.forEach(function(q){
+    if(q.at==="Mehrfachauswahl"&&/Schaeden$/.test(q.t)&&!hasFotoFor[q.t]&&q.ao.indexOf("keine")>=0){
+      add.push({t:q.t+"_AutoFoto",q:"Foto des Schadens",k:q.k,y:q.y,at:"Foto-Upload",ao:[],
+                b:"«"+q.t+"» ungleich 'keine'",p:false,fp:false,kl:"Schäden / Mangel",
+                r:(q.r||500)+1,lod:q.lod||200,z:"Laie",e:"Objekt",ft:"Schaden"});
+    }
+  });
+  return qs.concat(add).sort(sortQ);
+}
+var STANDING={"Wärmeerzeuger":1,"Wärmespeicher":1,"TWW-Erzeugung":1,"Kälteerzeugung":1,
+  "Abwasser-Sonderbauteile":1,"Wasseraufbereitung":1,"Solarstation":1,"Elektro-Erzeugung/Speicher":1,
+  "Wasserinstallation":1,"Wohnungsstation":1};
+/* Katalog-Gateways: Ja-Antwort erzeugt das passende Sub-Objekt */
+var GW_MAP={"Ventil_vorh":"Heizkörperventil","Thermostatkopf_vorh":"Thermostatkopf",
+  "Armatur_vorh":"Sanitärarmatur (Mischer/Batterie)","Eckventil_vorh":"Eckventil",
+  "Vorwand_vorh":"Vorwandinstallationselement","Siphon_vorh":"Ablaufgarnitur/Siphon",
+  "SO_Vorwand":"Vorwandinstallationselement","SO_Siphon":"Ablaufgarnitur/Siphon"};
+/* Integer-Spawns: Zahl N erzeugt N Sub-Instanzen */
+var SPAWN_N={"BT_AnzSchichten":"Schicht (Schichtaufbau)","F_AnzahlFelder":"Feld",
+  "TD_AnzFluegel":"Flügel (Türblatt)","SCH_AnzFluegel":"Flügel (Türblatt)",
+  "DT_Fluegel":"Flügel (Türblatt)","FAL_Segmente":"Flügel (Türblatt)"};
+function subCountOf(inst,typName){ return (inst.subs||[]).filter(function(x){return x.y===typName;}).length; }
+function ensureSub(inst,typName,open){
+  var row=subTypesFor(inst.k,inst.y).filter(function(o){return o[1]===typName;})[0];
+  if(!row) return null;
+  var ni=newInst(row[0],row[1]); ni.art="S"; if(open!==false) ni._open=true;
+  inst.subs=inst.subs||[]; inst.subs.push(ni); return ni;
+}
+function ensureSubCount(inst,typName,n){
+  var made=0;
+  while(subCountOf(inst,typName)<n){ if(!ensureSub(inst,typName,subCountOf(inst,typName)===0)) break; made++; if(made>50) break; }
+  return made;
 }
 function subTypesFor(klasse,typ){
   var out=[];
@@ -578,7 +631,7 @@ function subTypesFor(klasse,typ){
       if(p===typ||p===klasse) return true;
       if(ALIAS[p]&&ALIAS[p]===klasse) return true;
       if(p==="alle Objekte") return true;
-      if(p==="alle stehenden Objekte") return true;
+      if(p==="alle stehenden Objekte") return STANDING[klasse]===1;
       return false;
     });
     if(hit) out.push(o);
@@ -890,8 +943,48 @@ function setPlacing(on){
   document.getElementById("modeHint").textContent=on?t("hintPlace"):t("hintDefault");
 }
 document.getElementById("placeBtn").addEventListener("click",function(){ showPlan(); setPlacing(!placing); });
+function loadPdfPlan(file){
+  function doRender(){
+    var pdfjs=window.pdfjsLib;
+    file.arrayBuffer().then(function(buf){
+      return pdfjs.getDocument({data:buf}).promise;
+    }).then(function(doc){
+      var n=doc.numPages, pg=1;
+      if(n>1){
+        var ans=prompt(t("pdfPage").replace(/\{n\}/g,String(n)),"1");
+        if(ans===null) return null;
+        pg=Math.min(Math.max(parseInt(ans,10)||1,1),n);
+      }
+      return doc.getPage(pg);
+    }).then(function(page){
+      if(!page) return;
+      var vp=page.getViewport({scale:1});
+      var scale=Math.min(3,1600/Math.max(vp.width,vp.height));
+      vp=page.getViewport({scale:scale});
+      var c=document.createElement("canvas"); c.width=Math.round(vp.width); c.height=Math.round(vp.height);
+      return page.render({canvasContext:c.getContext("2d"),viewport:vp}).promise.then(function(){
+        ctxObj().image=c.toDataURL("image/jpeg",0.85);
+        bgImg=null; save(); renderCanvas();
+        var mine=data.pins.filter(function(p){return (p.bereichId||"")===planCtx;});
+        if(!mine.length) setPlacing(true);
+      });
+    }).catch(function(){ alert(t("pdfErr")); });
+  }
+  if(window.pdfjsLib) return doRender();
+  if(!/^https?:$/.test(location.protocol)){ alert(t("pdfErr")); return; }
+  var sc=document.createElement("script");
+  sc.src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js";
+  sc.onload=function(){
+    try{ window.pdfjsLib.GlobalWorkerOptions.workerSrc="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js"; }catch(e){}
+    doRender();
+  };
+  sc.onerror=function(){ alert(t("pdfErr")); };
+  document.head.appendChild(sc);
+}
 function loadImageFile(file){
-  if(!file||!/^image\//.test(file.type)) return;
+  if(!file) return;
+  if(file.type==="application/pdf") return loadPdfPlan(file);
+  if(!/^image\//.test(file.type)) return;
   shrinkImage(file,1600).then(function(blob){
     var rd=new FileReader();
     rd.onload=function(){
@@ -919,16 +1012,23 @@ function condMet(inst,b){
   var c=parseCond(b);
   if(!c) return true;
   var val=(inst.a||{})[c.t];
-  var has;
-  if(Array.isArray(val)) has=val.indexOf(c.v)>=0;
-  else has=String(val===undefined?"":val)===c.v;
-  return c.op==="="?has:!has && val!==undefined;
+  if(Array.isArray(val)){
+    var has=val.indexOf(c.v)>=0;
+    return c.op==="="?has:(val.length>0&&!has);
+  }
+  var hasS=String(val===undefined?"":val)===c.v;
+  return c.op==="="?hasS:(!hasS&&val!==undefined&&val!=="");
 }
 function visibleQuestions(inst){
   return questionsFor(inst.k,inst.y,inst.art).filter(function(q){
     if(q.lod>LOD) return false;
     return condMet(inst,q.b);
   });
+}
+function hasCondOn(inst,titel){
+  var pool=inst.k==="(Raum)"?(KAT.R||[]):questionsFor(inst.k,inst.y,inst.art);
+  for(var i=0;i<pool.length;i++){ var c=parseCond(pool[i].b); if(c&&c.t===titel) return true; }
+  return false;
 }
 function answered(inst,q){
   if(q.at==="Foto-Upload") return ((inst.fotos||{})[q.t]||[]).length>0;
@@ -1022,7 +1122,27 @@ function openRoom(id){
     fb.appendChild(bsel); ed.appendChild(fb);
   }
 
-  // Standard-Raumfragen
+  // Angelegte Objekte zuerst (schneller Wiederzugriff), dann Checkliste, dann Raumfragen
+  if(p.raumtyp){
+    var objs=p.objekte||[];
+    if(objs.length){
+      var f2=field(t("createdObjects")+" ("+objAll(p).length+")");
+      var ol=el("div","objlist");
+      objs.forEach(function(o){ ol.appendChild(objRow(p,o)); });
+      f2.appendChild(ol); ed.appendChild(f2);
+    }
+    var defs=DEF[p.raumtyp]||{S:[],O:[]};
+    var f1=field(t("checklist")+" ("+rtLabel(p.raumtyp)+")");
+    var cl=el("div","checklist");
+    defs.S.forEach(function(k){ cl.appendChild(checkRow(p,k,true)); });
+    defs.O.forEach(function(k){ cl.appendChild(checkRow(p,k,false)); });
+    f1.appendChild(cl);
+    var more=el("button","btn small ghost",t("moreObject"));
+    more.style.marginTop="8px";
+    more.addEventListener("click",function(){ openClassPicker(p,null); });
+    f1.appendChild(more);
+    ed.appendChild(f1);
+  }
   if((KAT.R||[]).length){
     var ri=roomInst(p);
     var rqs=visibleRoomQuestions(p);
@@ -1035,28 +1155,7 @@ function openRoom(id){
     rqs.forEach(function(q){ rb.appendChild(qRow(ri,q,"pin",p.id)); });
     rg.appendChild(rb); ed.appendChild(rg);
   }
-  // Checkliste + Objekte
-  if(p.raumtyp){
-    var defs=DEF[p.raumtyp]||{S:[],O:[]};
-    var f1=field(t("checklist")+" ("+rtLabel(p.raumtyp)+")");
-    var cl=el("div","checklist");
-    defs.S.forEach(function(k){ cl.appendChild(checkRow(p,k,true)); });
-    defs.O.forEach(function(k){ cl.appendChild(checkRow(p,k,false)); });
-    f1.appendChild(cl);
-    var more=el("button","btn small ghost",t("moreObject"));
-    more.style.marginTop="8px";
-    more.addEventListener("click",function(){ openClassPicker(p,null); });
-    f1.appendChild(more);
-    ed.appendChild(f1);
-
-    var objs=p.objekte||[];
-    if(objs.length){
-      var f2=field(t("createdObjects")+" ("+objAll(p).length+")");
-      var ol=el("div","objlist");
-      objs.forEach(function(o){ ol.appendChild(objRow(p,o)); });
-      f2.appendChild(ol); ed.appendChild(f2);
-    }
-  } else {
+  if(!p.raumtyp){
     var hint=el("p","hint",t("chooseFirst"));
     ed.appendChild(hint);
   }
@@ -1293,22 +1392,10 @@ function openObject(ctx,pinId,iid){
 
   renderQuestionGroups(ed,inst,ctx,pinId);
 
-  // Sub-Objekte
-  var subs=subTypesFor(inst.k,inst.y);
-  if(subs.length||inst.subs.length){
-    var sw=el("div","subwrap");
-    sw.appendChild(el("label",null,"")); var lbl=field(t("subObjects")); sw.appendChild(lbl.firstChild);
-    (inst.subs||[]).forEach(function(s,idx){ sw.appendChild(subBlock(inst,s,idx,ctx,pinId)); });
-    var add=el("div","subadd");
-    subs.forEach(function(o){
-      var b=el("button",null,"＋ "+o[1]);
-      b.addEventListener("click",function(){
-        var s=newInst(o[0],o[1]); s.art="S"; inst.subs.push(s); save(); openObject(ctx,pinId,iid);
-      });
-      add.appendChild(b);
-    });
-    sw.appendChild(add); ed.appendChild(sw);
-  }
+  // Sub-Objekte (Gateways statt "+"-Buttons)
+  var sw=el("div","subwrap");
+  renderSubSection(sw,inst,ctx,pinId,function(){ openObject(ctx,pinId,iid); },true);
+  if(sw.childNodes.length) ed.appendChild(sw);
 
   // Memo
   var fm=field(t("memoObj"));
@@ -1332,6 +1419,44 @@ function openObject(ctx,pinId,iid){
   fa.appendChild(dup); fa.appendChild(del); ed.appendChild(fa);
   panel.scrollTop=0;
 }
+function renderSubSection(container,inst,ctx,pinId,refresh,withLabel){
+  var subs=subTypesFor(inst.k,inst.y);
+  if(!subs.length&&!(inst.subs||[]).length) return;
+  if(withLabel){ var lbl=field(t("subObjects")); container.appendChild(lbl.firstChild); }
+  (inst.subs||[]).forEach(function(sx,idx){ container.appendChild(subBlock(inst,sx,idx,ctx,pinId)); });
+  var covered={};
+  questionsFor(inst.k,inst.y,inst.art).forEach(function(q){ if(GW_MAP[q.t]) covered[GW_MAP[q.t]]=1; });
+  inst.gw=inst.gw||{};
+  subs.forEach(function(o){
+    var name=o[1], cnt=subCountOf(inst,name);
+    if(cnt>0){
+      var more=el("button","submore",t("subMore")+" "+name);
+      more.addEventListener("click",function(){ ensureSub(inst,name,true); save(); refresh(); });
+      container.appendChild(more);
+      return;
+    }
+    if(covered[name]) return;           // die Katalog-Frage «…_vorh» ist das Gateway
+    if(inst.gw[name]==="Nein"){          // beantwortet: nicht vorhanden
+      var row0=el("div","gwrow");
+      row0.appendChild(el("span","gq",name+" vorhanden?"));
+      ["Ja","Nein"].forEach(function(v){
+        var c=el("button","chip"+(v==="Nein"?" on":""),ynLabel(v));
+        c.addEventListener("click",function(){ inst.gw[name]=v; if(v==="Ja") ensureSub(inst,name,true); save(); refresh(); });
+        row0.appendChild(c);
+      });
+      container.appendChild(row0);
+      return;
+    }
+    var row=el("div","gwrow");
+    row.appendChild(el("span","gq",name+" vorhanden?"));
+    ["Ja","Nein"].forEach(function(v){
+      var c=el("button","chip",ynLabel(v));
+      c.addEventListener("click",function(){ inst.gw[name]=v; if(v==="Ja") ensureSub(inst,name,true); save(); refresh(); });
+      row.appendChild(c);
+    });
+    container.appendChild(row);
+  });
+}
 function subBlock(parent,s,idx,ctx,pinId){
   var d=el("div","subrow");
   var h=el("div","subhead");
@@ -1345,17 +1470,9 @@ function subBlock(parent,s,idx,ctx,pinId){
   h.addEventListener("click",function(){ s._open=!s._open; body.style.display=s._open?"block":"none"; if(s._open&&!body.childNodes.length) buildSub(); });
   function buildSub(){
     renderQuestionGroups(body,s,ctx,pinId);
-    var nested=subTypesFor(s.k,s.y);
-    if(nested.length||s.subs.length){
-      (s.subs||[]).forEach(function(ns,ni){ body.appendChild(subBlock(s,ns,ni,ctx,pinId)); });
-      var add=el("div","subadd");
-      nested.forEach(function(o){
-        var b=el("button",null,"＋ "+o[1]);
-        b.addEventListener("click",function(){ var n2=newInst(o[0],o[1]); n2.art="S"; s.subs.push(n2); save(); body.innerHTML=""; buildSub(); });
-        add.appendChild(b);
-      });
-      body.appendChild(add);
-    }
+    var nsw=el("div");
+    renderSubSection(nsw,s,ctx,pinId,function(){ body.innerHTML=""; buildSub(); },false);
+    body.appendChild(nsw);
     var fm=el("div"); fm.appendChild(memoWidget(s.memos,function(){ save(); })); body.appendChild(fm);
   }
   if(s._open) buildSub();
@@ -1379,7 +1496,10 @@ function renderQuestionGroups(container,inst,ctx,pinId){
   qs.forEach(function(q){ (groups[q.kl]=groups[q.kl]||[]).push(q); });
   Object.keys(groups).sort(function(a,b){return klOrder(a)-klOrder(b);}).forEach(function(kl){
     var g=el("div","qgroup");
+    var col=KL_COLOR[kl];
+    if(col){ g.style.borderLeft="3px solid "+col; }
     var h=el("h4"); h.appendChild(el("span",null,klLabel(kl)));
+    if(col){ h.style.background="color-mix(in srgb, "+col+" 12%, transparent)"; h.style.color=col; }
     var open=groups[kl].filter(function(q){return q.p&&!answered(inst,q);}).length;
     if(open) h.appendChild(el("span",null,open+" "+t("open")));
     g.appendChild(h);
@@ -1423,7 +1543,11 @@ function qRow(inst,q,ctx,pinId){
     var r=el("div","ynrow");
     ["Ja","Nein","weiß nicht"].forEach(function(v){
       var c=el("button","chip"+(inst.a[q.t]===v?" on":""),ynLabel(v));
-      c.addEventListener("click",function(){ inst.a[q.t]=v; save(true); refresh(); });
+      c.addEventListener("click",function(){
+        inst.a[q.t]=v;
+        if(v==="Ja"&&GW_MAP[q.t]&&subCountOf(inst,GW_MAP[q.t])===0) ensureSub(inst,GW_MAP[q.t],true);
+        save(true); refresh();
+      });
       r.appendChild(c);
     });
     d.appendChild(r);
@@ -1455,6 +1579,7 @@ function qRow(inst,q,ctx,pinId){
         var arr=inst.a[q.t]||[]; var i=arr.indexOf(v);
         i>=0?arr.splice(i,1):arr.push(v);
         inst.a[q.t]=arr; save(true); c.classList.toggle("on");
+        if(hasCondOn(inst,q.t)) refresh();
       });
       r3.appendChild(c);
     });
@@ -1463,6 +1588,12 @@ function qRow(inst,q,ctx,pinId){
     var nr=el("div","numrow");
     var inp=el("input"); inp.type="number"; inp.value=inst.a[q.t]!==undefined?inst.a[q.t]:"";
     inp.addEventListener("input",function(){ inst.a[q.t]=inp.value; save(true); });
+    if(SPAWN_N[q.t]){
+      inp.addEventListener("change",function(){
+        var n=parseInt(inp.value,10);
+        if(n>0&&ensureSubCount(inst,SPAWN_N[q.t],Math.min(n,30))>0){ save(true); refresh(); }
+      });
+    }
     nr.appendChild(inp);
     if(q.u) nr.appendChild(el("span","unit",q.u));
     d.appendChild(nr);
@@ -2058,6 +2189,10 @@ function newProject(){
   openProject(pid);
 }
 /* ================= Dashboard ================= */
+var KL_COLOR={"Heizung":"#c2410c","Schäden / Mangel":"#b0393c","Geometrie & Maße (Dimensionen)":"#0f7d84",
+  "Allgemein / Identifikation":"#64748b","Dokumentation / Foto":"#7a4b86","Sanitär":"#2563eb",
+  "Elektro":"#b45309","Lüftung":"#0d9488","Solar":"#a16207","Kälte":"#0369a1","Gas":"#4d7c0f",
+  "Bauphysik – Hülle":"#6d28d9","Nutzung & Betrieb":"#475569","Struktur & Verknüpfung":"#94a3b8"};
 var DASH_LBL={"Bauphysik – Fenster":"Fenster / Windows","Bauphysik – Türen":"Türen / Doors",
   "Heizflächen – statisch":"Heizkörper / Radiators","Heizflächen – Flächenheizung":"Flächenheizung",
   "Sanitärobjekte":"Sanitärobjekte","Elektro-Endstellen":"Steckdosen & Leuchten",
