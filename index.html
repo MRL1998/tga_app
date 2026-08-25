@@ -186,36 +186,113 @@
   .prow .del{border:1px solid var(--line);background:transparent;color:var(--muted);border-radius:7px;padding:4px 8px;font-size:11px;cursor:pointer;}
   .prow .del:hover{color:var(--danger);border-color:var(--danger);}
   .wz .btn.on{background:var(--accent);color:var(--badge-ink);border-color:var(--accent);}
+  /* Sidebar-Shell */
+  .shell{display:flex;min-height:100vh;}
+  .side{width:216px;flex:0 0 216px;background:var(--panel);border-right:1px solid var(--line);
+    display:flex;flex-direction:column;padding:16px 12px 12px;position:sticky;top:0;height:100vh;box-sizing:border-box;}
+  .sbrand h1{font-size:16px;margin:0;font-weight:700;}
+  .sbrand .ssub{font-family:var(--mono);font-size:9.5px;color:var(--muted);letter-spacing:.05em;text-transform:uppercase;}
+  .snav{display:flex;flex-direction:column;gap:3px;margin-top:18px;flex:1;}
+  .sitem{display:flex;align-items:center;gap:9px;text-align:left;padding:9px 11px;border-radius:9px;border:0;
+    background:transparent;color:var(--ink);font:550 13.5px var(--sans);cursor:pointer;width:100%;}
+  .sitem:hover{background:var(--accent-soft);}
+  .sitem.on{background:var(--accent);color:var(--badge-ink);}
+  .sfoot{display:flex;flex-direction:column;gap:8px;border-top:1px solid var(--line);padding-top:12px;}
+  .userchip{font-size:11.5px;color:var(--muted);word-break:break-all;padding:0 4px;}
+  .srow{display:flex;gap:6px;}
+  .content{flex:1;min-width:0;display:flex;flex-direction:column;}
+  @media (max-width:920px){
+    .shell{flex-direction:column;}
+    .side{width:100%;height:auto;position:static;flex-direction:row;align-items:center;gap:8px;padding:8px 10px;overflow-x:auto;}
+    .sbrand{display:none;}
+    .snav{flex-direction:row;margin:0;flex:1;}
+    .sitem{width:auto;white-space:nowrap;padding:7px 10px;}
+    .sfoot{flex-direction:row;border:0;padding:0;align-items:center;}
+    .userchip{display:none;}
+  }
+  /* Auth */
+  .auth-logo{width:52px;height:52px;border-radius:14px;background:var(--accent-soft);display:flex;
+    align-items:center;justify-content:center;font-size:26px;margin-bottom:14px;}
+  .auth-sub{font-size:13px;color:var(--muted);margin:-6px 0 18px;line-height:1.5;}
+  .auth-tabs{display:flex;background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:3px;margin-bottom:18px;}
+  .auth-tabs button{flex:1;border:0;background:transparent;padding:8px;border-radius:8px;font:600 13px var(--sans);
+    color:var(--muted);cursor:pointer;}
+  .auth-tabs button.on{background:var(--accent);color:var(--badge-ink);}
+  .auth-go{width:100%;border:0;border-radius:10px;padding:12px;background:var(--accent);color:var(--badge-ink);
+    font:650 14px var(--sans);cursor:pointer;margin-top:4px;}
+  .auth-go:hover{filter:brightness(1.08);}
+  .auth-err{font-size:12.5px;color:var(--danger);margin-top:10px;min-height:16px;}
+  /* Dashboard */
+  .dash{display:flex;flex-direction:column;gap:14px;}
+  .dash-head{display:flex;align-items:flex-start;gap:14px;flex-wrap:wrap;}
+  .dash-head .dtitle{font-size:20px;font-weight:700;margin:0;}
+  .dash-head .daddr{font-size:12.5px;color:var(--muted);}
+  .dash-head .spacer{flex:1;}
+  .tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(128px,1fr));gap:10px;}
+  .dtile{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px 14px;box-shadow:var(--shadow);}
+  .dtile .n{font-family:var(--mono);font-size:25px;font-weight:600;font-variant-numeric:tabular-nums;letter-spacing:-.02em;}
+  .dtile .l{font-size:11.5px;color:var(--muted);margin-top:1px;}
+  .dtile.warn .n{color:var(--warn);}
+  .dcard{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px 16px;box-shadow:var(--shadow);}
+  .dcard h3{margin:0 0 10px;font-size:11px;font-family:var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600;}
+  .brow{display:grid;grid-template-columns:minmax(110px,42%) 1fr 44px;gap:10px;align-items:center;padding:3.5px 0;font-size:12.5px;}
+  .brow .bl{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .brow .btrack{height:10px;border-radius:4px;position:relative;}
+  .brow .bbar{height:10px;border-radius:4px;background:var(--accent);min-width:3px;}
+  .brow .bval{text-align:right;font-family:var(--mono);font-variant-numeric:tabular-nums;color:var(--ink);}
+  .rrow{display:grid;grid-template-columns:1fr auto auto;gap:10px;align-items:center;padding:8px 10px;
+    border:1px solid var(--line);border-radius:9px;margin-bottom:6px;cursor:pointer;background:var(--paper);font-size:12.5px;}
+  .rrow:hover{border-color:var(--accent);}
+  .rrow .rn{font-weight:600;} .rrow .rt{color:var(--muted);font-size:11.5px;}
+  .rrow .rp{font-family:var(--mono);font-variant-numeric:tabular-nums;color:var(--muted);}
+  .rrow .rp.done{color:var(--good);}
+  .dash-empty{font-size:13px;color:var(--muted);padding:6px 0;}
   @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;}}
 </style>
 
 <div class="app">
-  <header class="bar">
-    <div class="brand">
-      <h1 id="brandTitle">Grundriss – Raumaufnahme</h1>
-      <span class="sub" id="brandSub"></span>
+<div class="shell">
+  <nav class="side">
+    <div class="sbrand">
+      <h1 id="brandTitle">Gebäudeaufnahme</h1>
+      <span class="ssub" id="brandSub"></span>
     </div>
-    <div class="tools">
+    <div class="snav">
+      <button class="sitem on" id="navDash">▦ <span id="navDashL"></span></button>
+      <button class="sitem" id="navPlan">🗺 <span id="navPlanL"></span></button>
+      <button class="sitem" id="gebBtn"></button>
+      <button class="sitem" id="projBtn"></button>
+    </div>
+    <div class="sfoot">
+      <div class="userchip" id="sideUser"></div>
+      <div class="srow">
+        <button class="btn small ghost" id="langBtn" title="Deutsch / English"></button>
+        <button class="btn small ghost" id="themeBtn" title="Hell/Dunkel · Light/Dark">◐</button>
+      </div>
+      <button class="sitem" id="sideLogout">⏻ <span id="sideLogoutL"></span></button>
+    </div>
+  </nav>
+  <div class="content">
+  <header class="bar">
+    <div class="tools" style="margin-left:auto">
       <span class="savechip" id="savechip"><span class="dot"></span>✓</span>
       <span class="storagechip" id="storagechip"></span>
       <div class="lodwrap" id="lodwrap" title="LOD">
         <button data-lod="200" id="lodQ"></button><button data-lod="300" class="on" id="lodS"></button><button data-lod="400" id="lodD"></button>
       </div>
-      <button class="btn" id="projBtn"></button>
-      <button class="btn" id="gebBtn"></button>
       <button class="btn" id="imgBtn"></button>
       <input type="file" id="imgFile" accept="image/*" class="visually-file">
       <button class="btn" id="placeBtn"></button>
       <button class="btn ghost" id="exportBtn"></button>
       <button class="btn ghost" id="importBtn"></button>
       <input type="file" id="importFile" accept="application/json" class="visually-file">
-      <button class="btn ghost" id="langBtn" title="Deutsch / English"></button>
-      <button class="btn ghost" id="themeBtn" title="Hell/Dunkel · Light/Dark">◐</button>
     </div>
   </header>
 
   <div class="main">
     <section class="stage">
+      <div id="dashView" class="dash" style="display:none"></div>
+      <div id="planView">
       <div class="legend">
         <span class="item"><span class="dotm empty"></span> <span id="legEmpty"></span></span>
         <span class="item"><span class="dotm part"></span> <span id="legPart"></span></span>
@@ -231,6 +308,7 @@
           </div>
         </div>
       </div>
+      </div>
     </section>
 
     <aside class="panel" id="panel">
@@ -238,6 +316,8 @@
       <div id="editor" style="display:none"></div>
     </aside>
   </div>
+  </div>
+</div>
 </div>
 
 <div class="wz-overlay" id="start" style="display:none">
@@ -312,6 +392,10 @@ sbEmail:"E-Mail",sbPw:"Passwort",sbLogin:"Anmelden",sbRegister:"Registrieren",
 sbConfirm:"Bestätigungs-E-Mail gesendet – Posteingang prüfen, dann anmelden.",logout:"Abmelden",
 cloudSave:"☁ Sichern",cloudList:"☁ Cloud-Projekte anzeigen",cloudLoad:"Laden",cloudBusy:"überträgt …",
 cloudDone:"✓ gesichert",cloudErr:"Cloud-Fehler: ",cloudHave:"lokal vorhanden",
+navDash:"Dashboard",navPlan:"Aufnahme",authSub:"Gebäudeaufnahme für TGA & Energieberatung. Konto anlegen oder anmelden – die Daten gehören dir.",
+dashByClass:"Objekte nach Klasse",dashRoomsList:"Räume",dashRooms:"Räume",dashObjects:"Objekte",dashParts:"Bauteile",
+dashPhotos:"Fotos",dashMemos:"Memos",dashOpenReq:"Pflicht offen",dashToPlan:"Zur Aufnahme →",
+dashEmpty:"Noch keine Objekte erfasst – starte mit der Aufnahme.",dashLodNote:"Zählung bei Aufnahmetiefe LOD",
 errStorage:"Browser-Speicher (Struktur) voll. Bitte Projekt exportieren und alte Bilder/Videos entfernen.",
 errPhoto:"Foto konnte nicht verarbeitet werden.",errFile:"Datei konnte nicht gelesen werden.",errFormat:"Unbekanntes Format.",
 appSub:"TGA · Gebäude → Raum → Objekt",legEmpty:"leer",legPart:"begonnen",legFull:"Pflicht erfüllt",
@@ -355,6 +439,10 @@ sbEmail:"Email",sbPw:"Password",sbLogin:"Sign in",sbRegister:"Register",
 sbConfirm:"Confirmation email sent – check your inbox, then sign in.",logout:"Sign out",
 cloudSave:"☁ Save",cloudList:"☁ Show cloud projects",cloudLoad:"Load",cloudBusy:"transferring …",
 cloudDone:"✓ saved",cloudErr:"Cloud error: ",cloudHave:"available locally",
+navDash:"Dashboard",navPlan:"Survey",authSub:"Building survey for HVAC & energy consulting. Create an account or sign in – your data stays yours.",
+dashByClass:"Objects by class",dashRoomsList:"Rooms",dashRooms:"Rooms",dashObjects:"Objects",dashParts:"Components",
+dashPhotos:"Photos",dashMemos:"Memos",dashOpenReq:"Required open",dashToPlan:"Go to survey →",
+dashEmpty:"No objects captured yet – start the survey.",dashLodNote:"Counted at survey depth LOD",
 errStorage:"Browser storage (structure) full. Please export the project and remove old images/videos.",
 errPhoto:"Photo could not be processed.",errFile:"File could not be read.",errFormat:"Unknown format.",
 appSub:"Building services · Building → Room → Object",legEmpty:"empty",legPart:"in progress",legFull:"required done",
@@ -507,7 +595,8 @@ var view={mode:"room"}; // {mode:"room"} | {mode:"object",ctx:"pin"|"geb",instId
 var saveTimer=null;
 function save(silent){
   if(!currentPid) return;
-  try{ localStorage.setItem("tga_proj_"+currentPid,JSON.stringify(data)); touchIndex(); if(!silent) flashSaved(); updateStorageChip(); }
+  try{ localStorage.setItem("tga_proj_"+currentPid,JSON.stringify(data)); touchIndex(); if(!silent) flashSaved(); updateStorageChip();
+    var dv=document.getElementById("dashView"); if(dv&&dv.style.display!=="none") renderDashboard(); }
   catch(e){ alert(t("errStorage")); }
 }
 function flashSaved(){ var c=document.getElementById("savechip"); c.classList.add("show"); clearTimeout(saveTimer); saveTimer=setTimeout(function(){c.classList.remove("show");},1400); }
@@ -650,14 +739,14 @@ function setPlacing(on){
   canvas.classList.toggle("placing",on);
   document.getElementById("modeHint").textContent=on?t("hintPlace"):t("hintDefault");
 }
-document.getElementById("placeBtn").addEventListener("click",function(){ setPlacing(!placing); });
+document.getElementById("placeBtn").addEventListener("click",function(){ showPlan(); setPlacing(!placing); });
 function loadImageFile(file){
   if(!file||!/^image\//.test(file.type)) return;
   var rd=new FileReader();
   rd.onload=function(){ data.image=rd.result; bgImg=null; save(); renderCanvas(); if(!data.pins.length){ setPlacing(true); } };
   rd.readAsDataURL(file);
 }
-document.getElementById("imgBtn").addEventListener("click",function(){ document.getElementById("imgFile").click(); });
+document.getElementById("imgBtn").addEventListener("click",function(){ showPlan(); document.getElementById("imgFile").click(); });
 document.getElementById("imgFile").addEventListener("change",function(e){ if(e.target.files[0]) loadImageFile(e.target.files[0]); e.target.value=""; });
 ["dragover","dragenter"].forEach(function(t){ drop.addEventListener(t,function(e){e.preventDefault();drop.classList.add("hover");}); });
 ["dragleave","drop"].forEach(function(t){ drop.addEventListener(t,function(e){e.preventDefault();drop.classList.remove("hover");}); });
@@ -827,9 +916,9 @@ function checkRow(p,klasse,std){
 function objRow(p,o){
   var d=el("div","obj");
   var nm=el("div","oname");
-  var t=el("div","t",o.y+(o.label?" – "+o.label:""));
-  var s=el("div","s",o.k+" · "+(o.gewerk||""));
-  nm.appendChild(t); nm.appendChild(s);
+  var ttl=el("div","t",o.y+(o.label?" – "+o.label:""));
+  var sub=el("div","s",o.k+" · "+(o.gewerk||""));
+  nm.appendChild(ttl); nm.appendChild(sub);
   if(o.copiedFrom){ var cb=el("span","copybadge",t("copiedCheck")); nm.appendChild(cb); }
   var pr=instProgress(o);
   var pg=el("span","prog"+(pr.done>=pr.total&&pr.total?" done":""),pr.done+"/"+pr.total+" "+t("required"));
@@ -1410,6 +1499,10 @@ function applyLang(){
   var set=function(id,k,html){ var e=document.getElementById(id); if(!e)return; if(html)e.innerHTML=t(k); else e.textContent=t(k); };
   var bt=document.getElementById("brandTitle"); if(bt) bt.textContent=t("appTitle");
   set("projBtn","projects");
+  set("navDashL","navDash"); set("navPlanL","navPlan");
+  var sl=document.getElementById("sideLogoutL"); if(sl) sl.textContent=SB?t("logout"):t("switchUser");
+  var su=document.getElementById("sideUser"); if(su) su.textContent=(USER&&USER.name)||"";
+  if(document.getElementById("dashView").style.display!=="none") renderDashboard();
   set("loginTitle","loginTitle"); set("loginText","loginText"); set("loginNameL","loginName"); set("loginGo","loginGo");
   set("projTitle","projTitle"); set("switchUser","switchUser"); set("projNewBtn","projNew");
   if(document.getElementById("projView").style.display==="block") renderProjList();
@@ -1470,10 +1563,10 @@ document.getElementById("wzNext1").addEventListener("click",function(){
   wzMode==="bereich"?wzShow(3):wzShow(2);
 });
 document.getElementById("wzSkip1").addEventListener("click",function(){ data.projekt={type:"gebaeude",name:"",skipped:true}; save(true); wzHide(); });
-document.getElementById("wzGeb2").addEventListener("click",function(){ wzHide(); openGeb(); data.projekt.step=3; save(true); });
+document.getElementById("wzGeb2").addEventListener("click",function(){ wzHide(); showPlan(); openGeb(); data.projekt.step=3; save(true); });
 document.getElementById("wzLater2").addEventListener("click",function(){ wzShow(3); });
-document.getElementById("wzUpload3").addEventListener("click",function(){ wzHide(); document.getElementById("imgFile").click(); });
-document.getElementById("wzDone3").addEventListener("click",function(){ wzHide(); });
+document.getElementById("wzUpload3").addEventListener("click",function(){ wzHide(); showPlan(); document.getElementById("imgFile").click(); });
+document.getElementById("wzDone3").addEventListener("click",function(){ wzHide(); showPlan(); });
 
 /* ================= Supabase (optional, ohne SDK) ================= */
 var SB=null;
@@ -1570,23 +1663,32 @@ function showLogin(){
   document.getElementById("projView").style.display="none";
   if(SB){
     lv.innerHTML="";
-    lv.appendChild(el("h2",null,t("loginTitle")));
+    lv.appendChild(el("div","auth-logo","📍"));
+    lv.appendChild(el("h2",null,t("appTitle")));
+    lv.appendChild(el("p","auth-sub",t("authSub")));
     var reg=false;
-    var em=el("input"); em.type="email"; em.placeholder=t("sbEmail"); em.autocomplete="email";
-    var pw=el("input"); pw.type="password"; pw.placeholder=t("sbPw"); pw.autocomplete="current-password";
-    var f1=el("div","field"); f1.appendChild(em);
-    var f2=el("div","field"); f2.appendChild(pw);
-    var msg=el("p","hint","");
-    var go=el("button","btn on",t("sbLogin"));
-    var tog=el("button","btn ghost",t("sbRegister"));
-    var row=el("div","wz-actions"); row.appendChild(tog); row.appendChild(go);
-    lv.appendChild(f1); lv.appendChild(f2); lv.appendChild(row); lv.appendChild(msg);
-    tog.addEventListener("click",function(){
-      reg=!reg; go.textContent=reg?t("sbRegister"):t("sbLogin"); tog.textContent=reg?t("sbLogin"):t("sbRegister");
-      pw.autocomplete=reg?"new-password":"current-password";
-    });
-    function done(){ USER={name:SB.email()}; try{localStorage.setItem("tga_user",JSON.stringify(USER));}catch(e){} showProjects(); }
+    var tabs=el("div","auth-tabs");
+    var tabIn=el("button","on",t("sbLogin"));
+    var tabUp=el("button",null,t("sbRegister"));
+    tabs.appendChild(tabIn); tabs.appendChild(tabUp); lv.appendChild(tabs);
+    var f1=el("div","field"); f1.appendChild(el("label",null,t("sbEmail")));
+    var em=el("input"); em.type="email"; em.autocomplete="email"; em.placeholder="name@firma.de"; f1.appendChild(em);
+    var f2=el("div","field"); f2.appendChild(el("label",null,t("sbPw")));
+    var pw=el("input"); pw.type="password"; pw.autocomplete="current-password"; pw.placeholder="••••••••"; f2.appendChild(pw);
+    lv.appendChild(f1); lv.appendChild(f2);
+    var go=el("button","auth-go",t("sbLogin"));
+    var msg=el("div","auth-err","");
+    lv.appendChild(go); lv.appendChild(msg);
+    function setMode(r){
+      reg=r; go.textContent=r?t("sbRegister"):t("sbLogin");
+      tabIn.classList.toggle("on",!r); tabUp.classList.toggle("on",r);
+      pw.autocomplete=r?"new-password":"current-password"; msg.textContent="";
+    }
+    tabIn.addEventListener("click",function(){setMode(false);});
+    tabUp.addEventListener("click",function(){setMode(true);});
+    function done(){ USER={name:SB.email()}; try{localStorage.setItem("tga_user",JSON.stringify(USER));}catch(e){} applyLang(); showProjects(); }
     go.addEventListener("click",function(){
+      if(!em.value.trim()||!pw.value){ msg.textContent=t("sbEmail")+" + "+t("sbPw"); return; }
       msg.textContent="…";
       (reg?SB.signup(em.value.trim(),pw.value):SB.login(em.value.trim(),pw.value))
       .then(function(){ SB.session()?done():msg.textContent=t("sbConfirm"); })
@@ -1692,7 +1794,7 @@ function openProject(pid){
   currentPid=pid; data=loadProj(pid);
   bgImg=null; current=null; view={mode:"room"}; setPlacing(false);
   startOv.style.display="none"; wzHide(); closePanel(); renderCanvas(); updateStorageChip(); applyLang();
-  if(!data.projekt) wzShow(1);
+  if(!data.projekt){ showPlan(); wzShow(1); } else { showDash(); }
 }
 function newProject(){
   var pid=uid();
@@ -1700,6 +1802,102 @@ function newProject(){
   var ix=readIndex(); ix.unshift({pid:pid,name:"",ort:"",rooms:0,updated:Date.now()}); writeIndex(ix);
   openProject(pid);
 }
+/* ================= Dashboard ================= */
+var DASH_LBL={"Bauphysik – Fenster":"Fenster / Windows","Bauphysik – Türen":"Türen / Doors",
+  "Heizflächen – statisch":"Heizkörper / Radiators","Heizflächen – Flächenheizung":"Flächenheizung",
+  "Sanitärobjekte":"Sanitärobjekte","Elektro-Endstellen":"Steckdosen & Leuchten",
+  "Bauphysik – Hülle (opak)":"Gebäudehülle"};
+function showDash(){
+  document.getElementById("dashView").style.display="flex";
+  document.getElementById("planView").style.display="none";
+  document.getElementById("navDash").classList.add("on");
+  document.getElementById("navPlan").classList.remove("on");
+  renderDashboard();
+}
+function showPlan(){
+  document.getElementById("dashView").style.display="none";
+  document.getElementById("planView").style.display="block";
+  document.getElementById("navPlan").classList.add("on");
+  document.getElementById("navDash").classList.remove("on");
+}
+document.getElementById("navDash").addEventListener("click",showDash);
+document.getElementById("navPlan").addEventListener("click",showPlan);
+function dashData(){
+  var st={rooms:(data.pins||[]).length,mains:0,subs:0,fotos:0,memos:(data.gebaeude.memos||[]).length,
+          reqD:0,reqT:0,byClass:{}};
+  function walk(o){
+    var pr=instProgress(o); st.reqD+=pr.done; st.reqT+=pr.total;
+    var f=o.fotos||{}; Object.keys(f).forEach(function(k){ st.fotos+=(f[k]||[]).length; });
+    st.memos+=(o.memos||[]).length;
+    if(o.art==="O"){ st.mains++; st.byClass[o.k]=(st.byClass[o.k]||0)+1; } else st.subs++;
+    (o.subs||[]).forEach(walk);
+  }
+  (data.pins||[]).forEach(function(p){ st.memos+=(p.memos||[]).length; (p.objekte||[]).forEach(walk); });
+  (data.gebaeude.objekte||[]).forEach(walk);
+  return st;
+}
+function renderDashboard(){
+  var v=document.getElementById("dashView"); v.innerHTML="";
+  var st=dashData(), pj=data.projekt||{};
+  var head=el("div","dash-head");
+  var hb=el("div");
+  hb.appendChild(el("h2","dtitle",pj.name||t("noName")));
+  var addr=[pj.strasse,[pj.plz,pj.ort].filter(Boolean).join(" ")].filter(Boolean).join(", ");
+  hb.appendChild(el("div","daddr",addr+(pj.baujahr?" · "+pj.baujahr:"")+((USER&&USER.name)?" · "+USER.name:"")));
+  head.appendChild(hb); head.appendChild(el("div","spacer"));
+  var toPlan=el("button","btn",t("dashToPlan"));
+  toPlan.addEventListener("click",showPlan);
+  head.appendChild(toPlan); v.appendChild(head);
+  var tiles=el("div","tiles");
+  [[st.rooms,"dashRooms",""],[st.mains,"dashObjects",""],[st.subs,"dashParts",""],
+   [st.fotos,"dashPhotos",""],[st.memos,"dashMemos",""],
+   [st.reqT-st.reqD,"dashOpenReq",(st.reqT-st.reqD)>0?"warn":""]].forEach(function(x){
+    var d=el("div","dtile"+(x[2]?" "+x[2]:""));
+    d.appendChild(el("div","n",String(x[0])));
+    d.appendChild(el("div","l",t(x[1])));
+    tiles.appendChild(d);
+  });
+  v.appendChild(tiles);
+  var classes=Object.keys(st.byClass).sort(function(a,b){return st.byClass[b]-st.byClass[a];});
+  var c1=el("div","dcard");
+  c1.appendChild(el("h3",null,t("dashByClass")+" · "+t("dashLodNote")+" "+LOD));
+  if(!classes.length) c1.appendChild(el("div","dash-empty",t("dashEmpty")));
+  else{
+    var max=st.byClass[classes[0]];
+    classes.forEach(function(k){
+      var row=el("div","brow");
+      row.appendChild(el("div","bl",DASH_LBL[k]||k));
+      var tr=el("div","btrack"); var bar=el("div","bbar");
+      bar.style.width=Math.max(3,Math.round(st.byClass[k]/max*100))+"%";
+      tr.appendChild(bar); row.appendChild(tr);
+      row.appendChild(el("div","bval",String(st.byClass[k])));
+      c1.appendChild(row);
+    });
+  }
+  v.appendChild(c1);
+  var c2=el("div","dcard");
+  c2.appendChild(el("h3",null,t("dashRoomsList")+" ("+st.rooms+")"));
+  if(!st.rooms) c2.appendChild(el("div","dash-empty",t("dashEmpty")));
+  (data.pins||[]).forEach(function(p){
+    var objs=objAll(p);
+    var d=0,tt=0; objs.forEach(function(o){var pr=instProgress(o); d+=pr.done; tt+=pr.total;});
+    var row=el("div","rrow");
+    var left=el("div");
+    left.appendChild(el("span","rn",p.num+" · "+p.name));
+    left.appendChild(el("div","rt",(p.raumtyp?rtLabel(p.raumtyp)+" · ":"")+objs.length+" "+t("dashObjects")));
+    row.appendChild(left);
+    row.appendChild(el("span","rp"+(tt&&d>=tt?" done":""),d+"/"+tt));
+    var open=el("span",null,"›");
+    row.appendChild(open);
+    row.addEventListener("click",function(){ showPlan(); openRoom(p.id); });
+    c2.appendChild(row);
+  });
+  v.appendChild(c2);
+}
+document.getElementById("sideLogout").addEventListener("click",function(){
+  if(SB){ SB.logout(); USER=null; }
+  showLogin();
+});
 document.getElementById("loginGo").addEventListener("click",function(){
   var n=document.getElementById("loginName").value.trim(); if(!n) return;
   USER={name:n}; try{ localStorage.setItem("tga_user",JSON.stringify(USER)); }catch(e){}
