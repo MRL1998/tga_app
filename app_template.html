@@ -212,8 +212,7 @@
   .sitem:hover{background:var(--accent-soft);}
   .sitem.on{background:var(--accent);color:var(--badge-ink);}
   .sfoot{display:flex;flex-direction:column;gap:8px;border-top:1px solid var(--line);padding-top:12px;}
-  .userchip{font-size:11.5px;color:var(--muted);word-break:break-all;padding:0 4px;cursor:pointer;}
-  .userchip:hover{color:var(--accent);}
+  .userchip{font-size:11.5px;color:var(--muted);word-break:break-all;padding:0 4px;}
   .srow{display:flex;gap:6px;}
   .content{flex:1;min-width:0;display:flex;flex-direction:column;}
   .sitem .ic{width:20px;display:inline-block;text-align:center;flex:0 0 20px;}
@@ -254,7 +253,10 @@
     border-radius:6px;width:22px;height:22px;cursor:pointer;font-size:13px;line-height:1;}
   .sgroup .areaadd:hover{color:var(--accent);border-color:var(--accent);}
   #sideAreas .sitem{font-size:12.5px;padding:7px 11px 7px 18px;}
-  .side.collapsed .sgroup,.side.collapsed #sideAreas{display:none;}
+  .side.collapsed .sgroup{justify-content:center;padding:4px 0 2px;}
+  .side.collapsed .sgroup > span{display:none;}
+  .side.collapsed .sgroup .areaadd{margin-left:0;}
+  .side.collapsed #sideAreas .sitem{justify-content:center;padding:7px 0;}
   #planHead .ctxsel{width:auto;font-size:12.5px;padding:6px 9px;}
   #planHead .dtitle{font-size:17px;}
   #planHead input.bname{font-weight:650;font-size:15px;max-width:220px;}
@@ -373,6 +375,7 @@
     </div>
     <div class="sfoot">
       <div class="userchip" id="sideUser"></div>
+      <button class="sitem" id="profBtn"><span class="ic">👤</span> <span id="profBtnL"></span></button>
       <div class="srow">
         <button class="btn small ghost" id="langBtn" title="Deutsch / English"></button>
         <button class="btn small ghost" id="themeBtn" title="Hell/Dunkel · Light/Dark">◐</button>
@@ -523,7 +526,7 @@ loginTitle:"Anmelden",loginText:"Name der aufnehmenden Person – wird im Projek
 loginName:"Ihr Name",loginGo:"Weiter",projTitle:"Projektübersicht",projNew:"＋ Neues Projekt",
 projEmpty:"Noch keine Projekte – lege das erste an.",projRooms:"Räume",projDelete:"Löschen",
 projConfirmDel:"Projekt und alle zugehörigen Fotos/Memos endgültig löschen?",projChanged:"geändert",
-switchUser:"Name ändern",projects:"📁 Projekte",navProj:"Projekte",navGeb:"Grundlagen",noName:"(ohne Namen)",
+switchUser:"Name ändern",projects:"📁 Projekte",navProj:"Projekte",navGeb:"Grundlagen",navProf:"Profil",noName:"(ohne Namen)",
 sbEmail:"E-Mail",sbPw:"Passwort",sbLogin:"Anmelden",sbRegister:"Registrieren",
 sbConfirm:"Bestätigungs-E-Mail gesendet – Posteingang prüfen, dann anmelden.",logout:"Abmelden",
 cloudSave:"☁ Sichern",cloudList:"☁ Cloud-Projekte anzeigen",cloudLoad:"Laden",cloudBusy:"überträgt …",
@@ -584,7 +587,7 @@ loginTitle:"Sign in",loginText:"Name of the surveyor – recorded in the project
 loginName:"Your name",loginGo:"Continue",projTitle:"Project overview",projNew:"＋ New project",
 projEmpty:"No projects yet – create the first one.",projRooms:"rooms",projDelete:"Delete",
 projConfirmDel:"Permanently delete this project and all its photos/memos?",projChanged:"changed",
-switchUser:"Change name",projects:"📁 Projects",navProj:"Projects",navGeb:"Basics",noName:"(unnamed)",
+switchUser:"Change name",projects:"📁 Projects",navProj:"Projects",navGeb:"Basics",navProf:"Profile",noName:"(unnamed)",
 sbEmail:"Email",sbPw:"Password",sbLogin:"Sign in",sbRegister:"Register",
 sbConfirm:"Confirmation email sent – check your inbox, then sign in.",logout:"Sign out",
 cloudSave:"☁ Save",cloudList:"☁ Show cloud projects",cloudLoad:"Load",cloudBusy:"transferring …",
@@ -1980,7 +1983,7 @@ function applyLang(){
   document.documentElement.lang=LANG;
   var set=function(id,k,html){ var e=document.getElementById(id); if(!e)return; if(html)e.innerHTML=t(k); else e.textContent=t(k); };
   var bt=document.getElementById("brandTitle"); if(bt) bt.textContent=t("appTitle");
-  set("projBtnL","navProj");
+  set("projBtnL","navProj"); set("profBtnL","navProf");
   set("navDashL","navDash"); set("navPlanL","navPlan"); set("navReportL","navReport");
   set("profTitleH","profTitle"); set("profHintP","profHint"); set("profNameL","profName");
   set("profFirmaL","profFirma"); set("profTelL","profTel"); set("profMailL","profMail");
@@ -2340,6 +2343,7 @@ function setView(name){
   document.getElementById("gebBtn").classList.toggle("on",name==="infoPage");
   document.getElementById("projBtn").classList.toggle("on",name==="projPage");
   document.getElementById("navReport").classList.toggle("on",name==="reportPage");
+  var pb=document.getElementById("profBtn"); if(pb) pb.classList.toggle("on",name==="profPage");
   renderSideAreas();
   updCloudBtn();
 }
@@ -2488,7 +2492,7 @@ document.getElementById("profSave").addEventListener("click",function(){
   var b=document.getElementById("profSave"); b.textContent="✓";
   setTimeout(function(){ b.textContent=t("profSaveB"); profBack(); },500);
 });
-document.getElementById("sideUser").addEventListener("click",openProfile);
+document.getElementById("profBtn").addEventListener("click",openProfile);
 
 /* ================= Report ================= */
 var repUrls=[];
