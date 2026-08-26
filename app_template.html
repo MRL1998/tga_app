@@ -219,6 +219,7 @@
   .sitem .ic{width:20px;display:inline-block;text-align:center;flex:0 0 20px;}
   .side.collapsed{width:64px;flex-basis:64px;padding:16px 8px 12px;}
   .side.collapsed .sbrand,.side.collapsed .sitem span,.side.collapsed .userchip{display:none;}
+  .side.collapsed .sitem span.ic{display:inline-block;}
   .side.collapsed .sitem{justify-content:center;padding:10px 0;}
   .side.collapsed .srow{flex-direction:column;}
   #sideToggle{align-self:flex-end;margin-bottom:4px;}
@@ -230,9 +231,10 @@
       box-shadow:0 -4px 16px rgba(0,0,0,.08);}
     .sbrand,.sfoot,#sideToggle,.sgroup,#sideAreas{display:none!important;}
     .snav{display:grid;grid-template-columns:repeat(5,1fr);gap:0;margin:0;flex:1;}
-    .sitem{flex-direction:column;gap:2px;justify-content:center;align-items:center;border-radius:0;
-      padding:8px 2px calc(8px + env(safe-area-inset-bottom));font-size:10.5px;font-weight:600;}
-    .sitem .ic{font-size:18px;width:auto;flex:none;}
+    .sitem{flex-direction:column;gap:3px;justify-content:flex-start;align-items:center;border-radius:0;
+      padding:8px 2px calc(8px + env(safe-area-inset-bottom));font-size:10px;font-weight:600;min-width:0;}
+    .sitem .ic{font-size:18px;width:auto;flex:none;line-height:1;}
+    .sitem span:not(.ic){display:block;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;line-height:1.2;}
     .content{padding-bottom:64px;}
     .mob-only{display:flex;gap:8px;margin-top:14px;}
     .bar{padding:8px 10px;}
@@ -328,15 +330,26 @@
     font:700 10.5px var(--mono);border-radius:50%;min-width:20px;height:20px;display:inline-flex;
     align-items:center;justify-content:center;padding:0 3px;}
   @media print{
+    @page{margin:14mm 12mm;}
     .side,.bar,.panel,.wz-overlay,.norep{display:none!important;}
     .shell,.main,.content{display:block!important;padding:0!important;}
     .stage{display:block!important;padding:0!important;border:0!important;box-shadow:none!important;}
-    body{background:#fff;}
+    html,body,.app,.shell,.content,.main,.stage,.dcard,.reproom,.repplan{background:#fff!important;}
     #reportPage{max-width:none;}
-    .dcard,.reproom{box-shadow:none;}
-    .repobj,.reproom{break-inside:avoid;}
-    .repbereich{break-before:page;}
+    /* Karten flach drucken – keine über Seiten laufenden Rahmen */
+    .dcard{border:0!important;border-radius:0!important;box-shadow:none!important;padding:0!important;margin:0 0 18px!important;}
+    .dcard h3{border-bottom:1.5px solid #444;padding-bottom:5px;}
+    .reproom{border:0!important;border-radius:0!important;box-shadow:none!important;
+      border-top:1px solid #bbb!important;padding:10px 0 0!important;margin-top:12px!important;break-inside:auto;}
+    .reproomh{break-after:avoid;}
+    /* atomare Blöcke – nie über den Seitenumbruch schneiden */
+    .repobj,.roprow,.repfotos,.tiles,.repcover,.repclassrow{break-inside:avoid;}
+    img{break-inside:avoid;}
     .repimg{max-height:150px;}
+    /* Plan: als Ganzes auf eine Seite, Pins bleiben passgenau */
+    .repplan{break-inside:avoid;display:table;margin:8px auto;max-width:100%;}
+    .repplan img{display:block;width:auto;max-width:100%;max-height:185mm;border-radius:0;}
+    .repbereich{break-before:page;}
   }
   @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;}}
 </style>
@@ -350,9 +363,9 @@
       <span class="ssub" id="brandSub"></span>
     </div>
     <div class="snav">
-      <button class="sitem" id="projBtn"></button>
+      <button class="sitem" id="projBtn"><span class="ic">📁</span> <span id="projBtnL"></span></button>
       <button class="sitem on" id="navDash"><span class="ic">▦</span> <span id="navDashL"></span></button>
-      <button class="sitem" id="gebBtn"></button>
+      <button class="sitem" id="gebBtn"><span class="ic">🏢</span> <span id="gebBtnL"></span></button>
       <button class="sitem" id="navPlan"><span class="ic">🗺</span> <span id="navPlanL"></span></button>
       <div class="sgroup" id="navAreasHead"><span id="navAreasL"></span><button class="areaadd" id="areaAddBtn" title="＋">＋</button></div>
       <div id="sideAreas"></div>
@@ -407,6 +420,18 @@
       <div id="dashView" class="dash" style="display:none"></div>
       <div id="infoPage" class="ppage" style="display:none"></div>
       <div id="reportPage" class="ppage" style="display:none"></div>
+      <div id="profPage" class="ppage" style="display:none">
+        <div class="dcard" style="max-width:540px">
+          <h2 class="dtitle" id="profTitleH" style="margin:0 0 4px"></h2>
+          <p class="hint" id="profHintP" style="margin-top:0"></p>
+          <div class="field"><label id="profNameL"></label><input id="profName" autocomplete="name"></div>
+          <div class="field"><label id="profFirmaL"></label><input id="profFirma" autocomplete="organization"></div>
+          <div class="field"><label id="profTelL"></label><input id="profTel" type="tel" autocomplete="tel"></div>
+          <div class="field"><label id="profMailL"></label><input id="profMail" type="email" autocomplete="email"></div>
+          <div class="field"><label id="profAdrL"></label><input id="profAdr" autocomplete="street-address"></div>
+          <div class="wz-actions"><button class="btn ghost" id="profClose"></button><button class="btn on" id="profSave"></button></div>
+        </div>
+      </div>
       <div id="planView">
       <div id="planHead" class="dash-head" style="margin-bottom:10px"></div>
       <div class="legend">
@@ -446,19 +471,6 @@
       <div class="field"><label id="loginNameL"></label><input id="loginName"></div>
       <div class="wz-actions"><span></span><button class="btn on" id="loginGo"></button></div>
     </div>
-  </div>
-</div>
-
-<div class="wz-overlay" id="profOv" style="display:none">
-  <div class="wz" style="max-width:480px">
-    <h2 id="profTitleH"></h2>
-    <p class="hint" id="profHintP"></p>
-    <div class="field"><label id="profNameL"></label><input id="profName" autocomplete="name"></div>
-    <div class="field"><label id="profFirmaL"></label><input id="profFirma" autocomplete="organization"></div>
-    <div class="field"><label id="profTelL"></label><input id="profTel" type="tel" autocomplete="tel"></div>
-    <div class="field"><label id="profMailL"></label><input id="profMail" type="email" autocomplete="email"></div>
-    <div class="field"><label id="profAdrL"></label><input id="profAdr" autocomplete="street-address"></div>
-    <div class="wz-actions"><button class="btn ghost" id="profClose"></button><button class="btn on" id="profSave"></button></div>
   </div>
 </div>
 
@@ -511,7 +523,7 @@ loginTitle:"Anmelden",loginText:"Name der aufnehmenden Person – wird im Projek
 loginName:"Ihr Name",loginGo:"Weiter",projTitle:"Projektübersicht",projNew:"＋ Neues Projekt",
 projEmpty:"Noch keine Projekte – lege das erste an.",projRooms:"Räume",projDelete:"Löschen",
 projConfirmDel:"Projekt und alle zugehörigen Fotos/Memos endgültig löschen?",projChanged:"geändert",
-switchUser:"Name ändern",projects:"📁 Projekte",noName:"(ohne Namen)",
+switchUser:"Name ändern",projects:"📁 Projekte",navProj:"Projekte",navGeb:"Grundlagen",noName:"(ohne Namen)",
 sbEmail:"E-Mail",sbPw:"Passwort",sbLogin:"Anmelden",sbRegister:"Registrieren",
 sbConfirm:"Bestätigungs-E-Mail gesendet – Posteingang prüfen, dann anmelden.",logout:"Abmelden",
 cloudSave:"☁ Sichern",cloudList:"☁ Cloud-Projekte anzeigen",cloudLoad:"Laden",cloudBusy:"überträgt …",
@@ -533,7 +545,7 @@ repContact:"Ansprechpartner / Kontakt",repNoContact:"Noch keine Ansprechdaten hi
 repEditContact:"✎ Ansprechdaten bearbeiten",repSummary:"Zusammenfassung",repGeb:"Gebäude / Grundlagen",repNoAns:"keine Angaben",
 profTitle:"Profil & Ansprechdaten",profHint:"Diese Angaben erscheinen auf dem Report-Deckblatt (Rückfragen & Abrechnung).",
 profName:"Name",profFirma:"Firma",profTel:"Telefon",profMail:"E-Mail",profAdr:"Adresse (Straße, PLZ Ort)",
-profSaveB:"Speichern",profCloseB:"Schließen",fotoDone:"✓ Foto hochgeladen",fotosDone:"✓ {n} Fotos hochgeladen",fotoRemove:"entfernen",fotoMore:"📷 weiteres Foto",pdfPage:"PDF hat {n} Seiten – welche Seite übernehmen? (1–{n})",pdfErr:"PDF konnte nicht geladen werden (Offline-Ansicht? Dann bitte ein Bild verwenden).",
+profSaveB:"Speichern",profCloseB:"‹ Zurück",fotoDone:"✓ Foto hochgeladen",fotosDone:"✓ {n} Fotos hochgeladen",fotoRemove:"entfernen",fotoMore:"📷 weiteres Foto",pdfPage:"PDF hat {n} Seiten – welche Seite übernehmen? (1–{n})",pdfErr:"PDF konnte nicht geladen werden (Offline-Ansicht? Dann bitte ein Bild verwenden).",
 errStorage:"Browser-Speicher (Struktur) voll. Bitte Projekt exportieren und alte Bilder/Videos entfernen.",
 errPhoto:"Foto konnte nicht verarbeitet werden.",errFile:"Datei konnte nicht gelesen werden.",errFormat:"Unbekanntes Format.",
 appSub:"TGA · Gebäude → Raum → Objekt",legEmpty:"leer",legPart:"begonnen",legFull:"Pflicht erfüllt",
@@ -572,7 +584,7 @@ loginTitle:"Sign in",loginText:"Name of the surveyor – recorded in the project
 loginName:"Your name",loginGo:"Continue",projTitle:"Project overview",projNew:"＋ New project",
 projEmpty:"No projects yet – create the first one.",projRooms:"rooms",projDelete:"Delete",
 projConfirmDel:"Permanently delete this project and all its photos/memos?",projChanged:"changed",
-switchUser:"Change name",projects:"📁 Projects",noName:"(unnamed)",
+switchUser:"Change name",projects:"📁 Projects",navProj:"Projects",navGeb:"Basics",noName:"(unnamed)",
 sbEmail:"Email",sbPw:"Password",sbLogin:"Sign in",sbRegister:"Register",
 sbConfirm:"Confirmation email sent – check your inbox, then sign in.",logout:"Sign out",
 cloudSave:"☁ Save",cloudList:"☁ Show cloud projects",cloudLoad:"Load",cloudBusy:"transferring …",
@@ -594,7 +606,7 @@ repContact:"Contact",repNoContact:"No contact details yet – add them via “Ed
 repEditContact:"✎ Edit contact details",repSummary:"Summary",repGeb:"Building / basics",repNoAns:"no data",
 profTitle:"Profile & contact details",profHint:"Shown on the report cover (queries & billing).",
 profName:"Name",profFirma:"Company",profTel:"Phone",profMail:"Email",profAdr:"Address (street, ZIP city)",
-profSaveB:"Save",profCloseB:"Close",fotoDone:"✓ photo uploaded",fotosDone:"✓ {n} photos uploaded",fotoRemove:"remove",fotoMore:"📷 another photo",pdfPage:"PDF has {n} pages – which page to use? (1–{n})",pdfErr:"Could not load the PDF (offline view? Please use an image instead).",
+profSaveB:"Save",profCloseB:"‹ Back",fotoDone:"✓ photo uploaded",fotosDone:"✓ {n} photos uploaded",fotoRemove:"remove",fotoMore:"📷 another photo",pdfPage:"PDF has {n} pages – which page to use? (1–{n})",pdfErr:"Could not load the PDF (offline view? Please use an image instead).",
 errStorage:"Browser storage (structure) full. Please export the project and remove old images/videos.",
 errPhoto:"Photo could not be processed.",errFile:"File could not be read.",errFormat:"Unknown format.",
 appSub:"Building services · Building → Room → Object",legEmpty:"empty",legPart:"in progress",legFull:"required done",
@@ -1968,7 +1980,7 @@ function applyLang(){
   document.documentElement.lang=LANG;
   var set=function(id,k,html){ var e=document.getElementById(id); if(!e)return; if(html)e.innerHTML=t(k); else e.textContent=t(k); };
   var bt=document.getElementById("brandTitle"); if(bt) bt.textContent=t("appTitle");
-  set("projBtn","projects");
+  set("projBtnL","navProj");
   set("navDashL","navDash"); set("navPlanL","navPlan"); set("navReportL","navReport");
   set("profTitleH","profTitle"); set("profHintP","profHint"); set("profNameL","profName");
   set("profFirmaL","profFirma"); set("profTelL","profTel"); set("profMailL","profMail");
@@ -1987,7 +1999,7 @@ function applyLang(){
   set("brandSub","appSub"); set("legEmpty","legEmpty"); set("legPart","legPart"); set("legFull","legFull");
   document.getElementById("modeHint").textContent=placing?t("hintPlace"):t("hintDefault");
   set("lodQ","lodQ"); set("lodS","lodS"); set("lodD","lodD");
-  set("gebBtn","geb"); set("imgBtn","loadPlan"); set("placeBtn","placePt");
+  set("gebBtnL","navGeb"); set("imgBtn","loadPlan"); set("placeBtn","placePt");
   set("exportBtn","export"); set("importBtn","import");
   updCloudBtn();
   document.getElementById("langBtn").textContent=LANG==="de"?"EN":"DE";
@@ -2154,6 +2166,7 @@ function router(){
   if(p==="/grundlagen"){ if(openLast()) openGeb(); return; }
   if(p==="/aufnahme"){ if(openLast()) openPlanCtx(""); return; }
   if(p==="/report"){ if(openLast()) showReport(); return; }
+  if(p==="/profil"){ openProfile(); return; }
   var m=p.match(/^\/bereich\/(.+)$/);
   if(m){ if(openLast()){ bereichById(m[1])?openPlanCtx(m[1]):openPlanCtx(""); } return; }
   showProjects();
@@ -2319,7 +2332,7 @@ var DASH_LBL={"Bauphysik – Fenster":"Fenster / Windows","Bauphysik – Türen"
   "Sanitärobjekte":"Sanitärobjekte","Elektro-Endstellen":"Steckdosen & Leuchten",
   "Bauphysik – Hülle (opak)":"Gebäudehülle"};
 function setView(name){
-  ["projPage","dashView","planView","infoPage","reportPage"].forEach(function(id){
+  ["projPage","dashView","planView","infoPage","reportPage","profPage"].forEach(function(id){
     document.getElementById(id).style.display=(id===name)?(id==="planView"?"block":"flex"):"none";
   });
   document.getElementById("navDash").classList.toggle("on",name==="dashView");
@@ -2462,14 +2475,18 @@ function openProfile(){
   document.getElementById("profTel").value=pr.tel||"";
   document.getElementById("profMail").value=pr.mail||((SB&&SB.session())?SB.email():"");
   document.getElementById("profAdr").value=pr.adr||"";
-  document.getElementById("profOv").style.display="flex";
+  nav("/profil");
+  setView("profPage");
 }
-document.getElementById("profClose").addEventListener("click",function(){ document.getElementById("profOv").style.display="none"; });
+function profBack(){
+  if(currentPid) showDash(); else showProjects();
+}
+document.getElementById("profClose").addEventListener("click",profBack);
 document.getElementById("profSave").addEventListener("click",function(){
   var gv=function(id){ return document.getElementById(id).value.trim(); };
   try{ localStorage.setItem("tga_profile",JSON.stringify({name:gv("profName"),firma:gv("profFirma"),tel:gv("profTel"),mail:gv("profMail"),adr:gv("profAdr")})); }catch(e){}
-  document.getElementById("profOv").style.display="none";
-  if(document.getElementById("reportPage").style.display!=="none") renderReport();
+  var b=document.getElementById("profSave"); b.textContent="✓";
+  setTimeout(function(){ b.textContent=t("profSaveB"); profBack(); },500);
 });
 document.getElementById("sideUser").addEventListener("click",openProfile);
 
