@@ -1,0 +1,31 @@
+﻿Raumtyp;Raumklasse;Fragen_Klasse;Nutzung;Lüftungszone;Verfügbar_in_Bereichstyp;Beheizung;Objektklassen_Vorfilter (vorläufig);Notiz
+Wohnzimmer;Aufenthalt;Aufenthalt;WG;Zuluftraum;"Wohnung;Gewerbe";beheizt;"Heizflächen (statisch/Flächenheizung);Elektro-Endstellen;Bauphysik (Fenster/Türen/Wände)";"aufgeteilt aus „Aufenthaltsraum"" (Lüftungsberechnung)"
+Schlafzimmer;Aufenthalt;Aufenthalt;WG;Zuluftraum;"Wohnung;Gewerbe";beheizt;"Heizflächen (statisch/Flächenheizung);Elektro-Endstellen;Bauphysik (Fenster/Türen/Wände)";"aufgeteilt aus „Aufenthaltsraum"" (Lüftungsberechnung)"
+Kinderzimmer;Aufenthalt;Aufenthalt;WG;Zuluftraum;"Wohnung;Gewerbe";beheizt;"Heizflächen (statisch/Flächenheizung);Elektro-Endstellen;Bauphysik (Fenster/Türen/Wände)";"aufgeteilt aus „Aufenthaltsraum"" (Lüftungsberechnung)"
+Arbeitszimmer;Aufenthalt;Aufenthalt;WG;Zuluftraum;"Wohnung;Gewerbe";beheizt;"Heizflächen (statisch/Flächenheizung);Elektro-Endstellen;Bauphysik (Fenster/Türen/Wände)";"aufgeteilt aus „Aufenthaltsraum"" (Lüftungsberechnung)"
+Esszimmer;Aufenthalt;Aufenthalt;WG;Zuluftraum;"Wohnung;Gewerbe";beheizt;"Heizflächen (statisch/Flächenheizung);Elektro-Endstellen;Bauphysik (Fenster/Türen/Wände)";"aufgeteilt aus „Aufenthaltsraum"" (Lüftungsberechnung)"
+Küche;Aufenthalt/Nass;;beides;Abluftraum;"Wohnung;Gewerbe";beheizt;"Sanitärobjekte (Spüle);Wasserinstallation;Abwasserinstallation;Elektro-Endstellen;Gasinstallation (evtl.);Heizflächen";deine Liste
+Büro/Aufenthalt;Aufenthalt;Aufenthalt;NWG;Zuluftraum;Gewerbe;beheizt;"Heizflächen;Elektro-Endstellen;Kälteübergabe (evtl.)";ergänzt
+Verkauf;Aufenthalt;Aufenthalt;NWG;Zuluftraum;Gewerbe;beheizt;"Heizflächen;Elektro-Endstellen;Kälteübergabe";ergänzt
+Badezimmer;Nassraum;Nassraum;WG;Abluftraum;"Wohnung;Gewerbe";beheizt;"Sanitärobjekte;Wasserinstallation;TWW-Installation;Abwasserinstallation;Heizflächen (Badheizkörper);Elektro-Endstellen;Lüftung (Abluft)";deine Liste
+WC;Nassraum;Nassraum;beides;Abluftraum;"Wohnung;Gewerbe;Gemeinschaftsraum";beheizt;"Sanitärobjekte (WC);Wasserinstallation;Abwasserinstallation;Lüftung (Abluft)";deine Liste
+Sanitär (Gewerbe);Nassraum;Nassraum;NWG;Abluftraum;Gewerbe;beheizt;"Sanitärobjekte;Wasser-/Abwasserinstallation;Lüftung";ergänzt
+Flur;Erschließung;Erschließung;WG;Überströmraum;"Wohnung;Gewerbe";beheizt;"Elektro-Endstellen;Heizflächen (evtl.); Unterverteilung; Wohnungsübergabestation";deine Liste
+Treppenhaus;Erschließung;Erschließung;beides;Überströmraum;Treppenhaus/Erschließung;gering beheizt;"Elektro-Endstellen;Bauphysik";deine Liste
+Flur (öffentlich);Erschließung;Erschließung;NWG;Überströmraum;Treppenhaus/Erschließung;gering beheizt;Elektro-Endstellen;deine Liste
+Abstellraum;Lager;Lager;beides;Abluftraum;"Wohnung;Kellerbereich;Dachboden/Spitzboden;Gemeinschaftsraum";unbeheizt / gering;Elektro-Endstellen (evtl.);ergänzt
+Kellerraum;Lager;Lager;beides;keine;Kellerbereich;unbeheizt;"Bauphysik (Kellerdecke/Wände);durchlaufende Leitungen";deine Liste
+Waschküche;Nassraum/Lager;Nassraum;beides;Abluftraum;"Kellerbereich;Gemeinschaftsraum";gering beheizt;"Wasser-/Abwasserinstallation;TWW;Elektro-Endstellen";ergänzt
+Trockenraum;Lager;Lager;beides;Abluftraum;"Gemeinschaftsraum;Kellerbereich";unbeheizt;"Elektro;Lüftung";ergänzt
+Fahrradraum;Lager;Lager;beides;keine;"Gemeinschaftsraum;Kellerbereich";unbeheizt;Elektro-Endstellen;ergänzt
+Dachboden;Lager;Lager;beides;keine;Dachboden/Spitzboden;unbeheizt;"Bauphysik (Dach/oberste Geschossdecke);Abwasser (Lüftungsleitung)";deine Liste
+Heizungsraum;Technik;Technik;beides;keine (Verbrennungsluft beachten);"Technik;Kellerbereich";gering beheizt;"Wärmeerzeuger;Wärmespeicher;Heizungsverteiler;Heizungsinstallation;Heizungsregelung;Heizungsarmaturen;Solarstation;TWW-Erzeugung;Gasinstallation";"deine Liste; jetzt Raumtyp im Bereich Technik"
+ELT-Raum;Technik;Technik;beides;keine;Technik;gering beheizt;"Elektroverteilung;Elektroinstallation";"war „ELT-Zentrale""; jetzt Raumtyp"
+Hausanschlussraum;Technik;Technik;beides;keine;Technik;gering beheizt;"Gaszähler;Gashausanschluss/HAE;Wasserzähler;Stromzähler;Hausanschlusskasten (HAK)";jetzt Raumtyp im Bereich Technik
+Lüftungszentrale;Technik;Technik;beides;keine;Technik;gering beheizt;"Lüftung;Kälteerzeugung";ergänzt
+Technikraum (allgemein);Technik;Technik;beides;keine;Technik;gering beheizt;offen (je nach Anlage);ergänzt – Auffangtyp
+Balkon/Loggia/Terrasse;Außen;Außen;WG;keine;Wohnung;außen / unbeheizt;"Bauphysik (Wärmebrücke Balkonplatte);Entwässerung";"deine Liste („Bakon"" – Tippfehler korr.)"
+Stellplatz;Außen;Außen;beides;keine;"Tiefgarage/Garage;Außenanlage";unbeheizt;"Elektro (Wallbox);Abwasser (Bodenablauf)";ergänzt
+Außenfläche;Außen;Außen;beides;keine;Außenanlage;außen;"Solarkollektoren;PV;Rückkühler;Revisionsschacht/Kanalanschluss";ergänzt
+Lager (Gewerbe);Lager;Lager;NWG;keine;Gewerbe;gering beheizt;Elektro-Endstellen;ergänzt
+Technikfläche (außen);Technik;;beides;keine;Außenanlage;außen / unbeheizt;"Kälteerzeugung;Wärmeerzeuger (WP-Außengerät);Rückkühler;Abwasser-Sonderbauteile;Elektro-Erzeugung/Speicher";"technische Außenaufstellung (Technikraum außen); EE-Flächen bleiben separat"

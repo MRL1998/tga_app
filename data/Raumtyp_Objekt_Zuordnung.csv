@@ -1,24 +1,142 @@
 ﻿Raumtyp;Bereichstyp;Objektklasse;Vorauswahl;Anzahl_typisch;Prompt_wenn_fehlt;Notiz
-Badezimmer;alle;Sanitärobjekte;Standard;1–4;Ja;Waschbecken/WC/Dusche/Wanne – Typ bei Objektaufnahme
-Badezimmer;alle;Heizflächen – statisch;Standard;1;Ja;typisch Badheizkörper
-Badezimmer;alle;Heizflächen – Flächenheizung;Optional;0–1;Nein;falls FBH
+Wohnzimmer;alle;Heizflächen – statisch;Standard;1–2;Ja;
+Wohnzimmer;alle;Heizflächen – Flächenheizung;Optional;0–1;Nein;falls Flächenheizung
+Wohnzimmer;alle;Bauphysik – Fenster;Standard;1–3;Ja;
+Wohnzimmer;alle;Bauphysik – Türen;Standard;1;Nein;
+Wohnzimmer;alle;Elektro-Endstellen;Optional;mehrere;Nein;Steckdosen/Schalter/Leuchten
+Schlafzimmer;alle;Heizflächen – statisch;Standard;1–2;Ja;
+Schlafzimmer;alle;Heizflächen – Flächenheizung;Optional;0–1;Nein;falls Flächenheizung
+Schlafzimmer;alle;Bauphysik – Fenster;Standard;1–3;Ja;
+Schlafzimmer;alle;Bauphysik – Türen;Standard;1;Nein;
+Schlafzimmer;alle;Elektro-Endstellen;Optional;mehrere;Nein;Steckdosen/Schalter/Leuchten
+Kinderzimmer;alle;Heizflächen – statisch;Standard;1–2;Ja;
+Kinderzimmer;alle;Heizflächen – Flächenheizung;Optional;0–1;Nein;falls Flächenheizung
+Kinderzimmer;alle;Bauphysik – Fenster;Standard;1–3;Ja;
+Kinderzimmer;alle;Bauphysik – Türen;Standard;1;Nein;
+Kinderzimmer;alle;Elektro-Endstellen;Optional;mehrere;Nein;Steckdosen/Schalter/Leuchten
+Arbeitszimmer;alle;Heizflächen – statisch;Standard;1–2;Ja;
+Arbeitszimmer;alle;Heizflächen – Flächenheizung;Optional;0–1;Nein;falls Flächenheizung
+Arbeitszimmer;alle;Bauphysik – Fenster;Standard;1–3;Ja;
+Arbeitszimmer;alle;Bauphysik – Türen;Standard;1;Nein;
+Arbeitszimmer;alle;Elektro-Endstellen;Optional;mehrere;Nein;Steckdosen/Schalter/Leuchten
+Esszimmer;alle;Heizflächen – statisch;Standard;1–2;Ja;
+Esszimmer;alle;Heizflächen – Flächenheizung;Optional;0–1;Nein;falls Flächenheizung
+Esszimmer;alle;Bauphysik – Fenster;Standard;1–3;Ja;
+Esszimmer;alle;Bauphysik – Türen;Standard;1;Nein;
+Esszimmer;alle;Elektro-Endstellen;Optional;mehrere;Nein;Steckdosen/Schalter/Leuchten
+Büro/Aufenthalt;alle;Heizflächen – statisch;Standard;1–2;Ja;
+Büro/Aufenthalt;alle;Heizflächen – Flächenheizung;Optional;0–1;Nein;
+Büro/Aufenthalt;alle;Bauphysik – Fenster;Standard;1–4;Ja;
+Büro/Aufenthalt;alle;Bauphysik – Türen;Standard;1;Nein;
+Büro/Aufenthalt;alle;Elektro-Endstellen;Standard;mehrere;Nein;Arbeitsplätze
+Büro/Aufenthalt;alle;Kälteübergabe;Optional;0–2;Nein;falls gekühlt
+Verkauf;alle;Heizflächen – statisch;Optional;0–2;Nein;
+Verkauf;alle;Bauphysik – Fenster;Optional;0–4;Nein;Schaufenster
+Verkauf;alle;Bauphysik – Türen;Standard;1–2;Nein;
+Verkauf;alle;Elektro-Endstellen;Optional;mehrere;Nein;
+Verkauf;alle;Kälteübergabe;Optional;0–3;Nein;Verkaufskühlmöbel
+Verkauf;alle;Kälteerzeugung;Optional;0–1;Nein;
+Küche;alle;Sanitärobjekte;Standard;1–2;Ja;Spüle
+Küche;alle;Heizflächen – statisch;Standard;1;Nein;
+Küche;alle;Abwasser-Sonderbauteile;Optional;0–1;Nein;Bodenablauf (v. a. Gewerbeküche)
+Küche;alle;Gasinstallation;Optional;0–1;Nein;Gasherd
+Küche;alle;Gasarmaturen;Optional;0–1;Nein;
+Küche;alle;Elektro-Endstellen;Optional;mehrere;Nein;Geräteanschlüsse
+Küche;alle;Bauphysik – Fenster;Optional;0–1;Nein;
+Küche;alle;Bauphysik – Türen;Standard;1;Nein;
+Badezimmer;alle;Sanitärobjekte;Standard;1–4;Ja;Waschbecken/WC/Dusche/Wanne
+Badezimmer;alle;Heizflächen – statisch;Standard;1;Ja;Badheizkörper
+Badezimmer;alle;Heizflächen – Flächenheizung;Optional;0–1;Nein;
 Badezimmer;alle;Abwasser-Sonderbauteile;Optional;0–1;Nein;Bodenablauf/Gully
 Badezimmer;alle;Bauphysik – Fenster;Optional;0–1;Nein;
 Badezimmer;alle;Bauphysik – Türen;Standard;1;Nein;
+Badezimmer;alle;Elektro-Endstellen;Optional;mehrere;Nein;
 WC;Wohnung;Sanitärobjekte;Standard;1–2;Ja;WC + Handwaschbecken
+WC;Wohnung;Heizflächen – statisch;Optional;0–1;Nein;
 WC;Wohnung;Bauphysik – Türen;Standard;1;Nein;
-WC;Gewerbe;Sanitärobjekte;Standard;2–5;Ja;WC + Urinal + Waschbecken (mehrere)
+WC;Wohnung;Elektro-Endstellen;Optional;0–2;Nein;
+WC;Gewerbe;Sanitärobjekte;Standard;2–6;Ja;WC + Urinal + Waschbecken
 WC;Gewerbe;Abwasser-Sonderbauteile;Optional;0–1;Nein;Bodenablauf
+WC;Gewerbe;Heizflächen – statisch;Optional;0–1;Nein;
 WC;Gewerbe;Bauphysik – Türen;Standard;1;Nein;
+WC;Gewerbe;Elektro-Endstellen;Optional;mehrere;Nein;
+Sanitär (Gewerbe);alle;Sanitärobjekte;Standard;2–8;Ja;WC/Urinal/Waschbecken/Dusche
+Sanitär (Gewerbe);alle;Abwasser-Sonderbauteile;Optional;0–2;Nein;Bodenablauf
+Sanitär (Gewerbe);alle;Heizflächen – statisch;Optional;0–1;Nein;
+Sanitär (Gewerbe);alle;Bauphysik – Fenster;Optional;0–1;Nein;
+Sanitär (Gewerbe);alle;Bauphysik – Türen;Standard;1;Nein;
+Sanitär (Gewerbe);alle;Elektro-Endstellen;Optional;mehrere;Nein;
+Flur;alle;Bauphysik – Türen;Standard;1–4;Nein;Wohnungs-/Zimmertüren
+Flur;alle;Heizflächen – statisch;Optional;0–1;Nein;
+Flur;alle;Elektro-Endstellen;Optional;mehrere;Nein;
+Treppenhaus;alle;Bauphysik – Türen;Standard;1–6;Nein;Wohnungs-/Brandschutztüren
+Treppenhaus;alle;Bauphysik – Fenster;Optional;0–2;Nein;
+Treppenhaus;alle;Heizflächen – statisch;Optional;0–1;Nein;
+Treppenhaus;alle;Elektro-Endstellen;Optional;mehrere;Nein;Leuchten
+Flur (öffentlich);alle;Bauphysik – Türen;Standard;1–6;Nein;Brandschutz-/Rauchschutztüren
+Flur (öffentlich);alle;Heizflächen – statisch;Optional;0–2;Nein;
+Flur (öffentlich);alle;Elektro-Endstellen;Optional;mehrere;Nein;
+Abstellraum;alle;Bauphysik – Türen;Standard;1;Nein;
+Abstellraum;alle;Elektro-Endstellen;Optional;0–2;Nein;
+Abstellraum;alle;Bauphysik – Fenster;Optional;0–1;Nein;
+Kellerraum;alle;Bauphysik – Türen;Standard;1;Nein;
+Kellerraum;alle;Elektro-Endstellen;Optional;0–2;Nein;
+Kellerraum;alle;Bauphysik – Fenster;Optional;0–1;Nein;
+Trockenraum;alle;Bauphysik – Türen;Standard;1;Nein;
+Trockenraum;alle;Elektro-Endstellen;Optional;0–2;Nein;
+Trockenraum;alle;Bauphysik – Fenster;Optional;0–1;Nein;
+Fahrradraum;alle;Bauphysik – Türen;Standard;1;Nein;
+Fahrradraum;alle;Elektro-Endstellen;Optional;0–2;Nein;
+Fahrradraum;alle;Bauphysik – Fenster;Optional;0–1;Nein;
+Dachboden;alle;Bauphysik – Türen;Standard;1;Nein;
+Dachboden;alle;Elektro-Endstellen;Optional;0–2;Nein;
+Dachboden;alle;Bauphysik – Fenster;Optional;0–1;Nein;
+Lager (Gewerbe);alle;Bauphysik – Türen;Standard;1;Nein;
+Lager (Gewerbe);alle;Elektro-Endstellen;Optional;0–2;Nein;
+Lager (Gewerbe);alle;Bauphysik – Fenster;Optional;0–1;Nein;
+Waschküche;alle;Sanitärobjekte;Standard;1–2;Ja;Ausgussbecken/WM-Anschluss
+Waschküche;alle;Abwasser-Sonderbauteile;Optional;0–1;Nein;Bodenablauf
+Waschküche;alle;Heizflächen – statisch;Optional;0–1;Nein;
+Waschküche;alle;Bauphysik – Türen;Standard;1;Nein;
+Waschküche;alle;Elektro-Endstellen;Optional;mehrere;Nein;
 Heizungsraum;Technik;Wärmeerzeuger;Standard;1–2;Ja;
 Heizungsraum;Technik;Wärmespeicher;Standard;1;Ja;
 Heizungsraum;Technik;Heizungsverteiler;Standard;1;Ja;
 Heizungsraum;Technik;Heizungsregelung;Standard;1;Nein;
+Heizungsraum;Technik;Heizungsarmaturen;Optional;mehrere;Nein;
+Heizungsraum;Technik;Heizungsinstallation;Optional;mehrere;Nein;
 Heizungsraum;Technik;TWW-Erzeugung;Optional;0–1;Nein;
+Heizungsraum;Technik;Gasarmaturen;Optional;0–1;Nein;
+Heizungsraum;Technik;Abwasser-Sonderbauteile;Optional;0–1;Nein;Bodenablauf
+Heizungsraum;Technik;Elektroverteilung;Optional;0–1;Nein;
 Heizungsraum;Technik;Bauphysik – Türen;Standard;1;Nein;
+Hausanschlussraum;Technik;Wasserinstallation;Standard;1–2;Ja;Hauptabsperrung/Wasserzähler
+Hausanschlussraum;Technik;Gaszähler;Optional;0–1;Nein;
+Hausanschlussraum;Technik;Elektroverteilung;Standard;1;Ja;Hauptverteilung
+Hausanschlussraum;Technik;Wasseraufbereitung;Optional;0–1;Nein;
+Hausanschlussraum;Technik;Abwasser-Sonderbauteile;Optional;0–1;Nein;Bodenablauf
+Hausanschlussraum;Technik;Bauphysik – Türen;Standard;1;Nein;
+ELT-Raum;Technik;Elektroverteilung;Standard;1–2;Ja;
+ELT-Raum;Technik;Elektro-Erzeugung/Speicher;Optional;0–1;Nein;PV/Speicher/NEA
+ELT-Raum;Technik;Elektroinstallation;Optional;mehrere;Nein;
+ELT-Raum;Technik;Bauphysik – Türen;Standard;1;Nein;
+Lüftungszentrale;Technik;Elektroverteilung;Optional;0–1;Nein;
+Lüftungszentrale;Technik;Abwasser-Sonderbauteile;Optional;0–1;Nein;Kondensatablauf
+Lüftungszentrale;Technik;Bauphysik – Türen;Standard;1;Nein;
 Technikraum (allgemein);Technik;Wärmeerzeuger;Optional;0–2;Nein;
 Technikraum (allgemein);Technik;Wärmespeicher;Optional;0–1;Nein;
 Technikraum (allgemein);Technik;Heizungsverteiler;Optional;0–1;Nein;
 Technikraum (allgemein);Technik;Wasseraufbereitung;Optional;0–1;Nein;
 Technikraum (allgemein);Technik;Elektroverteilung;Optional;0–1;Nein;
+Technikraum (allgemein);Technik;Abwasser-Sonderbauteile;Optional;0–1;Nein;Bodenablauf
 Technikraum (allgemein);Technik;Bauphysik – Türen;Standard;1;Nein;
+Balkon/Loggia/Terrasse;alle;Abwasser-Sonderbauteile;Optional;0–1;Nein;Balkonablauf/Gully
+Balkon/Loggia/Terrasse;alle;Elektro-Endstellen;Optional;0–2;Nein;Außensteckdose/Leuchte
+Stellplatz;alle;Elektro-Endstellen;Optional;0–1;Nein;Wallbox/Ladepunkt
+Stellplatz;alle;Abwasser-Sonderbauteile;Optional;0–1;Nein;
+Außenfläche;alle;Abwasser-Sonderbauteile;Optional;0–2;Nein;Hofablauf/Gully
+Außenfläche;alle;Elektro-Endstellen;Optional;0–2;Nein;Außenbeleuchtung
+Technikfläche (außen);Außenanlage;Kälteerzeugung;Standard;1–2;Ja;Kältemaschine/Rückkühler
+Technikfläche (außen);Außenanlage;Wärmeerzeuger;Optional;0–1;Nein;Wärmepumpe-Außengerät
+Technikfläche (außen);Außenanlage;Abwasser-Sonderbauteile;Optional;0–2;Nein;Hebeanlage/Abscheider
+Technikfläche (außen);Außenanlage;Elektro-Erzeugung/Speicher;Optional;0–1;Nein;z. B. NEA/Wallbox

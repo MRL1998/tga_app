@@ -1,0 +1,11 @@
+﻿Bereichstyp;Metabereich_Vorbelegung;Beheizung;Raumtyp_Vorfilter (vorläufig);Beschreibung;Aktiv;Notiz
+Wohnung/Wohneinheit;Regelgeschoss;beheizt;"Aufenthaltsraum;Küche;Badezimmer;WC;Flur;Abstellraum;Balkon/Loggia/Terrasse";Abgeschlossene Wohneinheit;Ja;deine Liste
+Gewerbe-/Nutzungseinheit;Regelgeschoss;beheizt;"Büro/Aufenthalt;Verkauf;Lager;Sanitär;Flur";Büro, Praxis, Laden;Ja;ergänzt – streichen falls rein Wohnen
+Treppenhaus/Erschließung;Regelgeschoss (vertikal übergreifend);gering beheizt;"Treppenhaus;Flur (öffentlich)";Öffentliche Verkehrsfläche;Ja;"deine Liste („Verkehrsfläche öffentlich"")"
+Gemeinschaftsraum;Keller/Regelgeschoss;gering beheizt / unbeheizt;"Waschküche;Trockenraum;Fahrradraum;Abstellraum";Gemeinschaftsflächen;Ja;ergänzt
+Technik;Keller;gering beheizt;"Heizungsraum;ELT-Raum;Hausanschlussraum;Lüftungszentrale;Technikraum (allgemein)";Technikzentrale (Heizung/Elektro/Wasser/Gas);Ja;zusammengefasst aus Heizzentrale/ELT/Hausanschluss
+Kellerbereich;Keller;unbeheizt;"Kellerraum;Abstellraum;Waschküche";Unbeheizter Keller;Ja;"deine Liste; Technikräume jetzt im Bereich Technik"
+Dachboden/Spitzboden;Dachboden;unbeheizt;"Dachboden;Abstellraum";Unbeheizter Dachraum;Ja;deine Liste
+Tiefgarage/Garage;Keller / Erdgeschoss;unbeheizt;"Stellplatz;Technikraum";Garage / Tiefgarage;Ja;ergänzt
+Außenanlage;Außenanlage;außen;"Außenfläche;Stellplatz";Außenbereich / Grundstück;Ja;deine Liste
+EE-Fläche (Erneuerbare Energien);Dach / Außen;außen;(keine Räume – trägt Kollektoren/PV-Module);Dach-/Freifläche für PV & Solarthermie;Ja;"ergänzt; Montageart/Verschattung als Bereichsfragen"
