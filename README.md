@@ -54,10 +54,26 @@ Aufnahmetiefe über `Min_LOD` (Schnell 200 / Standard 300 / Detail 400).
 - [x] App offline-fähig (localStorage-Struktur + IndexedDB-Medien), Export/Import als JSON
 - [x] Login (lokal) + Projektübersicht, Mehrprojekt-Verwaltung
 - [x] Supabase-Projekt angelegt; SQL-Reihenfolge: `schema.sql` → `02_cloud.sql` → `03_catalogs.sql` → `04_seed_catalogs.sql`; Bucket `media` (privat)
+- [x] Katalogschema v2 (`05_catalogs_v2.sql`): alle 11 CSVs, stabile `frage_id`, `kat_raumtypen`/`kat_bereichstypen`/`kat_nutzungsprofile_18599`/`kat_hilfetext_override`/`kat_meta`, Prüf-View `v_katalog_check`
+- [x] Katalog-Import als Python-CLI (`tools/tga_tools`) statt `csv_to_seed.py` – siehe „Kataloge nach Supabase“
+- [x] Oberfläche auf das Modernist-Design (Archivo, 2px-Raster, gelber Akzent) umgestellt – Tokens + Override-Layer oben in `app_template.html`
 - [x] Login auf Supabase Auth (E-Mail/Passwort) + Cloud-Backup je Projekt
 - [ ] Sync-Schicht: lokale Warteschlange → Postgres/Storage (offline-first bleibt)
 - [ ] Deployment als statische Site (Cloudflare Pages / Netlify) + eigene Domain, PWA
 - [ ] Katalog-Pflege: CSV-Upload oder Admin-Maske, Kataloge aus `catalogs`-Tabelle laden
+
+## Kataloge nach Supabase (v2)
+
+```bash
+# einmalig in Supabase → SQL-Editor: supabase/05_catalogs_v2.sql ausführen (idempotent)
+pip install "psycopg[binary]"
+cd tools
+python -m tga_tools katalog check                       # nur validieren (Fehler/Warnungen/Hinweise)
+python -m tga_tools katalog import --sql ../supabase/05_seed_catalogs_v2.sql   # Seed-Datei für den SQL-Editor
+python -m tga_tools katalog import --dsn "$DATABASE_URL"                        # oder direkt schreiben
+```
+`DATABASE_URL` = Supabase → Project Settings → Database → Connection string (URI, Session-Pooler). Kann auch in `.env` im Repo-Root stehen.
+„Fehler“ (Duplikate, unbekannter Kluster/Antworttyp) brechen ab; „Warnungen“ sind die offenen CSV-Korrekturen aus `offene-fragen` A2 und landen in `v_katalog_check`. `frage_id` = `F-` + sha256(quelle|Objektklasse|Objekttyp|Raumtyp|Fragen_Klasse|Titel)[:10]; eine Spalte `Frage_ID` in der CSV hat Vorrang.
 
 ## Deployment (statisch)
 
